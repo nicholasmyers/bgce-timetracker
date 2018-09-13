@@ -8,7 +8,25 @@
     BGCE Time Keeping
     <br />
     This is the home page, take a look!
-
-    I updated it this time! 
+    <br />
+    <br />
 </body>
 </html>
+
+<!--test form for login -->
+<form id='login' action='login.php' method='post' accept-charset='UTF-8'> <!--login.php needs to be created, or .css or .js?? decide what language we want to run for logic.-->
+     <fieldset>
+      <legend>Login</legend>
+      <input type='hidden' name='submitted' id='submitted' value='1' />
+      <label for='username'>UserName*:</label>
+      <input type='text' name='username' id='username' maxlength="50" />
+      <label for='password'>Password*:</label>
+      <input type='password' name='password' id='password' maxlength="50" />
+      <input type='submit' name='Submit' value='Submit' />
+    </fieldset>
+</form>
+<br />
+<!--test form/"button" for navigation-->
+<form action="portal.html">
+    <input type="submit" value="Go to portal" />
+</form>
