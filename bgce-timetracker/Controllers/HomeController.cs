@@ -15,7 +15,7 @@ namespace bgce_timetracker.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "A time tracking application.";
 
             return View();
         }
