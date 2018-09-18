@@ -1,0 +1,80 @@
+﻿@model bgce_timetracker.Models.NOTIFICATION
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>NOTIFICATION</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.recipients)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.recipients)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trigger)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trigger)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.content)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.content)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER1.fname)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

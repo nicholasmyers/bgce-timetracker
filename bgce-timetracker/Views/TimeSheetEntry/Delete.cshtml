@@ -1,0 +1,128 @@
+﻿@model bgce_timetracker.Models.TIME_SHEET_ENTRY
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TIME_SHEET_ENTRY</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.hours_worked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hours_worked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.clock_in_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.clock_in_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.clock_out_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.clock_out_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_clocked_in)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_clocked_in)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.time_type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.time_type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.overtime_hours_worked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.overtime_hours_worked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pto_earned)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pto_earned)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TIME_SHEET1.comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TIME_SHEET1.comments)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

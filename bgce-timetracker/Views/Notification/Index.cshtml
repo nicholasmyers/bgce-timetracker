@@ -1,0 +1,69 @@
+﻿@model IEnumerable<bgce_timetracker.Models.NOTIFICATION>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.recipients)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.trigger)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.recipients)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.trigger)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.fname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.notifID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.notifID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.notifID })
+        </td>
+    </tr>
+}
+
+</table>

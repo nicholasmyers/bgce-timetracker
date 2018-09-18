@@ -1,0 +1,152 @@
+﻿@model bgce_timetracker.Models.TIME_SHEET
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TIME_SHEET</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.submitted_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.submitted_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.approved_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.approved_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.submitted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.submitted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.approved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.approved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_missing_punches)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_missing_punches)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_entries)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_entries)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_hours_worked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_hours_worked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_overtime_worked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_overtime_worked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_pto_used)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_pto_used)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_unpaid_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_unpaid_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAY_PERIOD1.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAY_PERIOD1.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER1.fname)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
