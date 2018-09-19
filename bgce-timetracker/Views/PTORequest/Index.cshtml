@@ -1,0 +1,69 @@
+﻿@model IEnumerable<bgce_timetracker.Models.PTO_REQUEST>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.total_time_requested)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requested_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.approved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.approved_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_time_requested)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.requested_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.fname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.requestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.requestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.requestID })
+        </td>
+    </tr>
+}
+
+</table>

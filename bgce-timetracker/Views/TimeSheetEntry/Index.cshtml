@@ -1,0 +1,105 @@
+﻿@model IEnumerable<bgce_timetracker.Models.TIME_SHEET_ENTRY>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.hours_worked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.clock_in_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.clock_out_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_clocked_in)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updated_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updated_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.time_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.overtime_hours_worked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pto_earned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TIME_SHEET1.comments)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.hours_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.clock_in_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.clock_out_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_clocked_in)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updated_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updated_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.time_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.overtime_hours_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pto_earned)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TIME_SHEET1.comments)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

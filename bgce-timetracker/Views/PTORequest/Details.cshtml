@@ -1,0 +1,74 @@
+﻿@model bgce_timetracker.Models.PTO_REQUEST
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PTO_REQUEST</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.total_time_requested)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_time_requested)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.requested_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.requested_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.approved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.approved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.approved_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.approved_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.comments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.comments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER1.fname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.requestID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

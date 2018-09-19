@@ -1,0 +1,194 @@
+﻿@model bgce_timetracker.Models.USER
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>USER</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.start_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.start_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.created_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.created_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_on)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.updated_by)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.updated_by)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passwrd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passwrd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passwrd_last_set)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passwrd_last_set)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passwrd_expired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passwrd_expired)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passwd_salt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passwd_salt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_administrator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_administrator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.user_type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_hours_worked)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_hours_worked)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LOCATION1.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LOCATION1.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PAID_STAFF.pay_schedule)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PAID_STAFF.pay_schedule)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UNIT_DIRECTOR.emplID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UNIT_DIRECTOR.emplID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER2.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER2.fname)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VOLUNTEER.volID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VOLUNTEER.volID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.userID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
