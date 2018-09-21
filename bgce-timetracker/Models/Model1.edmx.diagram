@@ -15,9 +15,6 @@
         <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR" Width="1.5" PointX="5.25" PointY="21" IsExpanded="true" />
         <EntityTypeShape EntityType="trackerModel.USER" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="trackerModel.VOLUNTEER" Width="1.5" PointX="5.25" PointY="23.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.PAID_STAFF_VIEW" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR_VIEW" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.VOLUNTEER_VIEW" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="trackerModel.FK__USER__location__0C85DE4D" ManuallyRouted="false" />
         <AssociationConnector Association="trackerModel.user_recipient" ManuallyRouted="false" />
         <AssociationConnector Association="trackerModel.user_sender" ManuallyRouted="false" />
@@ -31,6 +28,11 @@
         <AssociationConnector Association="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" ManuallyRouted="false" />
         <AssociationConnector Association="trackerModel.manager" ManuallyRouted="false" />
         <AssociationConnector Association="trackerModel.volID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="trackerModel.LOGIN" Width="1.5" PointX="5.25" PointY="0.75" />
+        <AssociationConnector Association="trackerModel.FK_LOGIN_USER" />
+        <EntityTypeShape EntityType="trackerModel.VOLUNTEER_VIEW" Width="1.5" PointX="9.5" PointY="1.375" />
+        <EntityTypeShape EntityType="trackerModel.PAID_STAFF_VIEW" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR_VIEW" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

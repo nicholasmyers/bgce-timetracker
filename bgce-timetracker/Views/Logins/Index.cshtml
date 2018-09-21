@@ -1,0 +1,70 @@
+﻿@model IEnumerable<bgce_timetracker.Models.LOGIN>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password_salt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password_last_set)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_locked_out)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_password_expired)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.password_salt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.password_last_set)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_locked_out)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_password_expired)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER.fname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.userID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.userID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.userID })
+        </td>
+    </tr>
+}
+
+</table>

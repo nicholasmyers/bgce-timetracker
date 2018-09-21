@@ -25,12 +25,7 @@ namespace bgce_timetracker.Models
         public Nullable<System.DateTime> updated_by { get; set; }
         public Nullable<int> manager { get; set; }
         public Nullable<int> location { get; set; }
-        public string username { get; set; }
         public string email { get; set; }
-        public string passwrd { get; set; }
-        public Nullable<System.DateTime> passwrd_last_set { get; set; }
-        public byte[] passwrd_expired { get; set; }
-        public string passwd_salt { get; set; }
         public byte[] is_administrator { get; set; }
         public string user_type { get; set; }
         public Nullable<double> total_hours_worked { get; set; }
