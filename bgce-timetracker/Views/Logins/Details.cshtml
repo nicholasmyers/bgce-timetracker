@@ -1,0 +1,75 @@
+﻿@model bgce_timetracker.Models.LOGIN
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LOGIN</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.username)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.username)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.password)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.password_salt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.password_salt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.password_last_set)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.password_last_set)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_locked_out)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_locked_out)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.is_password_expired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_password_expired)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.userID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

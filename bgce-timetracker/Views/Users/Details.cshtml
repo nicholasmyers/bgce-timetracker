@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
@@ -75,51 +76,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.username)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.username)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.email)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.passwrd)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.passwrd)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.passwrd_last_set)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.passwrd_last_set)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.passwrd_expired)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.passwrd_expired)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.passwd_salt)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.passwd_salt)
         </dd>
 
         <dt>

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
@@ -36,22 +37,7 @@
             @Html.DisplayNameFor(model => model.updated_by)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.username)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.passwrd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.passwrd_last_set)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.passwrd_expired)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.passwd_salt)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.is_administrator)
@@ -107,22 +93,7 @@
             @Html.DisplayFor(modelItem => item.updated_by)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.username)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.passwrd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.passwrd_last_set)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.passwrd_expired)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.passwd_salt)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.is_administrator)
