@@ -7,28 +7,29 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/sidebar.css")
-    @using Microsoft.AspNet.Identity;
-
-    <link rel="icon" href="@Url.Content("~/Content/bgcelogo.png")" />
 
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top sidebar-navbar-inverse">
         <div class="container sidebar-navbar-container">
             <div class="navbar-header">
-                <div class="navbar-header pull-left">
-                    <a class="navbar-brand" href="@Url.Action("IndexInternal", "Home")">
-                        <img src="~/Content/bgcelogo.png" alt="Boys & Girls Club of El Dorado County Logo" style="height:30px; width: 40px" />
-                    </a>
-                </div>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("BGCE Time Management", "IndexInternal", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("BGCE Time Tracker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             @Html.Partial("_LoginPartial")
+
+            <div class="navbar-collapse collapse">
+
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <!--<li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>-->
+                </ul>
+            </div>
         </div>
     </div>
    
@@ -36,73 +37,11 @@
             <div class="sidebar-aside-content">
                 <!-- Content of sidebar -->
                 <ul class="sidebar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Self-Service
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">
-                                @Html.ActionLink("My Profile", "Details", "Users",
-                                    new {
-                                        userID = User.Identity.GetUserId()
-                                })
-                            </div>
-                            <a class="dropdown-item">@Html.ActionLink("My Timecard", "Index", "Timesheet")</a>
-                            <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
-                            <a class="dropdown-item">@Html.ActionLink("Clock In / Out", "Create", "TimeSheetEntry")</a>
-                            <a class="dropdown-item"href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            PTO Requests
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View my PTO Requests", "Index", "PTORequest")</div>
-                            <div class="dropdown-item">@Html.ActionLink("My staff's Requests", "Index", "PTORequest")</div>
-                            <div class="dropdown-item">@Html.ActionLink("Pending My Approval", "Index", "PTORequest")</div>
-                            <div class="dropdown-item">@Html.ActionLink("View all PTO Requests", "Index", "PTORequest")</div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Timesheets
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View Open", "Details", "TimeSheet")</div>
-                            <div class="dropdown-item">@Html.ActionLink("View All", "Index", "TimeSheet")</div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Pay Periods
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("Edit Current", "Edit", "PayPeriod")</div>
-                            <div class="dropdown-item">@Html.ActionLink("View All", "Index", "PayPeriod")</div>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            User Management
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View All", "Index", "Users")</div>
-                            <div class="dropdown-item">@Html.ActionLink("Create New", "Create", "Users")</div>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            System Administration
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("Manage Locations", "Index", "Locations")</div>
-                            <div class="dropdown-item">@Html.ActionLink("View or Edit Users", "Index", "Users")</div>
-                            <div class="dropdown-item">@Html.ActionLink("Manage Scheduled Jobs", "")</div>
-                        </div>
-                    </li>
+                    <li>@Html.ActionLink("Users", "Index", "Users")</li>
+                    <li>@Html.ActionLink("Locations", "Index", "Locations")</li>
+                    <li>@Html.ActionLink("PTO Requests", "Index", "PTORequest")</li>
+                    <li>@Html.ActionLink("Pay Periods", "Index", "PayPeriod")</li>
+                    <li>@Html.ActionLink("Time Sheets", "Index", "TimeSheet")</li>
                 </ul>
             </div>
         
