@@ -14,7 +14,7 @@
 }
 /* Sidebar */
 .sidebar-layout {
-  padding-left: 180px;
+  padding-left: 150px;
 }
 .sidebar-body-content {
   margin: 0;
@@ -23,17 +23,17 @@
 .sidebar-aside-content {
   z-index: 1000;
   position: fixed;
-  left: 180px;
-  width: 180px;
+  left: 150px;
+  width: 150px;
   height: 100%;
-  margin-left: -180px;
+  margin-left: -150px;
   overflow-y: auto;
   background: #222222;
 }
 .sidebar-nav {
   position: absolute;
   top: 0;
-  width: 180px;
+  width: 150px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -45,7 +45,7 @@
 .sidebar-nav li a {
   display: block;
   text-decoration: none;
-  color: #797979;
+  color: #999999;
 }
 .sidebar-nav li a:hover {
   text-decoration: none;
@@ -56,8 +56,4 @@
 .sidebar-nav li a:focus {
   text-decoration: none;
 }
-.dropdown-menu {
-  background-color: #373737;
-  position: relative;
-  width: 99%;
-}
+/*# sourceMappingURL=sidebar.css.map */
