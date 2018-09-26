@@ -8,6 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/sidebar.css")
 
+    <link rel="icon" href="@Url.Content("~/Content/bgcelogo.png")" />
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top sidebar-navbar-inverse">
@@ -18,16 +20,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("BGCE Time Tracker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("BGCE Time Tracker", "IndexInternal", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             @Html.Partial("_LoginPartial")
 
             <div class="navbar-collapse collapse">
 
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <!--<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>-->
+                    <li>@Html.ActionLink("Home", "IndexInternal", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -39,13 +39,23 @@
                 <ul class="sidebar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Self-Service
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <div class="dropdown-item">@Html.ActionLink("My Profile", "Details", "Users")</div>
+                            <a class="dropdown-item">@Html.ActionLink("My Timecard", "Index", "Timesheet")</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
+                            <a class="dropdown-item">@Html.ActionLink("Clock In / Out", "Create", "TimeSheetEntry")</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             User Management
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("Users", "Index", "Users")</div>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-item">@Html.ActionLink("View Users", "Index", "Users")</div>
+                            <a class="dropdown-item">@Html.ActionLink("Create New", "Create", "Users")</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -53,7 +63,7 @@
                             Locations
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View all Locations", "Index", "Locations")</div>
+                            <div class="dropdown-item">@Html.ActionLink("View Locations", "Index", "Locations")</div>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
