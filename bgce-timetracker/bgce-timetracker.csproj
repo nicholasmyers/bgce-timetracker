@@ -283,6 +283,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bgcelogo.png" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -358,6 +359,12 @@
     <Content Include="Views\Logins\Index.cshtml" />
     <Content Include="Content\sidebar.css.map" />
     <Content Include="Content\sidebar.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\Home\IndexInternal.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
