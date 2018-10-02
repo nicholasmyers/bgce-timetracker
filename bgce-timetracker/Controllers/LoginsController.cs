@@ -12,13 +12,75 @@ namespace bgce_timetracker.Controllers
 {
     public class LoginsController : Controller
     {
-        private trackerEntities db = new trackerEntities();
 
-        // GET: Logins
+        private trackerEntities db = new trackerEntities();
+        /*/-----------------------------------------------------------------------------------------------------------------------------------------------Work in Progress
+        // GET: /Account/Login
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+
+        //
+        // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------------^^ Work In Progress
+        /*/// GET: Logins
         public ActionResult Index()
         {
             var lOGINs = db.LOGINs.Include(l => l.USER);
             return View(lOGINs.ToList());
+        } 
+        public ActionResult Authorize()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel)
+        {
+            using (trackerEntities db = new trackerEntities())
+            {
+                var userDetails = db.LOGINs.Where(x => x.username == userModel.username && x.password == userModel.password).FirstOrDefault();
+                if (userDetails == null)
+                {
+                    userModel.LoginErrorMessage = "Wrong Username or password";
+                    return View("Login", userModel);
+                }
+                else
+                {
+                    Session["userID"] = userDetails.userID;
+                    return RedirectToAction("Index", "Home");
+                }
+                }
+                
         }
 
         // GET: Logins/Details/5
@@ -48,21 +110,23 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userID,username,password,password_salt,password_last_set,is_locked_out,is_password_expired")] LOGIN lOGIN)
+        public ActionResult Create(LOGIN newuser)
         {
-            if (ModelState.IsValid)
+            using (trackerEntities db = new trackerEntities())
             {
-                db.LOGINs.Add(lOGIN);
+                int hash = newuser.password.GetHashCode();
+                //newuser.password_salt = hash; //password salt needs to be int ??
+                db.LOGINs.Add(newuser);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-
-            ViewBag.userID = new SelectList(db.USERs, "userID", "fname", lOGIN.userID);
-            return View(lOGIN);
+            ModelState.Clear();
+            ViewBag.SuccessMessage = "Registration Success!";
+            return View("Create", new LOGIN());
+            //return View("Create", new LOGIN());
         }
 
-        // GET: Logins/Edit/5
-        public ActionResult Edit(int? id)
+            // GET: Logins/Edit/5
+            public ActionResult Edit(int? id)
         {
             if (id == null)
             {
