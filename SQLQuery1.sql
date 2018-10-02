@@ -1,0 +1,1 @@
+﻿INSERT INTO LOGIN(userID, username,password,password_salt,password_last_set,is_locked_out,is_password_expired) VALUES ( 1, 'user1', 'p1','abc', NULL , NULL , NULL);
