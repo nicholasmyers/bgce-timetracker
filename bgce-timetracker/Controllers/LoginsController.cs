@@ -7,14 +7,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
-using bgce_timetracker.Services;
-using System.Text;
 
 namespace bgce_timetracker.Controllers
 {
     public class LoginsController : Controller
     {
-        
+
         private trackerEntities db = new trackerEntities();
         /*/-----------------------------------------------------------------------------------------------------------------------------------------------Work in Progress
         // GET: /Account/Login
@@ -66,44 +64,22 @@ namespace bgce_timetracker.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel, String answer)
+        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel)
         {
             using (trackerEntities db = new trackerEntities())
             {
-
-                var userDetails = db.LOGINs.Where(x => x.username == userModel.username).ToList();
-                byte[] ss;
-                string hashword;
-                Encoding enc = Encoding.UTF8;
-                PasswordHash pass = new PasswordHash();
+                var userDetails = db.LOGINs.Where(x => x.username == userModel.username && x.password == userModel.password).FirstOrDefault();
                 if (userDetails == null)
                 {
                     userModel.LoginErrorMessage = "Wrong Username or password";
                     return View("Login", userModel);
                 }
-                else foreach (var item in userDetails)
+                else
                 {
-                    ss = enc.GetBytes(item.password_salt);
-                    //pass.GetHash(item.password, ss);
-                        if(pass.GetHash(item.password, ss) == pass.GetHash(userModel.password,ss))
-                        {
-                            Session["userID"] = item.userID;
-                            if (answer.Equals("Log in"))
-                            {
-                                return RedirectToAction("Index", "Home"); //Takes user to log in button.
-                            }
-                            else
-                            {
-                                return RedirectToAction("ClockIn", "TimeSheetEntry", userModel); //Takes user to... this is what happens after you just press the clock in button.
-                            }
-                        }
+                    Session["userID"] = userDetails.userID;
+                    return RedirectToAction("Index", "Home");
                 }
-                userModel.LoginErrorMessage = "Wrong Username or password";
-                return View("Login", userModel);
-                
-         
-
-            }
+                }
                 
         }
 
@@ -138,11 +114,7 @@ namespace bgce_timetracker.Controllers
         {
             using (trackerEntities db = new trackerEntities())
             {
-                PasswordHash pass = new PasswordHash();
-                pass.Salt = pass.GenerateSalt();
-                newuser.password_salt = pass.Salt.ToString();
-                newuser.password = pass.GetHash(newuser.password, pass.Salt);
-                //int hash = newuser.password.GetHashCode();
+                int hash = newuser.password.GetHashCode();
                 //newuser.password_salt = hash; //password salt needs to be int ??
                 db.LOGINs.Add(newuser);
                 db.SaveChanges();
