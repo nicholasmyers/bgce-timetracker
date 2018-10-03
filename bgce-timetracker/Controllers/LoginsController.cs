@@ -7,12 +7,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
+using bgce_timetracker.Services;
 
 namespace bgce_timetracker.Controllers
 {
     public class LoginsController : Controller
     {
-
+        
         private trackerEntities db = new trackerEntities();
         /*/-----------------------------------------------------------------------------------------------------------------------------------------------Work in Progress
         // GET: /Account/Login
@@ -68,6 +69,7 @@ namespace bgce_timetracker.Controllers
         {
             using (trackerEntities db = new trackerEntities())
             {
+
                 var userDetails = db.LOGINs.Where(x => x.username == userModel.username && x.password == userModel.password).FirstOrDefault();
                 if (userDetails == null)
                 {
@@ -114,7 +116,10 @@ namespace bgce_timetracker.Controllers
         {
             using (trackerEntities db = new trackerEntities())
             {
-                int hash = newuser.password.GetHashCode();
+                PasswordHash pass = new PasswordHash();
+                pass.Salt = pass.GenerateSalt();
+                newuser.password_salt = pass.Salt.ToString();
+                //int hash = newuser.password.GetHashCode();
                 //newuser.password_salt = hash; //password salt needs to be int ??
                 db.LOGINs.Add(newuser);
                 db.SaveChanges();
