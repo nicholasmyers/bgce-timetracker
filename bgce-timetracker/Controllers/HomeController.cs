@@ -10,6 +10,11 @@ namespace bgce_timetracker.Controllers
     {
         public ActionResult Index()
         {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("IndexInternal", "Home");
+            }
+
             return View();
         }
 
@@ -23,6 +28,17 @@ namespace bgce_timetracker.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
+        public ActionResult IndexInternal()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.Message = "Home.";
 
             return View();
         }
