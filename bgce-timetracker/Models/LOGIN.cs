@@ -12,23 +12,7 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
-    public class DBLoginViewModel
-    {
-        [Required]
-        [Display(Name = "UserName")]
-       
-        public string username { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string password { get; set; }
-
-        /*[Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }*/
-    }
-
+    
     public partial class LOGIN
     {
         public int userID { get; set; }
@@ -37,11 +21,9 @@ namespace bgce_timetracker.Models
         public string password { get; set; }
         public string password_salt { get; set; }
         public Nullable<System.DateTime> password_last_set { get; set; }
-        public byte[] is_locked_out { get; set; }
-        public byte[] is_password_expired { get; set; }
-
+        public bool is_locked_out { get; set; }
+        public bool is_password_expired { get; set; }
         public string LoginErrorMessage { get; set; }
-    
         public virtual USER USER { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace bgce_timetracker.Models
         public int userID { get; set; }
         public string fname { get; set; }
         public string lname { get; set; }
-        public byte[] active { get; set; }
+        public bool active { get; set; }
         public Nullable<System.DateTime> start_date { get; set; }
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }
@@ -38,7 +38,7 @@ namespace bgce_timetracker.Models
         public Nullable<int> manager { get; set; }
         public Nullable<int> location { get; set; }
         public string email { get; set; }
-        public byte[] is_administrator { get; set; }
+        public bool is_administrator { get; set; }
         public string user_type { get; set; }
         public Nullable<double> total_hours_worked { get; set; }
     
@@ -61,6 +61,5 @@ namespace bgce_timetracker.Models
         public virtual ICollection<USER> USER1 { get; set; }
         public virtual USER USER2 { get; set; }
         public virtual VOLUNTEER VOLUNTEER { get; set; }
-        public virtual LOGIN LOGIN { get; set; }
     }
 }

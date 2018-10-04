@@ -107,6 +107,7 @@
             @Html.LabelFor(model => model.is_administrator, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.is_administrator, new { htmlAttributes = new { @class = "form-control" } })
+                <!--@Html.CheckBoxFor(model => model.is_administrator, new { @checked = "checked" });-->
                 @Html.ValidationMessageFor(model => model.is_administrator, "", new { @class = "text-danger" })
             </div>
         </div>

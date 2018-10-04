@@ -21,7 +21,7 @@ namespace bgce_timetracker.Models
         public string comment { get; set; }
         public Nullable<System.TimeSpan> clock_in_time { get; set; }
         public Nullable<System.TimeSpan> clock_out_time { get; set; }
-        public byte[] is_clocked_in { get; set; }
+        public bool is_clocked_in { get; set; }
         public Nullable<System.DateTime> updated_on { get; set; }
         public string updated_by { get; set; }
         public string time_type { get; set; }
