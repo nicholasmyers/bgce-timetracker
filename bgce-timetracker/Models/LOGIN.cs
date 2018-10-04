@@ -12,16 +12,23 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+    using System.ComponentModel;
+
     public partial class LOGIN
     {
+        [DisplayName("User ID")]
         public int userID { get; set; }
+        [DisplayName("Username")]
         public string username { get; set; }
+        [DisplayName("Password")]
         [DataType(DataType.Password)]
         public string password { get; set; }
         public string password_salt { get; set; }
+        [DisplayName("Password Last Changed")]
         public Nullable<System.DateTime> password_last_set { get; set; }
+        [DisplayName("Locked Out")]
         public bool is_locked_out { get; set; }
+        [DisplayName("Password Expired")]
         public bool is_password_expired { get; set; }
         public string LoginErrorMessage { get; set; }
         public virtual USER USER { get; set; }

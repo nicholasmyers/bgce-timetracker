@@ -50,7 +50,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.submitted, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.submitted, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.submitted)
                 @Html.ValidationMessageFor(model => model.submitted, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.approved, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.approved, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.approved)
                 @Html.ValidationMessageFor(model => model.approved, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -74,7 +74,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.active, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.active, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.active, htmlAttributes: new { @checked = true })
                 @Html.ValidationMessageFor(model => model.active, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -82,7 +82,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.is_missing_punches, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.is_missing_punches, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.is_missing_punches)
                 @Html.ValidationMessageFor(model => model.is_missing_punches, "", new { @class = "text-danger" })
             </div>
         </div>

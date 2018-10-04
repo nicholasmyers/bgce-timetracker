@@ -11,7 +11,8 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class TIME_SHEET
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,21 +22,37 @@ namespace bgce_timetracker.Models
         }
     
         public int timesheetID { get; set; }
+        [DisplayName("Timesheet For")]
         public int employee { get; set; }
+        [DisplayName("Submitted On")]
         public Nullable<System.DateTime> submitted_on { get; set; }
+        [DisplayName("Approved On")]
         public Nullable<System.DateTime> approved_on { get; set; }
+        [DisplayName("Approved By")]
         public Nullable<int> approved_by { get; set; }
+        [DisplayName("Timesheet Submitted")]
         public bool submitted { get; set; }
+        [DisplayName("Timesheet Approved")]
         public bool approved { get; set; }
+        [DisplayName("Comments")]
         public string comments { get; set; }
+        [DisplayName("Active")]
         public bool active { get; set; }
+        [DisplayName("Missing Punches")]
         public bool is_missing_punches { get; set; }
+        [DisplayName("Total Timesheet Entries")]
         public int total_entries { get; set; }
+        [DisplayName("Total Hours Worked")]
         public Nullable<double> total_hours_worked { get; set; }
+        [DisplayName("Total Overtime Worked")]
         public Nullable<double> total_overtime_worked { get; set; }
+        [DisplayName("Pay Period")]
         public int pay_period { get; set; }
+        [DisplayName("Total PTO Used")]
         public Nullable<double> total_pto_used { get; set; }
+        [DisplayName("Total Unpaid Time")]
         public Nullable<double> total_unpaid_time { get; set; }
+        [DisplayName("Created On")]
         public System.DateTime created_on { get; set; }
     
         public virtual PAY_PERIOD PAY_PERIOD1 { get; set; }

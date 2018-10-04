@@ -10,6 +10,7 @@
 namespace bgce_timetracker.Models
 {
     using System;
+    using System.ComponentModel;
     using System.Collections.Generic;
     
     public partial class VOLUNTEER_VIEW

@@ -11,7 +11,8 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class LOCATION
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,11 +22,17 @@ namespace bgce_timetracker.Models
         }
     
         public int locationID { get; set; }
+        [DisplayName("Name")]
         public string name { get; set; }
+        [DisplayName("Address")]
         public string address { get; set; }
+        [DisplayName("Street")]
         public string street { get; set; }
+        [DisplayName("City")]
         public string city { get; set; }
+        [DisplayName("State")]
         public string state { get; set; }
+        [DisplayName("Country")]
         public string country { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

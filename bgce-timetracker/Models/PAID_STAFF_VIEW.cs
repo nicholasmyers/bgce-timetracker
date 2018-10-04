@@ -11,7 +11,8 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class PAID_STAFF_VIEW
     {
         public Nullable<double> pto_accrual_rate { get; set; }

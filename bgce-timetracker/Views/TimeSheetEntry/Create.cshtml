@@ -66,7 +66,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.is_clocked_in, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.is_clocked_in, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(model => model.is_clocked_in, htmlAttributes: new { @checked = true })
                 @Html.ValidationMessageFor(model => model.is_clocked_in, "", new { @class = "text-danger" })
             </div>
         </div>
