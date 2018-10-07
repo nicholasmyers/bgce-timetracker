@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
 using bgce_timetracker.Services;
+using System.Text;
 
 namespace bgce_timetracker.Controllers
 {
@@ -70,18 +71,30 @@ namespace bgce_timetracker.Controllers
             using (trackerEntities db = new trackerEntities())
             {
 
-                var userDetails = db.LOGINs.Where(x => x.username == userModel.username && x.password == userModel.password).FirstOrDefault();
+                var userDetails = db.LOGINs.Where(x => x.username == userModel.username).ToList();
+                byte[] ss;
+                string hashword;
+                Encoding enc = Encoding.UTF8;
+                PasswordHash pass = new PasswordHash();
                 if (userDetails == null)
                 {
                     userModel.LoginErrorMessage = "Wrong Username or password";
                     return View("Login", userModel);
                 }
-                else
+                else foreach (var item in userDetails)
                 {
-                    Session["userID"] = userDetails.userID;
-                    return RedirectToAction("Index", "Home");
+                    ss = enc.GetBytes(item.password_salt);
+                    //pass.GetHash(item.password, ss);
+                        if(pass.GetHash(item.password, ss) == pass.GetHash(userModel.password,ss))
+                        {
+                            Session["userID"] = item.userID;
+                            return RedirectToAction("Index", "Home");
+                        }
                 }
-                }
+                userModel.LoginErrorMessage = "Wrong Username or password";
+                return View("Login", userModel);
+
+            }
                 
         }
 
@@ -119,6 +132,7 @@ namespace bgce_timetracker.Controllers
                 PasswordHash pass = new PasswordHash();
                 pass.Salt = pass.GenerateSalt();
                 newuser.password_salt = pass.Salt.ToString();
+                newuser.password = pass.GetHash(newuser.password, pass.Salt);
                 //int hash = newuser.password.GetHashCode();
                 //newuser.password_salt = hash; //password salt needs to be int ??
                 db.LOGINs.Add(newuser);
