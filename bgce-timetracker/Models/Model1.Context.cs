@@ -35,9 +35,9 @@ namespace bgce_timetracker.Models
         public virtual DbSet<UNIT_DIRECTOR> UNIT_DIRECTOR { get; set; }
         public virtual DbSet<USER> USERs { get; set; }
         public virtual DbSet<VOLUNTEER> VOLUNTEERs { get; set; }
-        public virtual DbSet<LOGIN> LOGINs { get; set; }
-        public virtual DbSet<VOLUNTEER_VIEW> VOLUNTEER_VIEW { get; set; }
         public virtual DbSet<PAID_STAFF_VIEW> PAID_STAFF_VIEW { get; set; }
         public virtual DbSet<UNIT_DIRECTOR_VIEW> UNIT_DIRECTOR_VIEW { get; set; }
+        public virtual DbSet<VOLUNTEER_VIEW> VOLUNTEER_VIEW { get; set; }
+        public virtual DbSet<LOGIN> LOGINs { get; set; }
     }
 }

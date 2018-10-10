@@ -25,11 +25,11 @@ namespace bgce_timetracker.Models
         public Nullable<System.DateTime> submitted_on { get; set; }
         public Nullable<System.DateTime> approved_on { get; set; }
         public Nullable<int> approved_by { get; set; }
-        public byte[] submitted { get; set; }
-        public byte[] approved { get; set; }
+        public bool submitted { get; set; }
+        public bool approved { get; set; }
         public string comments { get; set; }
-        public byte[] active { get; set; }
-        public byte[] is_missing_punches { get; set; }
+        public bool active { get; set; }
+        public bool is_missing_punches { get; set; }
         public int total_entries { get; set; }
         public Nullable<double> total_hours_worked { get; set; }
         public Nullable<double> total_overtime_worked { get; set; }
