@@ -72,7 +72,7 @@ namespace bgce_timetracker.Controllers
                 if (userDetails == null)
                 {
                     userModel.LoginErrorMessage = "Wrong Username or password";
-                    return View("Login", userModel);
+                    return View("Authorize", userModel);
                 }
                 else
                 {
@@ -82,7 +82,7 @@ namespace bgce_timetracker.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                     else {
-                        return RedirectToAction("ClockIn", "TimeSheetEntryController", userModel);
+                        return RedirectToAction("clockIn", "TimeSheetEntry", userModel);
                     }
                 }
                 }
