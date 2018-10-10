@@ -64,7 +64,7 @@ namespace bgce_timetracker.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel, string answer)
         {
             using (trackerEntities db = new trackerEntities())
             {
@@ -77,7 +77,13 @@ namespace bgce_timetracker.Controllers
                 else
                 {
                     Session["userID"] = userDetails.userID;
-                    return RedirectToAction("Index", "Home");
+                    if (answer.Equals("Log in"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else {
+                        return RedirectToAction("ClockIn", "TimeSheetEntryController", userModel);
+                    }
                 }
                 }
                 
