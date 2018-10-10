@@ -12,6 +12,7 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class USER
     {
@@ -52,6 +53,7 @@ namespace bgce_timetracker.Models
         public string email { get; set; }
         [DisplayName("User is an Administrator")]
         public bool is_administrator { get; set; }
+        [Required]
         [DisplayName("User Type")]
         public string user_type { get; set; }
         [DisplayName("Total Hours Worked")]

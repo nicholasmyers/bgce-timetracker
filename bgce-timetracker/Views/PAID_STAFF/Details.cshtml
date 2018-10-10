@@ -1,0 +1,66 @@
+﻿@model bgce_timetracker.Models.PAID_STAFF
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PAID_STAFF</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.pto_accrual_rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pto_accrual_rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.max_pto_accrual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.max_pto_accrual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_pto_accrued)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_pto_accrued)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_schedule)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_schedule)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.emplID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

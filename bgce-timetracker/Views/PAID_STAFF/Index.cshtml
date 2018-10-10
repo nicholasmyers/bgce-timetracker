@@ -1,0 +1,63 @@
+﻿@model IEnumerable<bgce_timetracker.Models.PAID_STAFF>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.pto_accrual_rate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.max_pto_accrual)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_pto_accrued)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pay_rate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pay_schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.pto_accrual_rate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.max_pto_accrual)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_pto_accrued)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pay_rate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pay_schedule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER.fname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.emplID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.emplID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.emplID })
+        </td>
+    </tr>
+}
+
+</table>

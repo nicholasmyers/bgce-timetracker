@@ -1,0 +1,72 @@
+﻿@model bgce_timetracker.Models.PAID_STAFF
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PAID_STAFF</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.pto_accrual_rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pto_accrual_rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.max_pto_accrual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.max_pto_accrual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.total_pto_accrued)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.total_pto_accrued)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_rate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_rate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pay_schedule)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pay_schedule)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USER.fname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USER.fname)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
