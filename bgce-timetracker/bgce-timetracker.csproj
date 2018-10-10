@@ -211,6 +211,7 @@
     <Compile Include="Controllers\LoginsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\PAID_STAFFController.cs" />
     <Compile Include="Controllers\PayPeriodController.cs" />
     <Compile Include="Controllers\PTORequestController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
@@ -367,6 +368,11 @@
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Views\Home\IndexInternal.cshtml" />
     <Content Include="Views\Logins\Authorize.cshtml" />
+    <Content Include="Views\PAID_STAFF\Create.cshtml" />
+    <Content Include="Views\PAID_STAFF\Delete.cshtml" />
+    <Content Include="Views\PAID_STAFF\Details.cshtml" />
+    <Content Include="Views\PAID_STAFF\Edit.cshtml" />
+    <Content Include="Views\PAID_STAFF\Index.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
