@@ -23,7 +23,7 @@ namespace bgce_timetracker.Models
         public int ppID { get; set; }
         public Nullable<System.DateTime> start_date { get; set; }
         public Nullable<System.DateTime> end_date { get; set; }
-        public byte[] active { get; set; }
+        public bool active { get; set; }
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }
     

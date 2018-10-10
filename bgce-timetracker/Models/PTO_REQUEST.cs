@@ -18,7 +18,7 @@ namespace bgce_timetracker.Models
         public int requested_by { get; set; }
         public Nullable<double> total_time_requested { get; set; }
         public System.DateTime requested_on { get; set; }
-        public byte[] approved { get; set; }
+        public bool approved { get; set; }
         public Nullable<System.DateTime> approved_on { get; set; }
         public Nullable<int> approved_by { get; set; }
         public string comments { get; set; }

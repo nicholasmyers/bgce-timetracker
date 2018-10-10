@@ -15,20 +15,22 @@ namespace bgce_timetracker.Models
     public partial class TIME_SHEET_ENTRY
     {
         public int entryID { get; set; }
-        public int time_sheet { get; set; }
         public System.DateTime date { get; set; }
         public Nullable<double> hours_worked { get; set; }
         public string comment { get; set; }
         public Nullable<System.TimeSpan> clock_in_time { get; set; }
         public Nullable<System.TimeSpan> clock_out_time { get; set; }
-        public byte[] is_clocked_in { get; set; }
+        public bool is_clocked_in { get; set; }
         public Nullable<System.DateTime> updated_on { get; set; }
         public string updated_by { get; set; }
         public string time_type { get; set; }
         public Nullable<double> overtime_hours_worked { get; set; }
         public Nullable<double> pto_earned { get; set; }
         public System.DateTime created_on { get; set; }
+        public Nullable<int> employee { get; set; }
+        public Nullable<int> time_sheet { get; set; }
     
         public virtual TIME_SHEET TIME_SHEET1 { get; set; }
+        public virtual USER USER { get; set; }
     }
 }
