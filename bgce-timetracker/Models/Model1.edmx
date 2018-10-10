@@ -102,10 +102,9 @@
         <EntityType Name="TIME_SHEET_ENTRY">
           <Key>
             <PropertyRef Name="entryID" />
-            <PropertyRef Name="time_sheet" />
           </Key>
           <Property Name="entryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="time_sheet" Type="int" Nullable="false" />
+          <Property Name="time_sheet" Type="int" />
           <Property Name="date" Type="date" Nullable="false" />
           <Property Name="hours_worked" Type="float" />
           <Property Name="comment" Type="varchar(max)" />
@@ -118,6 +117,7 @@
           <Property Name="overtime_hours_worked" Type="float" />
           <Property Name="pto_earned" Type="float" />
           <Property Name="created_on" Type="datetime" Nullable="false" />
+          <Property Name="employee" Type="int" />
         </EntityType>
         <EntityType Name="UNIT_DIRECTOR">
           <Key>
@@ -144,6 +144,7 @@
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="VOLUNTEER">
           <Key>
@@ -162,6 +163,7 @@ warning 6002: The table/view 'tracker.dbo.PAID_STAFF_VIEW' does not have a prima
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="float" />
           <Property Name="max_pto_accrual" Type="float" />
@@ -183,6 +185,7 @@ warning 6002: The table/view 'tracker.dbo.PAID_STAFF_VIEW' does not have a prima
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -195,6 +198,7 @@ warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a pr
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
             <PropertyRef Name="email" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="float" />
           <Property Name="max_pto_accrual" Type="float" />
@@ -216,6 +220,7 @@ warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a pr
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
           <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -228,6 +233,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="fname" Type="varchar" MaxLength="45" />
@@ -244,6 +250,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="approved_by">
           <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
@@ -302,18 +309,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Principal>
             <Dependent Role="TIME_SHEET">
               <PropertyRef Name="pay_period" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__TIME_SHEE__time___29221CFB">
-          <End Role="TIME_SHEET" Type="Self.TIME_SHEET" Multiplicity="1" />
-          <End Role="TIME_SHEET_ENTRY" Type="Self.TIME_SHEET_ENTRY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIME_SHEET">
-              <PropertyRef Name="timesheetID" />
-            </Principal>
-            <Dependent Role="TIME_SHEET_ENTRY">
-              <PropertyRef Name="time_sheet" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -434,7 +429,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [PAID_STAFF_VIEW].[email] AS [email], 
     [PAID_STAFF_VIEW].[is_administrator] AS [is_administrator], 
     [PAID_STAFF_VIEW].[user_type] AS [user_type], 
-    [PAID_STAFF_VIEW].[total_hours_worked] AS [total_hours_worked]
+    [PAID_STAFF_VIEW].[total_hours_worked] AS [total_hours_worked], 
+    [PAID_STAFF_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[PAID_STAFF_VIEW] AS [PAID_STAFF_VIEW]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="UNIT_DIRECTOR_VIEW" EntityType="Self.UNIT_DIRECTOR_VIEW" store:Type="Views" store:Schema="dbo">
@@ -458,7 +454,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [UNIT_DIRECTOR_VIEW].[is_administrator] AS [is_administrator], 
     [UNIT_DIRECTOR_VIEW].[user_type] AS [user_type], 
     [UNIT_DIRECTOR_VIEW].[total_hours_worked] AS [total_hours_worked], 
-    [UNIT_DIRECTOR_VIEW].[email] AS [email]
+    [UNIT_DIRECTOR_VIEW].[email] AS [email], 
+    [UNIT_DIRECTOR_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[UNIT_DIRECTOR_VIEW] AS [UNIT_DIRECTOR_VIEW]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VOLUNTEER_VIEW" EntityType="Self.VOLUNTEER_VIEW" store:Type="Views" store:Schema="dbo">
@@ -477,7 +474,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [VOLUNTEER_VIEW].[email] AS [email], 
     [VOLUNTEER_VIEW].[is_administrator] AS [is_administrator], 
     [VOLUNTEER_VIEW].[user_type] AS [user_type], 
-    [VOLUNTEER_VIEW].[total_hours_worked] AS [total_hours_worked]
+    [VOLUNTEER_VIEW].[total_hours_worked] AS [total_hours_worked], 
+    [VOLUNTEER_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[VOLUNTEER_VIEW] AS [VOLUNTEER_VIEW]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="approved_by" Association="Self.approved_by">
@@ -499,10 +497,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <AssociationSet Name="FK__TIME_SHEE__pay_p__1EA48E88" Association="Self.FK__TIME_SHEE__pay_p__1EA48E88">
             <End Role="PAY_PERIOD" EntitySet="PAY_PERIOD" />
             <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
-          </AssociationSet>
-          <AssociationSet Name="FK__TIME_SHEE__time___29221CFB" Association="Self.FK__TIME_SHEE__time___29221CFB">
-            <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
-            <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
           </AssociationSet>
           <AssociationSet Name="FK__UNIT_DIRE__emplI__498EEC8D" Association="Self.FK__UNIT_DIRE__emplI__498EEC8D">
             <End Role="USER" EntitySet="USER" />
@@ -665,7 +659,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="time_sheet" />
           </Key>
           <Property Name="entryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="time_sheet" Type="Int32" Nullable="false" />
+          <Property Name="time_sheet" Type="Int32" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="hours_worked" Type="Double" />
           <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
@@ -679,6 +673,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="pto_earned" Type="Double" />
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="TIME_SHEET1" Relationship="trackerModel.FK__TIME_SHEE__time___29221CFB" FromRole="TIME_SHEET_ENTRY" ToRole="TIME_SHEET" />
+          <Property Name="employee" Type="Int32" />
         </EntityType>
         <EntityType Name="LOGIN">
           <Key>
@@ -776,6 +771,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="USER1" Relationship="trackerModel.manager" FromRole="USER" ToRole="USER1" />
           <NavigationProperty Name="USER2" Relationship="trackerModel.manager" FromRole="USER1" ToRole="USER" />
           <NavigationProperty Name="VOLUNTEER" Relationship="trackerModel.volID" FromRole="USER" ToRole="VOLUNTEER" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="PAID_STAFF_VIEW">
           <Key>
@@ -786,6 +782,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="Double" />
           <Property Name="max_pto_accrual" Type="Double" />
@@ -807,6 +804,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="UNIT_DIRECTOR_VIEW">
           <Key>
@@ -817,6 +815,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
             <PropertyRef Name="email" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="Double" />
           <Property Name="max_pto_accrual" Type="Double" />
@@ -838,6 +837,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="VOLUNTEER_VIEW">
           <Key>
@@ -848,6 +848,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="fname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
@@ -864,6 +865,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__USER__location__0C85DE4D">
           <End Type="trackerModel.LOCATION" Role="LOCATION" Multiplicity="0..1" />
@@ -1083,6 +1085,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="TIME_SHEET_ENTRY">
             <EntityTypeMapping TypeName="trackerModel.TIME_SHEET_ENTRY">
               <MappingFragment StoreEntitySet="TIME_SHEET_ENTRY">
+                <ScalarProperty Name="employee" ColumnName="employee" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="pto_earned" ColumnName="pto_earned" />
                 <ScalarProperty Name="overtime_hours_worked" ColumnName="overtime_hours_worked" />
@@ -1165,6 +1168,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="USERs">
             <EntityTypeMapping TypeName="trackerModel.USER">
               <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
@@ -1186,6 +1190,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="PAID_STAFF_VIEW">
             <EntityTypeMapping TypeName="trackerModel.PAID_STAFF_VIEW">
               <MappingFragment StoreEntitySet="PAID_STAFF_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
@@ -1212,6 +1217,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="UNIT_DIRECTOR_VIEW">
             <EntityTypeMapping TypeName="trackerModel.UNIT_DIRECTOR_VIEW">
               <MappingFragment StoreEntitySet="UNIT_DIRECTOR_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
@@ -1238,6 +1244,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="VOLUNTEER_VIEW">
             <EntityTypeMapping TypeName="trackerModel.VOLUNTEER_VIEW">
               <MappingFragment StoreEntitySet="VOLUNTEER_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
