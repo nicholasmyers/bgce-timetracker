@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Text;
 
 namespace bgce_timetracker.Services
 {
@@ -19,24 +20,31 @@ namespace bgce_timetracker.Services
         }
         public string GetHash(string password, byte[] salt)
         {
+
             // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            /*string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: password,
                 salt: salt,
                 prf: KeyDerivationPrf.HMACSHA1,
                 iterationCount: 10000,
-                numBytesRequested: 256 / 8));
+                numBytesRequested: 256 / 8));*/
             //Console.WriteLine($"Hashed: {hashed}");
-            return hashed;  
+
+            var hashed = new Rfc2898DeriveBytes(password, salt, 10000);
+            byte[] hash = hashed.GetBytes(20);
+            string hashedString = Convert.ToBase64String(hash);
+            return hashedString;  
         }
         public byte[] GenerateSalt()
         {
             // generate a 128-bit salt using a secure PRNG
-            byte[] s = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
+            byte[] s;//= new byte[128 / 8];
+            //Encoding enc = Encoding.UTF8;
+            new RNGCryptoServiceProvider().GetBytes(s = new byte[128 / 8]);
+            /*using (var rng = RandomNumberGenerator.Create())
             {
-                rng.GetBytes(s);
-            }
+               s = enc.GetBytes(rng);
+            }*/
             return s;
         }
         public byte[] Salt
