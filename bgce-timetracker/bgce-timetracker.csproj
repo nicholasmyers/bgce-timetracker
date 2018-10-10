@@ -372,7 +372,6 @@
     </None>
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Views\Home\IndexInternal.cshtml" />
-    <Content Include="Views\Logins\Login.cshtml" />
     <Content Include="Views\Logins\Authorize.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
