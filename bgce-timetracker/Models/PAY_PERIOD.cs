@@ -12,23 +12,22 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class VOLUNTEER_VIEW
+    public partial class PAY_PERIOD
     {
-        public int userID { get; set; }
-        public string fname { get; set; }
-        public string lname { get; set; }
-        public bool active { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PAY_PERIOD()
+        {
+            this.TIME_SHEET = new HashSet<TIME_SHEET>();
+        }
+    
+        public int ppID { get; set; }
         public Nullable<System.DateTime> start_date { get; set; }
+        public Nullable<System.DateTime> end_date { get; set; }
+        public bool active { get; set; }
         public System.DateTime created_on { get; set; }
         public string created_by { get; set; }
-        public Nullable<System.DateTime> updated_on { get; set; }
-        public Nullable<System.DateTime> updated_by { get; set; }
-        public Nullable<int> manager { get; set; }
-        public Nullable<int> location { get; set; }
-        public string email { get; set; }
-        public bool is_administrator { get; set; }
-        public string user_type { get; set; }
-        public Nullable<double> total_hours_worked { get; set; }
-        public bool can_work_foodservice { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TIME_SHEET> TIME_SHEET { get; set; }
     }
 }

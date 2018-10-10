@@ -37,8 +37,8 @@ namespace bgce_timetracker.Models
         public string password { get; set; }
         public string password_salt { get; set; }
         public Nullable<System.DateTime> password_last_set { get; set; }
-        public byte[] is_locked_out { get; set; }
-        public byte[] is_password_expired { get; set; }
+        public bool is_locked_out { get; set; }
+        public bool is_password_expired { get; set; }
 
         public string LoginErrorMessage { get; set; }
     
