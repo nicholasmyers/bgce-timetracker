@@ -39,7 +39,7 @@ namespace bgce_timetracker.Controllers
         // GET: TimeSheetEntry/Create
         public ActionResult clockIn(bgce_timetracker.Models.LOGIN userModel)
         {
-            //Console.WriteLine("We out here boys.");
+            Console.WriteLine("We out here boys.");
 
             TIME_SHEET activeTimeSheet = db.TIME_SHEET.Find(userModel.userID); //query time sheet entry table.
 
@@ -60,6 +60,7 @@ namespace bgce_timetracker.Controllers
             TimeSpan time = TimeSpan.Parse("HH:mm:ss tt");
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
+            db.SaveChanges();
         }
 
         public void clockUserOut(TIME_SHEET activeTimeSheet) {
