@@ -11,8 +11,7 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class PAY_PERIOD
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,15 +21,10 @@ namespace bgce_timetracker.Models
         }
     
         public int ppID { get; set; }
-        [DisplayName("Start Date")]
         public Nullable<System.DateTime> start_date { get; set; }
-        [DisplayName("End Date")]
         public Nullable<System.DateTime> end_date { get; set; }
-        [DisplayName("Active")]
         public bool active { get; set; }
-        [DisplayName("Created On")]
         public System.DateTime created_on { get; set; }
-        [DisplayName("Created By")]
         public string created_by { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

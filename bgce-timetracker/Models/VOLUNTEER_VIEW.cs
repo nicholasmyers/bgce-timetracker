@@ -10,7 +10,6 @@
 namespace bgce_timetracker.Models
 {
     using System;
-    using System.ComponentModel;
     using System.Collections.Generic;
     
     public partial class VOLUNTEER_VIEW
@@ -30,5 +29,6 @@ namespace bgce_timetracker.Models
         public bool is_administrator { get; set; }
         public string user_type { get; set; }
         public Nullable<double> total_hours_worked { get; set; }
+        public bool can_work_foodservice { get; set; }
     }
 }

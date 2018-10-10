@@ -11,8 +11,7 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class PAID_STAFF
     {
         public int emplID { get; set; }

@@ -11,9 +11,7 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,39 +23,26 @@ namespace bgce_timetracker.Models
             this.PTO_REQUEST1 = new HashSet<PTO_REQUEST>();
             this.TIME_SHEET = new HashSet<TIME_SHEET>();
             this.TIME_SHEET1 = new HashSet<TIME_SHEET>();
+            this.TIME_SHEET_ENTRY = new HashSet<TIME_SHEET_ENTRY>();
             this.USER1 = new HashSet<USER>();
         }
     
         public int userID { get; set; }
-        [DisplayName("First Name")]
         public string fname { get; set; }
-        [DisplayName("Last Name")]
         public string lname { get; set; }
-        [DisplayName("Active")]
         public bool active { get; set; }
-        [DisplayName("Start Date")]
         public Nullable<System.DateTime> start_date { get; set; }
-        [DisplayName("User Created On")]
         public System.DateTime created_on { get; set; }
-        [DisplayName("User Created By")]
         public string created_by { get; set; }
-        [DisplayName("Last Updated")]
         public Nullable<System.DateTime> updated_on { get; set; }
-        [DisplayName("Last Updated By")]
         public Nullable<System.DateTime> updated_by { get; set; }
-        [DisplayName("Manager")]
         public Nullable<int> manager { get; set; }
-        [DisplayName("Work Location")]
         public Nullable<int> location { get; set; }
-        [DisplayName("Email Address")]
         public string email { get; set; }
-        [DisplayName("User is an Administrator")]
         public bool is_administrator { get; set; }
-        [Required]
-        [DisplayName("User Type")]
         public string user_type { get; set; }
-        [DisplayName("Total Hours Worked")]
         public Nullable<double> total_hours_worked { get; set; }
+        public bool can_work_foodservice { get; set; }
     
         public virtual LOCATION LOCATION1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -73,10 +58,13 @@ namespace bgce_timetracker.Models
         public virtual ICollection<TIME_SHEET> TIME_SHEET { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TIME_SHEET> TIME_SHEET1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TIME_SHEET_ENTRY> TIME_SHEET_ENTRY { get; set; }
         public virtual UNIT_DIRECTOR UNIT_DIRECTOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USER> USER1 { get; set; }
         public virtual USER USER2 { get; set; }
         public virtual VOLUNTEER VOLUNTEER { get; set; }
+        public virtual LOGIN LOGIN { get; set; }
     }
 }

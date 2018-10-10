@@ -11,25 +11,16 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class NOTIFICATION
     {
-        [DisplayName("Notification ID")]
         public int notifID { get; set; }
-        [DisplayName("Recipient(s)")]
         public string recipients { get; set; }
-        [DisplayName("Type")]
         public string type { get; set; }
-        [DisplayName("Triggered By")]
         public string trigger { get; set; }
-        [DisplayName("Content")]
         public string content { get; set; }
-        [DisplayName("Created On")]
         public System.DateTime created_on { get; set; }
-        [DisplayName("Recipient User")]
         public Nullable<int> user_recipient { get; set; }
-        [DisplayName("Sending User")]
         public Nullable<int> user_sender { get; set; }
     
         public virtual USER USER { get; set; }

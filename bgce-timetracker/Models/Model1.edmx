@@ -102,10 +102,8 @@
         <EntityType Name="TIME_SHEET_ENTRY">
           <Key>
             <PropertyRef Name="entryID" />
-            <PropertyRef Name="time_sheet" />
           </Key>
           <Property Name="entryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="time_sheet" Type="int" Nullable="false" />
           <Property Name="date" Type="date" Nullable="false" />
           <Property Name="hours_worked" Type="float" />
           <Property Name="comment" Type="varchar(max)" />
@@ -118,6 +116,8 @@
           <Property Name="overtime_hours_worked" Type="float" />
           <Property Name="pto_earned" Type="float" />
           <Property Name="created_on" Type="datetime" Nullable="false" />
+          <Property Name="employee" Type="int" />
+          <Property Name="time_sheet" Type="int" />
         </EntityType>
         <EntityType Name="UNIT_DIRECTOR">
           <Key>
@@ -144,6 +144,7 @@
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="VOLUNTEER">
           <Key>
@@ -162,6 +163,7 @@ warning 6002: The table/view 'tracker.dbo.PAID_STAFF_VIEW' does not have a prima
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="float" />
           <Property Name="max_pto_accrual" Type="float" />
@@ -183,6 +185,7 @@ warning 6002: The table/view 'tracker.dbo.PAID_STAFF_VIEW' does not have a prima
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -195,6 +198,7 @@ warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a pr
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
             <PropertyRef Name="email" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="float" />
           <Property Name="max_pto_accrual" Type="float" />
@@ -216,6 +220,7 @@ warning 6002: The table/view 'tracker.dbo.UNIT_DIRECTOR_VIEW' does not have a pr
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
           <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -228,6 +233,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="fname" Type="varchar" MaxLength="45" />
@@ -244,6 +250,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="bit" Nullable="false" />
           <Property Name="user_type" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="total_hours_worked" Type="float" />
+          <Property Name="can_work_foodservice" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="approved_by">
           <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
@@ -305,18 +312,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TIME_SHEE__time___29221CFB">
-          <End Role="TIME_SHEET" Type="Self.TIME_SHEET" Multiplicity="1" />
-          <End Role="TIME_SHEET_ENTRY" Type="Self.TIME_SHEET_ENTRY" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TIME_SHEET">
-              <PropertyRef Name="timesheetID" />
-            </Principal>
-            <Dependent Role="TIME_SHEET_ENTRY">
-              <PropertyRef Name="time_sheet" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__UNIT_DIRE__emplI__498EEC8D">
           <End Role="USER" Type="Self.USER" Multiplicity="1" />
           <End Role="UNIT_DIRECTOR" Type="Self.UNIT_DIRECTOR" Multiplicity="0..1" />
@@ -338,6 +333,42 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Principal>
             <Dependent Role="USER">
               <PropertyRef Name="location" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LOGIN_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="LOGIN" Type="Self.LOGIN" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="LOGIN">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIME_SHEET_ENTRY_TIME_SHEET">
+          <End Role="TIME_SHEET" Type="Self.TIME_SHEET" Multiplicity="0..1" />
+          <End Role="TIME_SHEET_ENTRY" Type="Self.TIME_SHEET_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIME_SHEET">
+              <PropertyRef Name="timesheetID" />
+            </Principal>
+            <Dependent Role="TIME_SHEET_ENTRY">
+              <PropertyRef Name="time_sheet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIME_SHEET_ENTRY_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="TIME_SHEET_ENTRY" Type="Self.TIME_SHEET_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="TIME_SHEET_ENTRY">
+              <PropertyRef Name="employee" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -434,7 +465,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [PAID_STAFF_VIEW].[email] AS [email], 
     [PAID_STAFF_VIEW].[is_administrator] AS [is_administrator], 
     [PAID_STAFF_VIEW].[user_type] AS [user_type], 
-    [PAID_STAFF_VIEW].[total_hours_worked] AS [total_hours_worked]
+    [PAID_STAFF_VIEW].[total_hours_worked] AS [total_hours_worked], 
+    [PAID_STAFF_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[PAID_STAFF_VIEW] AS [PAID_STAFF_VIEW]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="UNIT_DIRECTOR_VIEW" EntityType="Self.UNIT_DIRECTOR_VIEW" store:Type="Views" store:Schema="dbo">
@@ -458,7 +490,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [UNIT_DIRECTOR_VIEW].[is_administrator] AS [is_administrator], 
     [UNIT_DIRECTOR_VIEW].[user_type] AS [user_type], 
     [UNIT_DIRECTOR_VIEW].[total_hours_worked] AS [total_hours_worked], 
-    [UNIT_DIRECTOR_VIEW].[email] AS [email]
+    [UNIT_DIRECTOR_VIEW].[email] AS [email], 
+    [UNIT_DIRECTOR_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[UNIT_DIRECTOR_VIEW] AS [UNIT_DIRECTOR_VIEW]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VOLUNTEER_VIEW" EntityType="Self.VOLUNTEER_VIEW" store:Type="Views" store:Schema="dbo">
@@ -477,7 +510,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     [VOLUNTEER_VIEW].[email] AS [email], 
     [VOLUNTEER_VIEW].[is_administrator] AS [is_administrator], 
     [VOLUNTEER_VIEW].[user_type] AS [user_type], 
-    [VOLUNTEER_VIEW].[total_hours_worked] AS [total_hours_worked]
+    [VOLUNTEER_VIEW].[total_hours_worked] AS [total_hours_worked], 
+    [VOLUNTEER_VIEW].[can_work_foodservice] AS [can_work_foodservice]
     FROM [dbo].[VOLUNTEER_VIEW] AS [VOLUNTEER_VIEW]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="approved_by" Association="Self.approved_by">
@@ -500,10 +534,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <End Role="PAY_PERIOD" EntitySet="PAY_PERIOD" />
             <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
           </AssociationSet>
-          <AssociationSet Name="FK__TIME_SHEE__time___29221CFB" Association="Self.FK__TIME_SHEE__time___29221CFB">
-            <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
-            <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
-          </AssociationSet>
           <AssociationSet Name="FK__UNIT_DIRE__emplI__498EEC8D" Association="Self.FK__UNIT_DIRE__emplI__498EEC8D">
             <End Role="USER" EntitySet="USER" />
             <End Role="UNIT_DIRECTOR" EntitySet="UNIT_DIRECTOR" />
@@ -511,6 +541,18 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <AssociationSet Name="FK__USER__location__0C85DE4D" Association="Self.FK__USER__location__0C85DE4D">
             <End Role="LOCATION" EntitySet="LOCATION" />
             <End Role="USER" EntitySet="USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LOGIN_USER" Association="Self.FK_LOGIN_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="LOGIN" EntitySet="LOGIN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIME_SHEET_ENTRY_TIME_SHEET" Association="Self.FK_TIME_SHEET_ENTRY_TIME_SHEET">
+            <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
+            <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIME_SHEET_ENTRY_USER" Association="Self.FK_TIME_SHEET_ENTRY_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
           </AssociationSet>
           <AssociationSet Name="manager" Association="Self.manager">
             <End Role="USER" EntitySet="USER" />
@@ -537,72 +579,17 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="trackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="LOCATION">
-          <Key>
-            <PropertyRef Name="locationID" />
-          </Key>
-          <Property Name="locationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="street" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="city" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="state" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="country" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="USERs" Relationship="trackerModel.FK__USER__location__0C85DE4D" FromRole="LOCATION" ToRole="USER" />
-        </EntityType>
-        <EntityType Name="NOTIFICATION">
-          <Key>
-            <PropertyRef Name="notifID" />
-          </Key>
-          <Property Name="notifID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="recipients" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="trigger" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="content" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="user_recipient" Type="Int32" />
-          <Property Name="user_sender" Type="Int32" />
-          <NavigationProperty Name="USER" Relationship="trackerModel.user_recipient" FromRole="NOTIFICATION" ToRole="USER" />
-          <NavigationProperty Name="USER1" Relationship="trackerModel.user_sender" FromRole="NOTIFICATION" ToRole="USER" />
-          </EntityType>
-        <EntityType Name="PAID_STAFF">
-          <Key>
-            <PropertyRef Name="emplID" />
-          </Key>
-          <Property Name="emplID" Type="Int32" Nullable="false" />
-          <Property Name="pto_accrual_rate" Type="Double" />
-          <Property Name="max_pto_accrual" Type="Double" />
-          <Property Name="total_pto_accrued" Type="Double" />
-          <Property Name="pay_rate" Type="Double" />
-          <Property Name="pay_schedule" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="USER" Relationship="trackerModel.emplID" FromRole="PAID_STAFF" ToRole="USER" />
-        </EntityType>
-        <EntityType Name="UNIT_DIRECTOR">
-          <Key>
-            <PropertyRef Name="emplID" />
-          </Key>
-          <Property Name="emplID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="USER" Relationship="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" FromRole="UNIT_DIRECTOR" ToRole="USER" />
-        </EntityType>
-        <EntityType Name="VOLUNTEER">
-          <Key>
-            <PropertyRef Name="volID" />
-          </Key>
-          <Property Name="volID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="USER" Relationship="trackerModel.volID" FromRole="VOLUNTEER" ToRole="USER" />
-        </EntityType>
         <EntityContainer Name="trackerEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="LOCATIONs" EntityType="Self.LOCATION" />
-          <EntitySet Name="NOTIFICATIONs" EntityType="Self.NOTIFICATION" />
-          <EntitySet Name="PAID_STAFF" EntityType="Self.PAID_STAFF" />
-          <EntitySet Name="UNIT_DIRECTOR" EntityType="Self.UNIT_DIRECTOR" />
-          <EntitySet Name="VOLUNTEERs" EntityType="Self.VOLUNTEER" />
-          <EntitySet Name="TIME_SHEET_ENTRY" EntityType="trackerModel.TIME_SHEET_ENTRY" />
-          <EntitySet Name="LOGINs" EntityType="trackerModel.LOGIN" />
+          <EntitySet Name="LOCATIONs" EntityType="trackerModel.LOCATION" />
+          <EntitySet Name="NOTIFICATIONs" EntityType="trackerModel.NOTIFICATION" />
+          <EntitySet Name="PAID_STAFF" EntityType="trackerModel.PAID_STAFF" />
           <EntitySet Name="PAY_PERIOD" EntityType="trackerModel.PAY_PERIOD" />
           <EntitySet Name="PTO_REQUEST" EntityType="trackerModel.PTO_REQUEST" />
           <EntitySet Name="TIME_SHEET" EntityType="trackerModel.TIME_SHEET" />
+          <EntitySet Name="TIME_SHEET_ENTRY" EntityType="trackerModel.TIME_SHEET_ENTRY" />
+          <EntitySet Name="UNIT_DIRECTOR" EntityType="trackerModel.UNIT_DIRECTOR" />
           <EntitySet Name="USERs" EntityType="trackerModel.USER" />
+          <EntitySet Name="VOLUNTEERs" EntityType="trackerModel.VOLUNTEER" />
           <EntitySet Name="PAID_STAFF_VIEW" EntityType="trackerModel.PAID_STAFF_VIEW" />
           <EntitySet Name="UNIT_DIRECTOR_VIEW" EntityType="trackerModel.UNIT_DIRECTOR_VIEW" />
           <EntitySet Name="VOLUNTEER_VIEW" EntityType="trackerModel.VOLUNTEER_VIEW" />
@@ -642,8 +629,12 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <End Role="USER" EntitySet="USERs" />
             <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
           </AssociationSet>
-          <AssociationSet Name="FK__TIME_SHEE__time___29221CFB" Association="trackerModel.FK__TIME_SHEE__time___29221CFB">
+          <AssociationSet Name="FK_TIME_SHEET_ENTRY_TIME_SHEET" Association="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET">
             <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
+            <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIME_SHEET_ENTRY_USER" Association="trackerModel.FK_TIME_SHEET_ENTRY_USER">
+            <End Role="USER" EntitySet="USERs" />
             <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
           </AssociationSet>
           <AssociationSet Name="FK__UNIT_DIRE__emplI__498EEC8D" Association="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D">
@@ -658,39 +649,51 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <End Role="USER" EntitySet="USERs" />
             <End Role="VOLUNTEER" EntitySet="VOLUNTEERs" />
           </AssociationSet>
-          </EntityContainer>
-        <EntityType Name="TIME_SHEET_ENTRY">
+          <EntitySet Name="LOGINs" EntityType="trackerModel.LOGIN" />
+          <AssociationSet Name="FK_LOGIN_USER" Association="trackerModel.FK_LOGIN_USER">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="LOGIN" EntitySet="LOGINs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="LOCATION">
           <Key>
-            <PropertyRef Name="entryID" />
-            <PropertyRef Name="time_sheet" />
+            <PropertyRef Name="locationID" />
           </Key>
-          <Property Name="entryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="time_sheet" Type="Int32" Nullable="false" />
-          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="hours_worked" Type="Double" />
-          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="clock_in_time" Type="Time" Precision="7" />
-          <Property Name="clock_out_time" Type="Time" Precision="7" />
-          <Property Name="is_clocked_in" Type="Boolean" Nullable="false" />
-          <Property Name="updated_on" Type="DateTime" Precision="3" />
-          <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="time_type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="overtime_hours_worked" Type="Double" />
-          <Property Name="pto_earned" Type="Double" />
-          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="TIME_SHEET1" Relationship="trackerModel.FK__TIME_SHEE__time___29221CFB" FromRole="TIME_SHEET_ENTRY" ToRole="TIME_SHEET" />
+          <Property Name="locationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="street" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="city" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="country" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USERs" Relationship="trackerModel.FK__USER__location__0C85DE4D" FromRole="LOCATION" ToRole="USER" />
         </EntityType>
-        <EntityType Name="LOGIN">
+        <EntityType Name="NOTIFICATION">
           <Key>
-            <PropertyRef Name="userID" />
+            <PropertyRef Name="notifID" />
           </Key>
-          <Property Name="userID" Type="Int32" Nullable="false" />
-          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="password_salt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="password_last_set" Type="DateTime" Precision="0" />
-          <Property Name="is_locked_out" Type="Boolean" Nullable="false" />
-          <Property Name="is_password_expired" Type="Boolean" Nullable="false" />
+          <Property Name="notifID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="recipients" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="trigger" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="content" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="user_recipient" Type="Int32" />
+          <Property Name="user_sender" Type="Int32" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.user_recipient" FromRole="NOTIFICATION" ToRole="USER" />
+          <NavigationProperty Name="USER1" Relationship="trackerModel.user_sender" FromRole="NOTIFICATION" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="PAID_STAFF">
+          <Key>
+            <PropertyRef Name="emplID" />
+          </Key>
+          <Property Name="emplID" Type="Int32" Nullable="false" />
+          <Property Name="pto_accrual_rate" Type="Double" />
+          <Property Name="max_pto_accrual" Type="Double" />
+          <Property Name="total_pto_accrued" Type="Double" />
+          <Property Name="pay_rate" Type="Double" />
+          <Property Name="pay_schedule" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.emplID" FromRole="PAID_STAFF" ToRole="USER" />
         </EntityType>
         <EntityType Name="PAY_PERIOD">
           <Key>
@@ -743,7 +746,36 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="PAY_PERIOD1" Relationship="trackerModel.FK__TIME_SHEE__pay_p__1EA48E88" FromRole="TIME_SHEET" ToRole="PAY_PERIOD" />
           <NavigationProperty Name="USER" Relationship="trackerModel.approved_by" FromRole="TIME_SHEET" ToRole="USER" />
           <NavigationProperty Name="USER1" Relationship="trackerModel.employee" FromRole="TIME_SHEET" ToRole="USER" />
-          <NavigationProperty Name="TIME_SHEET_ENTRY" Relationship="trackerModel.FK__TIME_SHEE__time___29221CFB" FromRole="TIME_SHEET" ToRole="TIME_SHEET_ENTRY" />
+          <NavigationProperty Name="TIME_SHEET_ENTRY" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" FromRole="TIME_SHEET" ToRole="TIME_SHEET_ENTRY" />
+        </EntityType>
+        <EntityType Name="TIME_SHEET_ENTRY">
+          <Key>
+            <PropertyRef Name="entryID" />
+          </Key>
+          <Property Name="entryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="hours_worked" Type="Double" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="clock_in_time" Type="Time" Precision="7" />
+          <Property Name="clock_out_time" Type="Time" Precision="7" />
+          <Property Name="is_clocked_in" Type="Boolean" Nullable="false" />
+          <Property Name="updated_on" Type="DateTime" Precision="3" />
+          <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="time_type" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="overtime_hours_worked" Type="Double" />
+          <Property Name="pto_earned" Type="Double" />
+          <Property Name="created_on" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="employee" Type="Int32" />
+          <Property Name="time_sheet" Type="Int32" />
+          <NavigationProperty Name="TIME_SHEET1" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" FromRole="TIME_SHEET_ENTRY" ToRole="TIME_SHEET" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_USER" FromRole="TIME_SHEET_ENTRY" ToRole="USER" />
+        </EntityType>
+        <EntityType Name="UNIT_DIRECTOR">
+          <Key>
+            <PropertyRef Name="emplID" />
+          </Key>
+          <Property Name="emplID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" FromRole="UNIT_DIRECTOR" ToRole="USER" />
         </EntityType>
         <EntityType Name="USER">
           <Key>
@@ -764,6 +796,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="LOCATION1" Relationship="trackerModel.FK__USER__location__0C85DE4D" FromRole="USER" ToRole="LOCATION" />
           <NavigationProperty Name="NOTIFICATIONs" Relationship="trackerModel.user_recipient" FromRole="USER" ToRole="NOTIFICATION" />
           <NavigationProperty Name="NOTIFICATIONs1" Relationship="trackerModel.user_sender" FromRole="USER" ToRole="NOTIFICATION" />
@@ -772,10 +805,19 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="PTO_REQUEST1" Relationship="trackerModel.requested_by" FromRole="USER" ToRole="PTO_REQUEST" />
           <NavigationProperty Name="TIME_SHEET" Relationship="trackerModel.approved_by" FromRole="USER" ToRole="TIME_SHEET" />
           <NavigationProperty Name="TIME_SHEET1" Relationship="trackerModel.employee" FromRole="USER" ToRole="TIME_SHEET" />
+          <NavigationProperty Name="TIME_SHEET_ENTRY" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_USER" FromRole="USER" ToRole="TIME_SHEET_ENTRY" />
           <NavigationProperty Name="UNIT_DIRECTOR" Relationship="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" FromRole="USER" ToRole="UNIT_DIRECTOR" />
           <NavigationProperty Name="USER1" Relationship="trackerModel.manager" FromRole="USER" ToRole="USER1" />
           <NavigationProperty Name="USER2" Relationship="trackerModel.manager" FromRole="USER1" ToRole="USER" />
           <NavigationProperty Name="VOLUNTEER" Relationship="trackerModel.volID" FromRole="USER" ToRole="VOLUNTEER" />
+          <NavigationProperty Name="LOGIN" Relationship="trackerModel.FK_LOGIN_USER" FromRole="USER" ToRole="LOGIN" />
+        </EntityType>
+        <EntityType Name="VOLUNTEER">
+          <Key>
+            <PropertyRef Name="volID" />
+          </Key>
+          <Property Name="volID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.volID" FromRole="VOLUNTEER" ToRole="USER" />
         </EntityType>
         <EntityType Name="PAID_STAFF_VIEW">
           <Key>
@@ -786,6 +828,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="Double" />
           <Property Name="max_pto_accrual" Type="Double" />
@@ -807,6 +850,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="UNIT_DIRECTOR_VIEW">
           <Key>
@@ -817,6 +861,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
             <PropertyRef Name="email" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="pto_accrual_rate" Type="Double" />
           <Property Name="max_pto_accrual" Type="Double" />
@@ -838,6 +883,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="VOLUNTEER_VIEW">
           <Key>
@@ -848,6 +894,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <PropertyRef Name="email" />
             <PropertyRef Name="is_administrator" />
             <PropertyRef Name="user_type" />
+            <PropertyRef Name="can_work_foodservice" />
           </Key>
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="fname" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
@@ -864,6 +911,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
           <Property Name="user_type" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="total_hours_worked" Type="Double" />
+          <Property Name="can_work_foodservice" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__USER__location__0C85DE4D">
           <End Type="trackerModel.LOCATION" Role="LOCATION" Multiplicity="0..1" />
@@ -973,8 +1021,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TIME_SHEE__time___29221CFB">
-          <End Type="trackerModel.TIME_SHEET" Role="TIME_SHEET" Multiplicity="1" />
+        <Association Name="FK_TIME_SHEET_ENTRY_TIME_SHEET">
+          <End Type="trackerModel.TIME_SHEET" Role="TIME_SHEET" Multiplicity="0..1" />
           <End Type="trackerModel.TIME_SHEET_ENTRY" Role="TIME_SHEET_ENTRY" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TIME_SHEET">
@@ -982,6 +1030,18 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Principal>
             <Dependent Role="TIME_SHEET_ENTRY">
               <PropertyRef Name="time_sheet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TIME_SHEET_ENTRY_USER">
+          <End Type="trackerModel.USER" Role="USER" Multiplicity="0..1" />
+          <End Type="trackerModel.TIME_SHEET_ENTRY" Role="TIME_SHEET_ENTRY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="TIME_SHEET_ENTRY">
+              <PropertyRef Name="employee" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1021,6 +1081,31 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="LOGIN">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="password_salt" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="password_last_set" Type="DateTime" Precision="0" />
+          <Property Name="is_locked_out" Type="Boolean" Nullable="false" />
+          <Property Name="is_password_expired" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.FK_LOGIN_USER" FromRole="LOGIN" ToRole="USER" />
+        </EntityType>
+        <Association Name="FK_LOGIN_USER">
+          <End Type="trackerModel.USER" Role="USER" Multiplicity="1" />
+          <End Type="trackerModel.LOGIN" Role="LOGIN" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="LOGIN">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1030,86 +1115,39 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="LOCATIONs">
             <EntityTypeMapping TypeName="trackerModel.LOCATION">
               <MappingFragment StoreEntitySet="LOCATION">
-                <ScalarProperty Name="locationID" ColumnName="locationID" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="address" ColumnName="address" />
-                <ScalarProperty Name="street" ColumnName="street" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="state" ColumnName="state" />
                 <ScalarProperty Name="country" ColumnName="country" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="street" ColumnName="street" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="locationID" ColumnName="locationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NOTIFICATIONs">
             <EntityTypeMapping TypeName="trackerModel.NOTIFICATION">
               <MappingFragment StoreEntitySet="NOTIFICATION">
-                <ScalarProperty Name="notifID" ColumnName="notifID" />
-                <ScalarProperty Name="recipients" ColumnName="recipients" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="trigger" ColumnName="trigger" />
-                <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="created_on" ColumnName="created_on" />
-                <ScalarProperty Name="user_recipient" ColumnName="user_recipient" />
                 <ScalarProperty Name="user_sender" ColumnName="user_sender" />
+                <ScalarProperty Name="user_recipient" ColumnName="user_recipient" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="trigger" ColumnName="trigger" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="recipients" ColumnName="recipients" />
+                <ScalarProperty Name="notifID" ColumnName="notifID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PAID_STAFF">
             <EntityTypeMapping TypeName="trackerModel.PAID_STAFF">
               <MappingFragment StoreEntitySet="PAID_STAFF">
-                <ScalarProperty Name="emplID" ColumnName="emplID" />
-                <ScalarProperty Name="pto_accrual_rate" ColumnName="pto_accrual_rate" />
-                <ScalarProperty Name="max_pto_accrual" ColumnName="max_pto_accrual" />
-                <ScalarProperty Name="total_pto_accrued" ColumnName="total_pto_accrued" />
-                <ScalarProperty Name="pay_rate" ColumnName="pay_rate" />
                 <ScalarProperty Name="pay_schedule" ColumnName="pay_schedule" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UNIT_DIRECTOR">
-            <EntityTypeMapping TypeName="trackerModel.UNIT_DIRECTOR">
-              <MappingFragment StoreEntitySet="UNIT_DIRECTOR">
+                <ScalarProperty Name="pay_rate" ColumnName="pay_rate" />
+                <ScalarProperty Name="total_pto_accrued" ColumnName="total_pto_accrued" />
+                <ScalarProperty Name="max_pto_accrual" ColumnName="max_pto_accrual" />
+                <ScalarProperty Name="pto_accrual_rate" ColumnName="pto_accrual_rate" />
                 <ScalarProperty Name="emplID" ColumnName="emplID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="VOLUNTEERs">
-            <EntityTypeMapping TypeName="trackerModel.VOLUNTEER">
-              <MappingFragment StoreEntitySet="VOLUNTEER">
-                <ScalarProperty Name="volID" ColumnName="volID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TIME_SHEET_ENTRY">
-            <EntityTypeMapping TypeName="trackerModel.TIME_SHEET_ENTRY">
-              <MappingFragment StoreEntitySet="TIME_SHEET_ENTRY">
-                <ScalarProperty Name="created_on" ColumnName="created_on" />
-                <ScalarProperty Name="pto_earned" ColumnName="pto_earned" />
-                <ScalarProperty Name="overtime_hours_worked" ColumnName="overtime_hours_worked" />
-                <ScalarProperty Name="time_type" ColumnName="time_type" />
-                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
-                <ScalarProperty Name="updated_on" ColumnName="updated_on" />
-                <ScalarProperty Name="is_clocked_in" ColumnName="is_clocked_in" />
-                <ScalarProperty Name="clock_out_time" ColumnName="clock_out_time" />
-                <ScalarProperty Name="clock_in_time" ColumnName="clock_in_time" />
-                <ScalarProperty Name="comment" ColumnName="comment" />
-                <ScalarProperty Name="hours_worked" ColumnName="hours_worked" />
-                <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="time_sheet" ColumnName="time_sheet" />
-                <ScalarProperty Name="entryID" ColumnName="entryID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LOGINs">
-            <EntityTypeMapping TypeName="trackerModel.LOGIN">
-              <MappingFragment StoreEntitySet="LOGIN">
-                <ScalarProperty Name="is_password_expired" ColumnName="is_password_expired" />
-                <ScalarProperty Name="is_locked_out" ColumnName="is_locked_out" />
-                <ScalarProperty Name="password_last_set" ColumnName="password_last_set" />
-                <ScalarProperty Name="password_salt" ColumnName="password_salt" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="userID" ColumnName="userID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1162,9 +1200,38 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="TIME_SHEET_ENTRY">
+            <EntityTypeMapping TypeName="trackerModel.TIME_SHEET_ENTRY">
+              <MappingFragment StoreEntitySet="TIME_SHEET_ENTRY">
+                <ScalarProperty Name="time_sheet" ColumnName="time_sheet" />
+                <ScalarProperty Name="employee" ColumnName="employee" />
+                <ScalarProperty Name="created_on" ColumnName="created_on" />
+                <ScalarProperty Name="pto_earned" ColumnName="pto_earned" />
+                <ScalarProperty Name="overtime_hours_worked" ColumnName="overtime_hours_worked" />
+                <ScalarProperty Name="time_type" ColumnName="time_type" />
+                <ScalarProperty Name="updated_by" ColumnName="updated_by" />
+                <ScalarProperty Name="updated_on" ColumnName="updated_on" />
+                <ScalarProperty Name="is_clocked_in" ColumnName="is_clocked_in" />
+                <ScalarProperty Name="clock_out_time" ColumnName="clock_out_time" />
+                <ScalarProperty Name="clock_in_time" ColumnName="clock_in_time" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="hours_worked" ColumnName="hours_worked" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="entryID" ColumnName="entryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UNIT_DIRECTOR">
+            <EntityTypeMapping TypeName="trackerModel.UNIT_DIRECTOR">
+              <MappingFragment StoreEntitySet="UNIT_DIRECTOR">
+                <ScalarProperty Name="emplID" ColumnName="emplID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="USERs">
             <EntityTypeMapping TypeName="trackerModel.USER">
               <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
@@ -1183,9 +1250,17 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VOLUNTEERs">
+            <EntityTypeMapping TypeName="trackerModel.VOLUNTEER">
+              <MappingFragment StoreEntitySet="VOLUNTEER">
+                <ScalarProperty Name="volID" ColumnName="volID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PAID_STAFF_VIEW">
             <EntityTypeMapping TypeName="trackerModel.PAID_STAFF_VIEW">
               <MappingFragment StoreEntitySet="PAID_STAFF_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
@@ -1212,6 +1287,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="UNIT_DIRECTOR_VIEW">
             <EntityTypeMapping TypeName="trackerModel.UNIT_DIRECTOR_VIEW">
               <MappingFragment StoreEntitySet="UNIT_DIRECTOR_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
@@ -1238,6 +1314,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="VOLUNTEER_VIEW">
             <EntityTypeMapping TypeName="trackerModel.VOLUNTEER_VIEW">
               <MappingFragment StoreEntitySet="VOLUNTEER_VIEW">
+                <ScalarProperty Name="can_work_foodservice" ColumnName="can_work_foodservice" />
                 <ScalarProperty Name="total_hours_worked" ColumnName="total_hours_worked" />
                 <ScalarProperty Name="user_type" ColumnName="user_type" />
                 <ScalarProperty Name="is_administrator" ColumnName="is_administrator" />
@@ -1256,7 +1333,20 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          </EntityContainerMapping>
+          <EntitySetMapping Name="LOGINs">
+            <EntityTypeMapping TypeName="trackerModel.LOGIN">
+              <MappingFragment StoreEntitySet="LOGIN">
+                <ScalarProperty Name="is_password_expired" ColumnName="is_password_expired" />
+                <ScalarProperty Name="is_locked_out" ColumnName="is_locked_out" />
+                <ScalarProperty Name="password_last_set" ColumnName="password_last_set" />
+                <ScalarProperty Name="password_salt" ColumnName="password_salt" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

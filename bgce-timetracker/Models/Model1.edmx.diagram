@@ -4,21 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ec3164094c8f42698fb6de76f5e956d3" Name="Diagram1" ZoomLevel="86">
-        <EntityTypeShape EntityType="trackerModel.LOCATION" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.NOTIFICATION" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.PAID_STAFF" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR" Width="1.5" PointX="5.25" PointY="21" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.VOLUNTEER" Width="1.5" PointX="5.25" PointY="23.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="trackerModel.TIME_SHEET_ENTRY" Width="1.5" PointX="10.5" PointY="9.875" />
-        <EntityTypeShape EntityType="trackerModel.LOGIN" Width="1.5" PointX="0.5" PointY="3.5" />
-        <EntityTypeShape EntityType="trackerModel.PAY_PERIOD" Width="1.5" PointX="6.375" PointY="13.625" />
-        <EntityTypeShape EntityType="trackerModel.PTO_REQUEST" Width="1.5" PointX="5.625" PointY="17.125" />
-        <EntityTypeShape EntityType="trackerModel.TIME_SHEET" Width="1.5" PointX="8.625" PointY="12.25" />
-        <EntityTypeShape EntityType="trackerModel.USER" Width="1.5" PointX="3.375" PointY="11.625" />
-        <EntityTypeShape EntityType="trackerModel.PAID_STAFF_VIEW" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR_VIEW" Width="1.5" PointX="7.75" PointY="0.75" />
-        <EntityTypeShape EntityType="trackerModel.VOLUNTEER_VIEW" Width="1.5" PointX="7.75" PointY="6.75" />
+      <Diagram DiagramId="ec3164094c8f42698fb6de76f5e956d3" Name="Diagram1">
+        <EntityTypeShape EntityType="trackerModel.LOCATION" Width="1.5" PointX="1.375" PointY="11.5" />
+        <EntityTypeShape EntityType="trackerModel.NOTIFICATION" Width="1.5" PointX="5.875" PointY="15.875" />
+        <EntityTypeShape EntityType="trackerModel.PAID_STAFF" Width="1.5" PointX="5.875" PointY="19.5" />
+        <EntityTypeShape EntityType="trackerModel.PAY_PERIOD" Width="1.5" PointX="6.625" PointY="10.625" />
+        <EntityTypeShape EntityType="trackerModel.PTO_REQUEST" Width="1.5" PointX="5.875" PointY="22.625" />
+        <EntityTypeShape EntityType="trackerModel.TIME_SHEET" Width="1.5" PointX="8.875" PointY="10.25" />
+        <EntityTypeShape EntityType="trackerModel.TIME_SHEET_ENTRY" Width="1.5" PointX="11.125" PointY="10.625" />
+        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR" Width="1.5" PointX="5.875" PointY="13.625" />
+        <EntityTypeShape EntityType="trackerModel.USER" Width="1.5" PointX="3.625" PointY="9.5" />
+        <EntityTypeShape EntityType="trackerModel.VOLUNTEER" Width="1.5" PointX="5.875" PointY="5.75" />
+        <EntityTypeShape EntityType="trackerModel.PAID_STAFF_VIEW" Width="1.5" PointX="8.375" PointY="1.75" />
+        <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR_VIEW" Width="1.5" PointX="10.375" PointY="1.75" />
+        <EntityTypeShape EntityType="trackerModel.VOLUNTEER_VIEW" Width="1.5" PointX="12.375" PointY="1.75" />
         <AssociationConnector Association="trackerModel.FK__USER__location__0C85DE4D" />
         <AssociationConnector Association="trackerModel.user_recipient" />
         <AssociationConnector Association="trackerModel.user_sender" />
@@ -28,10 +27,13 @@
         <AssociationConnector Association="trackerModel.requested_by" />
         <AssociationConnector Association="trackerModel.approved_by" />
         <AssociationConnector Association="trackerModel.employee" />
-        <AssociationConnector Association="trackerModel.FK__TIME_SHEE__time___29221CFB" />
+        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" />
+        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_USER" />
         <AssociationConnector Association="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" />
         <AssociationConnector Association="trackerModel.manager" />
         <AssociationConnector Association="trackerModel.volID" />
+        <EntityTypeShape EntityType="trackerModel.LOGIN" Width="1.5" PointX="1" PointY="8" />
+        <AssociationConnector Association="trackerModel.FK_LOGIN_USER" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

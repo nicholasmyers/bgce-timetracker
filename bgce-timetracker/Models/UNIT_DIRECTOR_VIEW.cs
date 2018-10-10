@@ -11,8 +11,7 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-
+    
     public partial class UNIT_DIRECTOR_VIEW
     {
         public Nullable<double> pto_accrual_rate { get; set; }
@@ -35,5 +34,6 @@ namespace bgce_timetracker.Models
         public string user_type { get; set; }
         public Nullable<double> total_hours_worked { get; set; }
         public string email { get; set; }
+        public bool can_work_foodservice { get; set; }
     }
 }
