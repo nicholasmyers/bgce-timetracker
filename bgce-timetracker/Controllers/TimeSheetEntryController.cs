@@ -37,18 +37,17 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult ClockIn(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult clockIn(bgce_timetracker.Models.LOGIN userModel)
         {
-            TIME_SHEET activeTimeSheet = db.TIME_SHEET.Find(userModel.userID); //query time sheet entry table instead
+            Console.WriteLine("We out here boys.");
 
-            if (isClockedIn(activeTimeSheet)) {
-                clockUserOut(activeTimeSheet);
-            }
-            else {
+            TIME_SHEET activeTimeSheet = db.TIME_SHEET.Find(userModel.userID); //query time sheet entry table.
+
+            if (isClockedIn(activeTimeSheet))
+            {
                 clockUserIn(activeTimeSheet);
             }
-
-            return null;
+             return RedirectToAction("Index", "Home");
         }
 
         public bool isClockedIn(TIME_SHEET activeTimeSheet) {
@@ -61,6 +60,7 @@ namespace bgce_timetracker.Controllers
             TimeSpan time = TimeSpan.Parse("HH:mm:ss tt");
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
+            db.SaveChanges();
         }
 
         public void clockUserOut(TIME_SHEET activeTimeSheet) {

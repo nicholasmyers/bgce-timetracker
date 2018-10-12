@@ -7,12 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
+using bgce_timetracker.Services;
+using System.Text;
 
 namespace bgce_timetracker.Controllers
 {
     public class LoginsController : Controller
     {
-
+        
         private trackerEntities db = new trackerEntities();
         /*/-----------------------------------------------------------------------------------------------------------------------------------------------Work in Progress
         // GET: /Account/Login
@@ -68,18 +70,33 @@ namespace bgce_timetracker.Controllers
         {
             using (trackerEntities db = new trackerEntities())
             {
-                var userDetails = db.LOGINs.Where(x => x.username == userModel.username && x.password == userModel.password).FirstOrDefault();
+
+                var userDetails = db.LOGINs.Where(x => x.username == userModel.username).ToList();
+                byte[] ss;
+                string hashword;
+                //Encoding enc = Encoding.UTF8;
+                PasswordHash pass = new PasswordHash();
                 if (userDetails == null)
                 {
-                    userModel.LoginErrorMessage = "Wrong Username or password";
-                    return View("Login", userModel);
+                    userModel.LoginErrorMessage = "Wrong Username";
+                    return View("Authorize", userModel);
                 }
-                else
+                else foreach (var item in userDetails)
                 {
-                    Session["userID"] = userDetails.userID;
-                    return RedirectToAction("Index", "Home");
+                        string userSaltString = item.password_salt;
+                        ss = Convert.FromBase64String(userSaltString);
+                    //check the getbytes method used in the creation and login parts. make it consistant **PasswordHash.cs
+                    //pass.GetHash(item.password, ss);
+                        if(item.password == pass.GetHash(userModel.password,ss))
+                        {
+                            Session["userID"] = item.userID;
+                            return RedirectToAction("Index", "Home");
+                        }
                 }
-                }
+                userModel.LoginErrorMessage = "Wrong Username or password";
+                return View("Authorize", userModel);
+
+            }
                 
         }
 
@@ -114,14 +131,19 @@ namespace bgce_timetracker.Controllers
         {
             using (trackerEntities db = new trackerEntities())
             {
-                int hash = newuser.password.GetHashCode();
+                PasswordHash pass = new PasswordHash();
+                pass.Salt = pass.GenerateSalt();
+           
+                newuser.password = pass.GetHash(newuser.password, pass.Salt);
+                newuser.password_salt = Convert.ToBase64String(pass.Salt);
+                //int hash = newuser.password.GetHashCode();
                 //newuser.password_salt = hash; //password salt needs to be int ??
                 db.LOGINs.Add(newuser);
                 db.SaveChanges();
             }
             ModelState.Clear();
             ViewBag.SuccessMessage = "Registration Success!";
-            return View("Create", new LOGIN());
+            return View("Create", "User");
             //return View("Create", new LOGIN());
         }
 
