@@ -11,16 +11,25 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class PTO_REQUEST
     {
+        [DisplayName("Request ID")]
         public int requestID { get; set; }
+        [DisplayName("Requested by")]
         public int requested_by { get; set; }
+        [DisplayName("Total time requested")]
         public Nullable<double> total_time_requested { get; set; }
+        [DisplayName("Requested on")]
         public System.DateTime requested_on { get; set; }
+        [DisplayName("Approved")]
         public bool approved { get; set; }
+        [DisplayName("Approved on")]
         public Nullable<System.DateTime> approved_on { get; set; }
+        [DisplayName("Approved by")]
         public Nullable<int> approved_by { get; set; }
+        [DisplayName("Comments")]
         public string comments { get; set; }
     
         public virtual USER USER { get; set; }

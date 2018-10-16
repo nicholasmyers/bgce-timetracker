@@ -11,7 +11,8 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class TIME_SHEET
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,23 +20,40 @@ namespace bgce_timetracker.Models
         {
             this.TIME_SHEET_ENTRY = new HashSet<TIME_SHEET_ENTRY>();
         }
-    
+
+        [DisplayName("Timesheet ID")]
         public int timesheetID { get; set; }
+        [DisplayName("Employee")]
         public int employee { get; set; }
+        [DisplayName("Submitted on")]
         public Nullable<System.DateTime> submitted_on { get; set; }
+        [DisplayName("Approved on")]
         public Nullable<System.DateTime> approved_on { get; set; }
+        [DisplayName("Approved by")]
         public Nullable<int> approved_by { get; set; }
+        [DisplayName("Submitted")]
         public bool submitted { get; set; }
+        [DisplayName("Approved")]
         public bool approved { get; set; }
+        [DisplayName("Comments")]
         public string comments { get; set; }
+        [DisplayName("Active")]
         public bool active { get; set; }
+        [DisplayName("Missing punches")]
         public bool is_missing_punches { get; set; }
+        [DisplayName("Total entries")]
         public int total_entries { get; set; }
+        [DisplayName("Total hours worked")]
         public Nullable<double> total_hours_worked { get; set; }
+        [DisplayName("Total overtime worked")]
         public Nullable<double> total_overtime_worked { get; set; }
+        [DisplayName("Pay period")]
         public int pay_period { get; set; }
+        [DisplayName("Total PTO used")]
         public Nullable<double> total_pto_used { get; set; }
+        [DisplayName("Total unpaid time")]
         public Nullable<double> total_unpaid_time { get; set; }
+        [DisplayName("Created on")]
         public System.DateTime created_on { get; set; }
     
         public virtual PAY_PERIOD PAY_PERIOD1 { get; set; }
