@@ -55,6 +55,8 @@ namespace bgce_timetracker.Models
         public Nullable<double> total_unpaid_time { get; set; }
         [DisplayName("Created on")]
         public System.DateTime created_on { get; set; }
+        [DisplayName("Total PTO earned")]
+        public double total_pto_earned { get; set; }
     
         public virtual PAY_PERIOD PAY_PERIOD1 { get; set; }
         public virtual USER USER { get; set; }
