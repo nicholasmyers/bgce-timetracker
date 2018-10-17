@@ -40,6 +40,8 @@ namespace bgce_timetracker.Controllers
         public ActionResult Create()
         {
             //cViewBag.emplID = new SelectList(db.USERs, "userID", "fname");
+            ViewData["userID"] = TempData["userID"];
+            TempData["u2"] = TempData["userID"];
             return View();
         }
 
@@ -48,10 +50,11 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "emplID,pto_accrual_rate,max_pto_accrual,total_pto_accrued,pay_rate,pay_schedule")] PAID_STAFF pAID_STAFF)
+        public ActionResult Create(PAID_STAFF pAID_STAFF)
         {
             if (ModelState.IsValid)
             {
+                pAID_STAFF.emplID = (int) TempData["u2"];
                 db.PAID_STAFF.Add(pAID_STAFF);
                 db.SaveChanges();
                 return RedirectToAction("Index");
