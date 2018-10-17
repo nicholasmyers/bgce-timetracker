@@ -37,12 +37,11 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult clockIn(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult clockIn()
         {
-            Console.WriteLine("We out here boys.");
-
-            TIME_SHEET activeTimeSheet = db.TIME_SHEET.Find(userModel.userID); //query time sheet entry table.
-
+           int id = (int) TempData["UserID"];
+            var activeTimeSheet = db.TIME_SHEETs.Where(x => x.employee == id).ToList();
+            
             if (isClockedIn(activeTimeSheet))
             {
                 clockUserIn(activeTimeSheet);
@@ -50,14 +49,23 @@ namespace bgce_timetracker.Controllers
              return RedirectToAction("Index", "Home");
         }
 
-        public bool isClockedIn(TIME_SHEET activeTimeSheet) {
-            return activeTimeSheet.active;
+        public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
+            bool clockedIn = false;
+            foreach (var item in activeTimeSheet) {
+                if (item.active) {
+                    clockedIn = true;
+                }
+            }
+            return clockedIn;
         }
 
-        public void clockUserIn(TIME_SHEET activeTimeSheet) {
+        public void clockUserIn(List<TIME_SHEET> activeTimeSheet) {
             TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
-            timeSheetEntry.employee = activeTimeSheet.employee;
-            TimeSpan time = TimeSpan.Parse("HH:mm:ss tt");
+            foreach (var item in activeTimeSheet)
+            {
+               timeSheetEntry.employee = item.employee;
+            }
+            TimeSpan time = TimeSpan.Parse(DateTime.Now.ToString("HH:mm:ss tt"));
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();

@@ -95,6 +95,7 @@ namespace bgce_timetracker.Controllers
                                 return RedirectToAction("Index", "Home");
                             }
                             else {
+                                TempData["userID"] = item.userID;
                                 return RedirectToAction("clockIn", "TimeSheetEntry");
                             }
                             
