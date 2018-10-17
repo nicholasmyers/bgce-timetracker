@@ -66,7 +66,7 @@ namespace bgce_timetracker.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel, String answer)
         {
             using (trackerEntities db = new trackerEntities())
             {
@@ -90,7 +90,14 @@ namespace bgce_timetracker.Controllers
                         if(item.password == pass.GetHash(userModel.password,ss))
                         {
                             Session["userID"] = item.userID;
-                            return RedirectToAction("Index", "Home");
+                            if (answer.Equals("Log in"))
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else {
+                                return RedirectToAction("clockIn", "TimeSheetEntry");
+                            }
+                            
                         }
                 }
                 userModel.LoginErrorMessage = "Wrong Username or password";
