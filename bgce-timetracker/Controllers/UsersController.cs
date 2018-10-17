@@ -52,21 +52,33 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userID,fname,lname,active,start_date,created_on,created_by,updated_on,updated_by,manager,location,username,email,passwrd,passwrd_last_set,passwrd_expired,passwd_salt,is_administrator,user_type,total_hours_worked")] USER uSER)
+        public ActionResult Create(USER newUser)
         {
             if (ModelState.IsValid)
             {
-                db.USERs.Add(uSER);
+                //newUser.active = true;
+                newUser.created_on = DateTime.Today;
+                newUser.created_by = "Admin";
+
+                db.USERs.Add(newUser);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (newUser.user_type == "Volunteer")
+                {
+                    return RedirectToAction("Index");
+
+                }
+                else
+                    TempData["userID"] = newUser.userID;
+                return RedirectToAction("Create", "PAID_STAFF");
+
             }
 
-            ViewBag.location = new SelectList(db.LOCATIONs, "locationID", "name", uSER.location);
-            ViewBag.userID = new SelectList(db.PAID_STAFF, "emplID", "pay_schedule", uSER.userID);
-            ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", uSER.userID);
-            ViewBag.manager = new SelectList(db.USERs, "userID", "fname", uSER.manager);
-            ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", uSER.userID);
-            return View(uSER);
+            ViewBag.location = new SelectList(db.LOCATIONs, "locationID", "name", newUser.location);
+            ViewBag.userID = new SelectList(db.PAID_STAFF, "emplID", "pay_schedule", newUser.userID);
+            ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", newUser.userID);
+            ViewBag.manager = new SelectList(db.USERs, "userID", "fname", newUser.manager);
+            ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", newUser.userID);
+            return View(newUser);
         }
 
         // GET: Users/Edit/5
