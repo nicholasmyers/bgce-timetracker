@@ -12,7 +12,6 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
 
     public partial class USER
     {
@@ -25,39 +24,42 @@ namespace bgce_timetracker.Models
             this.PTO_REQUEST1 = new HashSet<PTO_REQUEST>();
             this.TIME_SHEET = new HashSet<TIME_SHEET>();
             this.TIME_SHEET1 = new HashSet<TIME_SHEET>();
+            this.TIME_SHEET_ENTRY = new HashSet<TIME_SHEET_ENTRY>();
             this.USER1 = new HashSet<USER>();
         }
-    
+
+        [DisplayName("User ID")]
         public int userID { get; set; }
-        [DisplayName("First Name")]
+        [DisplayName("First name")]
         public string fname { get; set; }
-        [DisplayName("Last Name")]
+        [DisplayName("Last name")]
         public string lname { get; set; }
         [DisplayName("Active")]
         public bool active { get; set; }
-        [DisplayName("Start Date")]
+        [DisplayName("Start date")]
         public Nullable<System.DateTime> start_date { get; set; }
-        [DisplayName("User Created On")]
+        [DisplayName("Created on")]
         public System.DateTime created_on { get; set; }
-        [DisplayName("User Created By")]
+        [DisplayName("Created by")]
         public string created_by { get; set; }
-        [DisplayName("Last Updated")]
+        [DisplayName("Updated on")]
         public Nullable<System.DateTime> updated_on { get; set; }
-        [DisplayName("Last Updated By")]
+        [DisplayName("Updated by")]
         public Nullable<System.DateTime> updated_by { get; set; }
         [DisplayName("Manager")]
         public Nullable<int> manager { get; set; }
-        [DisplayName("Work Location")]
+        [DisplayName("Location")]
         public Nullable<int> location { get; set; }
-        [DisplayName("Email Address")]
+        [DisplayName("Email")]
         public string email { get; set; }
-        [DisplayName("User is an Administrator")]
+        [DisplayName("Is administrator")]
         public bool is_administrator { get; set; }
-        [Required]
-        [DisplayName("User Type")]
+        [DisplayName("User type")]
         public string user_type { get; set; }
-        [DisplayName("Total Hours Worked")]
+        [DisplayName("Total hours worked")]
         public Nullable<double> total_hours_worked { get; set; }
+        [DisplayName("Can work foodservice")]
+        public bool can_work_foodservice { get; set; }
     
         public virtual LOCATION LOCATION1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -73,10 +75,13 @@ namespace bgce_timetracker.Models
         public virtual ICollection<TIME_SHEET> TIME_SHEET { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TIME_SHEET> TIME_SHEET1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TIME_SHEET_ENTRY> TIME_SHEET_ENTRY { get; set; }
         public virtual UNIT_DIRECTOR UNIT_DIRECTOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USER> USER1 { get; set; }
         public virtual USER USER2 { get; set; }
         public virtual VOLUNTEER VOLUNTEER { get; set; }
+        public virtual LOGIN LOGIN { get; set; }
     }
 }

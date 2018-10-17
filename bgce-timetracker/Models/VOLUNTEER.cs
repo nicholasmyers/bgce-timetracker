@@ -11,9 +11,11 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class VOLUNTEER
     {
+        [DisplayName("Volunteer ID")]
         public int volID { get; set; }
     
         public virtual USER USER { get; set; }

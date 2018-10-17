@@ -98,6 +98,7 @@
           <Property Name="total_pto_used" Type="float" />
           <Property Name="total_unpaid_time" Type="float" />
           <Property Name="created_on" Type="datetime2" Precision="0" Nullable="false" />
+          <Property Name="total_pto_earned" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="TIME_SHEET_ENTRY">
           <Key>
@@ -747,6 +748,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="USER" Relationship="trackerModel.approved_by" FromRole="TIME_SHEET" ToRole="USER" />
           <NavigationProperty Name="USER1" Relationship="trackerModel.employee" FromRole="TIME_SHEET" ToRole="USER" />
           <NavigationProperty Name="TIME_SHEET_ENTRY" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" FromRole="TIME_SHEET" ToRole="TIME_SHEET_ENTRY" />
+          <Property Name="total_pto_earned" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="TIME_SHEET_ENTRY">
           <Key>
@@ -1180,6 +1182,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySetMapping Name="TIME_SHEET">
             <EntityTypeMapping TypeName="trackerModel.TIME_SHEET">
               <MappingFragment StoreEntitySet="TIME_SHEET">
+                <ScalarProperty Name="total_pto_earned" ColumnName="total_pto_earned" />
                 <ScalarProperty Name="created_on" ColumnName="created_on" />
                 <ScalarProperty Name="total_unpaid_time" ColumnName="total_unpaid_time" />
                 <ScalarProperty Name="total_pto_used" ColumnName="total_pto_used" />

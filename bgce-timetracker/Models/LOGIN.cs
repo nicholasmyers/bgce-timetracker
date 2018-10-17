@@ -16,7 +16,7 @@ namespace bgce_timetracker.Models
     public class DBLoginViewModel
     {
         [Required]
-        [Display(Name = "UserName")]
+        [Display(Name = "Username")]
        
         public string username { get; set; }
 
