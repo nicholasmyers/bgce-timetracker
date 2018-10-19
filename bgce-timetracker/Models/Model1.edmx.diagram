@@ -34,7 +34,7 @@
         <EntityTypeShape EntityType="trackerModel.TIME_SHEET_ENTRY" Width="1.5" PointX="11.125" PointY="10.75" />
         <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" />
         <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_USER" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
