@@ -55,12 +55,12 @@ namespace bgce_timetracker.Controllers
         }
 
         public void clockUserIn(TIME_SHEET activeTimeSheet) {
-            TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
+            /*TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
             timeSheetEntry.employee = activeTimeSheet.employee;
             TimeSpan time = TimeSpan.Parse("HH:mm:ss tt");
             //timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
-            db.SaveChanges();
+            db.SaveChanges();*/
         }
 
         public void clockUserOut(TIME_SHEET activeTimeSheet) {
