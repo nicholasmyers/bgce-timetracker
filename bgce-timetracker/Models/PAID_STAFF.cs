@@ -11,14 +11,21 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class PAID_STAFF
     {
+        [DisplayName("Employee ID")]
         public int emplID { get; set; }
+        [DisplayName("PTO accrual rate")]
         public Nullable<double> pto_accrual_rate { get; set; }
+        [DisplayName("Max PTO accrual")]
         public Nullable<double> max_pto_accrual { get; set; }
+        [DisplayName("Total PTO accrued")]
         public Nullable<double> total_pto_accrued { get; set; }
+        [DisplayName("Pay rate")]
         public Nullable<double> pay_rate { get; set; }
+        [DisplayName("Pay schedule")]
         public string pay_schedule { get; set; }
     
         public virtual USER USER { get; set; }

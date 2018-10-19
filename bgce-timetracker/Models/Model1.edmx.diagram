@@ -11,7 +11,6 @@
         <EntityTypeShape EntityType="trackerModel.PAY_PERIOD" Width="1.5" PointX="6.625" PointY="10.625" />
         <EntityTypeShape EntityType="trackerModel.PTO_REQUEST" Width="1.5" PointX="5.875" PointY="22.625" />
         <EntityTypeShape EntityType="trackerModel.TIME_SHEET" Width="1.5" PointX="8.875" PointY="10.25" />
-        <EntityTypeShape EntityType="trackerModel.TIME_SHEET_ENTRY" Width="1.5" PointX="11.125" PointY="10.625" />
         <EntityTypeShape EntityType="trackerModel.UNIT_DIRECTOR" Width="1.5" PointX="5.875" PointY="13.625" />
         <EntityTypeShape EntityType="trackerModel.USER" Width="1.5" PointX="3.625" PointY="9.5" />
         <EntityTypeShape EntityType="trackerModel.VOLUNTEER" Width="1.5" PointX="5.875" PointY="5.75" />
@@ -27,14 +26,15 @@
         <AssociationConnector Association="trackerModel.requested_by" />
         <AssociationConnector Association="trackerModel.approved_by" />
         <AssociationConnector Association="trackerModel.employee" />
-        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" />
-        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_USER" />
         <AssociationConnector Association="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" />
         <AssociationConnector Association="trackerModel.manager" />
         <AssociationConnector Association="trackerModel.volID" />
         <EntityTypeShape EntityType="trackerModel.LOGIN" Width="1.5" PointX="1" PointY="8" />
         <AssociationConnector Association="trackerModel.FK_LOGIN_USER" />
-      </Diagram>
+        <EntityTypeShape EntityType="trackerModel.TIME_SHEET_ENTRY" Width="1.5" PointX="11.125" PointY="10.75" />
+        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_TIME_SHEET" />
+        <AssociationConnector Association="trackerModel.FK_TIME_SHEET_ENTRY_USER" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

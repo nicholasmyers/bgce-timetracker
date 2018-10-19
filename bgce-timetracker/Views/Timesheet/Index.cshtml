@@ -45,6 +45,9 @@
             @Html.DisplayNameFor(model => model.total_pto_used)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.total_pto_earned)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.total_unpaid_time)
         </th>
         <th>
@@ -98,6 +101,9 @@
             @Html.DisplayFor(modelItem => item.total_pto_used)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.total_pto_earned)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.total_unpaid_time)
         </td>
         <td>
@@ -113,9 +119,9 @@
             @Html.DisplayFor(modelItem => item.USER1.fname)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.timesheetID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.timesheetID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.timesheetID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.timesheetID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.timesheetID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.timesheetID })
         </td>
     </tr>
 }
