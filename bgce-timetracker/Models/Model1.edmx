@@ -655,7 +655,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             <End Role="USER" EntitySet="USERs" />
             <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="LOCATION">
           <Key>
             <PropertyRef Name="locationID" />
@@ -1108,7 +1108,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>

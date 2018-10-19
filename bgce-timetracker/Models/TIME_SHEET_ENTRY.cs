@@ -11,25 +11,41 @@ namespace bgce_timetracker.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+
     public partial class TIME_SHEET_ENTRY
     {
+        [DisplayName("Entry ID")]
         public int entryID { get; set; }
+        [DisplayName("Date")]
         public System.DateTime date { get; set; }
+        [DisplayName("Hours worked")]
         public Nullable<double> hours_worked { get; set; }
+        [DisplayName("Comments")]
         public string comment { get; set; }
+        [DisplayName("Clock in time")]
         public Nullable<System.DateTime> clock_in_time { get; set; }
+        [DisplayName("Clock out time")]
         public Nullable<System.DateTime> clock_out_time { get; set; }
+        [DisplayName("Clocked in")]
         public bool is_clocked_in { get; set; }
+        [DisplayName("Updated on")]
         public Nullable<System.DateTime> updated_on { get; set; }
+        [DisplayName("Updated by")]
         public string updated_by { get; set; }
+        [DisplayName("Time type")]
         public string time_type { get; set; }
+        [DisplayName("Overtime hours worked")]
         public Nullable<double> overtime_hours_worked { get; set; }
+        [DisplayName("PTO earned")]
         public Nullable<double> pto_earned { get; set; }
+        [DisplayName("Created on")]
         public System.DateTime created_on { get; set; }
+        [DisplayName("Employee")]
         public Nullable<int> employee { get; set; }
+        [DisplayName("Time sheet")]
         public Nullable<int> time_sheet { get; set; }
-    
+
         public virtual TIME_SHEET TIME_SHEET1 { get; set; }
         public virtual USER USER { get; set; }
     }
