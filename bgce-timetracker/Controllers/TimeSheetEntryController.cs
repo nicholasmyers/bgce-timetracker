@@ -69,14 +69,23 @@ namespace bgce_timetracker.Controllers
                timeSheetEntry.employee = item.employee;
             }
             timeSheetEntry.employee = 1;
-            DateTime time = DateTime.Now;
-            timeSheetEntry.clock_in_time = time;
+            //DateTime time = DateTime.Now;
+            timeSheetEntry.clock_in_time = System.DateTime.Now;
+            timeSheetEntry.created_on = System.DateTime.Now;
+            timeSheetEntry.date = System.DateTime.Now;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
         }
 
         public void clockUserOut(TIME_SHEET activeTimeSheet) {
 
+        }
+
+        // GET: TimeSheetEntry/Create
+        public ActionResult Create()
+        {
+            ViewBag.time_sheet = new SelectList(db.TIME_SHEET, "timesheetID", "comments");
+            return View();
         }
 
         // POST: TimeSheetEntry/Create
