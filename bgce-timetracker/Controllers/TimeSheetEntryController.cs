@@ -39,9 +39,12 @@ namespace bgce_timetracker.Controllers
         // GET: TimeSheetEntry/Create
         public ActionResult clockIn()
         {
-           int id = (int) TempData["UserID"];
-            var activeTimeSheet = db.TIME_SHEETs.Where(x => x.employee == id).ToList();
+
             
+           int id = (int) TempData["UserID"];
+            var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
+            clockUserIn(activeTimeSheet);
+
             if (isClockedIn(activeTimeSheet))
             {
                 clockUserIn(activeTimeSheet);
@@ -65,7 +68,8 @@ namespace bgce_timetracker.Controllers
             {
                timeSheetEntry.employee = item.employee;
             }
-            TimeSpan time = TimeSpan.Parse(DateTime.Now.ToString("HH:mm:ss tt"));
+            timeSheetEntry.employee = 1;
+            DateTime time = DateTime.Now;
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
