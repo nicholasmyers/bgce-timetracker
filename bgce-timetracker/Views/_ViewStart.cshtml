@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (!Request.IsAuthenticated) // remove exclamation point to return to normal viewing
+@if (Request.IsAuthenticated) // remove exclamation point to return to normal viewing
 {
     Layout = "~/Views/Shared/_Layout.cshtml";
 } else
