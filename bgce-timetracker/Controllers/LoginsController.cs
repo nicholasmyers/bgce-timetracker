@@ -91,23 +91,20 @@ namespace bgce_timetracker.Controllers
                     //pass.GetHash(item.password, ss);
                         if(item.password == pass.GetHash(userModel.password,ss))
                         {
-                            Session["userID"] = item.userID;
-                            var claims = new List<Claim>();
-                            claims.Add(new Claim(ClaimTypes.Name, item.username));
-
-                            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
-                            HttpContext.GetOwinContext().Authentication.SignIn(identity);
-                            return RedirectToAction("Index", "Home");
-                            
                             if (answer.Equals("Log in"))
                             {
+                                Session["userID"] = item.userID;
+                                var claims = new List<Claim>();
+                                claims.Add(new Claim(ClaimTypes.Name, item.username));
+
+                                var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                                HttpContext.GetOwinContext().Authentication.SignIn(identity);
                                 return RedirectToAction("Index", "Home");
                             }
                             else {
-                                TempData["userID"] = item.userID;
-                                return RedirectToAction("clockIn", "TimeSheetEntry");
+                                TempData["UserID"] = item.userID;
+                                return RedirectToAction("clockIn", "TimeSheetEntry");       
                             }
-                           
                         }
                 }
                 userModel.LoginErrorMessage = "Wrong Username or password";
