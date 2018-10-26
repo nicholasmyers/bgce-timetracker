@@ -68,8 +68,6 @@ namespace bgce_timetracker.Controllers
                timeSheetEntry.employee = item.employee;
             }
             timeSheetEntry.employee = 1;
-            //DateTime time = System.DateTime.Now;
-            //Debug.WriteLine("hadens string" + time);
             DateTime time = System.DateTime.Now;
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
