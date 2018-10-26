@@ -68,7 +68,7 @@ namespace bgce_timetracker.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult Authorize(bgce_timetracker.Models.LOGIN userModel, String answer)
         {
             using (trackerEntities db = new trackerEntities())
             {
@@ -98,6 +98,16 @@ namespace bgce_timetracker.Controllers
                             var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
                             HttpContext.GetOwinContext().Authentication.SignIn(identity);
                             return RedirectToAction("Index", "Home");
+                            
+                            if (answer.Equals("Log in"))
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                            else {
+                                TempData["userID"] = item.userID;
+                                return RedirectToAction("clockIn", "TimeSheetEntry");
+                            }
+                           
                         }
                 }
                 userModel.LoginErrorMessage = "Wrong Username or password";

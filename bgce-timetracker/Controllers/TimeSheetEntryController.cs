@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -37,11 +38,11 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult clockIn(bgce_timetracker.Models.LOGIN userModel)
+        public ActionResult clockIn()
         {
-            Console.WriteLine("We out here boys.");
-
-            TIME_SHEET activeTimeSheet = db.TIME_SHEET.Find(userModel.userID); //query time sheet entry table.
+           int id = (int) TempData["UserID"];
+            var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
+            clockUserIn(activeTimeSheet);
 
             if (isClockedIn(activeTimeSheet))
             {
@@ -50,28 +51,31 @@ namespace bgce_timetracker.Controllers
              return RedirectToAction("Index", "Home");
         }
 
-        public bool isClockedIn(TIME_SHEET activeTimeSheet) {
-            return activeTimeSheet.active;
+        public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
+            bool clockedIn = false;
+            foreach (var item in activeTimeSheet) {
+                if (item.active) {
+                    clockedIn = true;
+                }
+            }
+            return clockedIn;
         }
 
-        public void clockUserIn(TIME_SHEET activeTimeSheet) {
-            /*TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
-            timeSheetEntry.employee = activeTimeSheet.employee;
-            TimeSpan time = TimeSpan.Parse("HH:mm:ss tt");
-            //timeSheetEntry.clock_in_time = time;
+        public void clockUserIn(List<TIME_SHEET> activeTimeSheet) {
+            TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
+            foreach (var item in activeTimeSheet)
+            {
+               timeSheetEntry.employee = item.employee;
+            }
+            timeSheetEntry.employee = 1;
+            DateTime time = System.DateTime.Now;
+            timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
-            db.SaveChanges();*/
+            db.SaveChanges();
         }
 
         public void clockUserOut(TIME_SHEET activeTimeSheet) {
 
-        }
-
-        // GET: Timesheet/Create
-        public ActionResult Create()
-        {
-            ViewBag.time_sheet = new SelectList(db.TIME_SHEET, "timesheetID", "comments");
-            return View();
         }
 
         // POST: TimeSheetEntry/Create
