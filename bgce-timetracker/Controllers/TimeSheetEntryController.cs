@@ -39,8 +39,6 @@ namespace bgce_timetracker.Controllers
         // GET: TimeSheetEntry/Create
         public ActionResult clockIn()
         {
-
-            
            int id = (int) TempData["UserID"];
             var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
             clockUserIn(activeTimeSheet);
