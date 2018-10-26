@@ -24,7 +24,7 @@ namespace bgce_timetracker.Models
         [DisplayName("Comments")]
         public string comment { get; set; }
         [DisplayName("Clock in time")]
-        public Nullable<System.DateTime> clock_in_time { get; set; }
+        public Nullable<DateTime> clock_in_time { get; set; }
         [DisplayName("Clock out time")]
         public Nullable<System.DateTime> clock_out_time { get; set; }
         [DisplayName("Clocked in")]

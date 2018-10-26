@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -39,8 +40,6 @@ namespace bgce_timetracker.Controllers
         // GET: TimeSheetEntry/Create
         public ActionResult clockIn()
         {
-
-            
            int id = (int) TempData["UserID"];
             var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
             clockUserIn(activeTimeSheet);
@@ -69,7 +68,9 @@ namespace bgce_timetracker.Controllers
                timeSheetEntry.employee = item.employee;
             }
             timeSheetEntry.employee = 1;
-            DateTime time = DateTime.Now;
+            //DateTime time = System.DateTime.Now;
+            //Debug.WriteLine("hadens string" + time);
+            DateTime time = System.DateTime.Now;
             timeSheetEntry.clock_in_time = time;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
