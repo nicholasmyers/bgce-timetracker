@@ -17,28 +17,49 @@ namespace bgce_timetracker.Controllers
         // GET: Locations
         public ActionResult Index()
         {
-            return View(db.LOCATIONs.ToList());
+            if (Request.IsAuthenticated)
+            {
+                return View(db.LOCATIONs.ToList());
+            } 
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Locations/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOCATION lOCATION = db.LOCATIONs.Find(id);
+                if (lOCATION == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lOCATION);
             }
-            LOCATION lOCATION = db.LOCATIONs.Find(id);
-            if (lOCATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(lOCATION);
         }
 
         // GET: Locations/Create
         public ActionResult Create()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: Locations/Create
@@ -48,29 +69,43 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "locationID,name,address,street,city,state,country")] LOCATION lOCATION)
         {
-            if (ModelState.IsValid)
-            {
-                db.LOCATIONs.Add(lOCATION);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            if(Request.IsAuthenticated)
+            { 
+                if (ModelState.IsValid)
+                {
+                    db.LOCATIONs.Add(lOCATION);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            return View(lOCATION);
+                return View(lOCATION);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Locations/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOCATION lOCATION = db.LOCATIONs.Find(id);
+                if (lOCATION == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lOCATION);
             }
-            LOCATION lOCATION = db.LOCATIONs.Find(id);
-            if (lOCATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(lOCATION);
         }
 
         // POST: Locations/Edit/5
@@ -80,28 +115,42 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "locationID,name,address,street,city,state,country")] LOCATION lOCATION)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(lOCATION).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(lOCATION).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(lOCATION);
             }
-            return View(lOCATION);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Locations/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOCATION lOCATION = db.LOCATIONs.Find(id);
+                if (lOCATION == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lOCATION);
             }
-            LOCATION lOCATION = db.LOCATIONs.Find(id);
-            if (lOCATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(lOCATION);
         }
 
         // POST: Locations/Delete/5
@@ -109,10 +158,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LOCATION lOCATION = db.LOCATIONs.Find(id);
-            db.LOCATIONs.Remove(lOCATION);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                LOCATION lOCATION = db.LOCATIONs.Find(id);
+                db.LOCATIONs.Remove(lOCATION);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

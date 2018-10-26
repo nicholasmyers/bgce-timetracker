@@ -60,8 +60,15 @@ namespace bgce_timetracker.Controllers
         /*/// GET: Logins
         public ActionResult Index()
         {
-            var lOGINs = db.LOGINs.Include(l => l.USER);
-            return View(lOGINs.ToList());
+            if (Request.IsAuthenticated)
+            {
+                var lOGINs = db.LOGINs.Include(l => l.USER);
+                return View(lOGINs.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         } 
         public ActionResult Authorize()
         {
@@ -117,16 +124,23 @@ namespace bgce_timetracker.Controllers
         // GET: Logins/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOGIN lOGIN = db.LOGINs.Find(id);
+                if (lOGIN == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lOGIN);
             }
-            LOGIN lOGIN = db.LOGINs.Find(id);
-            if (lOGIN == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(lOGIN);
         }
 
         // GET: Logins/Create
@@ -161,20 +175,27 @@ namespace bgce_timetracker.Controllers
             //return View("Create", new LOGIN());
         }
 
-            // GET: Logins/Edit/5
-            public ActionResult Edit(int? id)
+        // GET: Logins/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOGIN lOGIN = db.LOGINs.Find(id);
+                if (lOGIN == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.userID = new SelectList(db.USERs, "userID", "fname", lOGIN.userID);
+                return View(lOGIN);
             }
-            LOGIN lOGIN = db.LOGINs.Find(id);
-            if (lOGIN == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            ViewBag.userID = new SelectList(db.USERs, "userID", "fname", lOGIN.userID);
-            return View(lOGIN);
         }
 
         // POST: Logins/Edit/5
@@ -184,29 +205,43 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "userID,username,password,password_salt,password_last_set,is_locked_out,is_password_expired")] LOGIN lOGIN)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(lOGIN).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(lOGIN).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.userID = new SelectList(db.USERs, "userID", "fname", lOGIN.userID);
+                return View(lOGIN);
             }
-            ViewBag.userID = new SelectList(db.USERs, "userID", "fname", lOGIN.userID);
-            return View(lOGIN);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Logins/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                LOGIN lOGIN = db.LOGINs.Find(id);
+                if (lOGIN == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(lOGIN);
             }
-            LOGIN lOGIN = db.LOGINs.Find(id);
-            if (lOGIN == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(lOGIN);
         }
 
         // POST: Logins/Delete/5
@@ -214,10 +249,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            LOGIN lOGIN = db.LOGINs.Find(id);
-            db.LOGINs.Remove(lOGIN);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                LOGIN lOGIN = db.LOGINs.Find(id);
+                db.LOGINs.Remove(lOGIN);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)
