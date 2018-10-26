@@ -17,31 +17,52 @@ namespace bgce_timetracker.Controllers
         // GET: Notification
         public ActionResult Index()
         {
-            var nOTIFICATIONs = db.NOTIFICATIONs.Include(n => n.USER).Include(n => n.USER1);
-            return View(nOTIFICATIONs.ToList());
+            if (Request.IsAuthenticated)
+            {
+                var nOTIFICATIONs = db.NOTIFICATIONs.Include(n => n.USER).Include(n => n.USER1);
+                return View(nOTIFICATIONs.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Notification/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
+                if (nOTIFICATION == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(nOTIFICATION);
             }
-            NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
-            if (nOTIFICATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(nOTIFICATION);
         }
 
         // GET: Notification/Create
         public ActionResult Create()
         {
-            ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname");
-            ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname");
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname");
+                ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: Notification/Create
@@ -51,33 +72,47 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
         {
-            if (ModelState.IsValid)
+            if(Request.IsAuthenticated)
             {
-                db.NOTIFICATIONs.Add(nOTIFICATION);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    db.NOTIFICATIONs.Add(nOTIFICATION);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
-            ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
-            return View(nOTIFICATION);
+                ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
+                ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
+                return View(nOTIFICATION);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Notification/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
+                if (nOTIFICATION == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
+                ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
+                return View(nOTIFICATION);
             }
-            NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
-            if (nOTIFICATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
-            ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
-            return View(nOTIFICATION);
         }
 
         // POST: Notification/Edit/5
@@ -87,30 +122,44 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(nOTIFICATION).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(nOTIFICATION).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
+                ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
+                return View(nOTIFICATION);
             }
-            ViewBag.user_recipient = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_recipient);
-            ViewBag.user_sender = new SelectList(db.USERs, "userID", "fname", nOTIFICATION.user_sender);
-            return View(nOTIFICATION);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: Notification/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if(Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
+                if (nOTIFICATION == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(nOTIFICATION);
             }
-            NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
-            if (nOTIFICATION == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(nOTIFICATION);
         }
 
         // POST: Notification/Delete/5
@@ -118,10 +167,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
-            db.NOTIFICATIONs.Remove(nOTIFICATION);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                NOTIFICATION nOTIFICATION = db.NOTIFICATIONs.Find(id);
+                db.NOTIFICATIONs.Remove(nOTIFICATION);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -17,32 +17,53 @@ namespace bgce_timetracker.Controllers
         // GET: PAID_STAFF
         public ActionResult Index()
         {
-            var pAID_STAFF = db.PAID_STAFF.Include(p => p.USER);
-            return View(pAID_STAFF.ToList());
+            if (Request.IsAuthenticated)
+            {
+                var pAID_STAFF = db.PAID_STAFF.Include(p => p.USER);
+                return View(pAID_STAFF.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PAID_STAFF/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if(Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
+                if (pAID_STAFF == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pAID_STAFF);
             }
-            PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
-            if (pAID_STAFF == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pAID_STAFF);
         }
 
         // GET: PAID_STAFF/Create
         public ActionResult Create()
         {
-            //cViewBag.emplID = new SelectList(db.USERs, "userID", "fname");
-            ViewData["userID"] = TempData["userID"];
-            TempData["u2"] = TempData["userID"];
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                //cViewBag.emplID = new SelectList(db.USERs, "userID", "fname");
+                ViewData["userID"] = TempData["userID"];
+                TempData["u2"] = TempData["userID"];
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: PAID_STAFF/Create
@@ -52,32 +73,46 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PAID_STAFF pAID_STAFF)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                pAID_STAFF.emplID = (int) TempData["u2"];
-                db.PAID_STAFF.Add(pAID_STAFF);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    pAID_STAFF.emplID = (int)TempData["u2"];
+                    db.PAID_STAFF.Add(pAID_STAFF);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
-            return View(pAID_STAFF);
+                ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
+                return View(pAID_STAFF);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PAID_STAFF/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
+                if (pAID_STAFF == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
+                return View(pAID_STAFF);
             }
-            PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
-            if (pAID_STAFF == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
-            return View(pAID_STAFF);
         }
 
         // POST: PAID_STAFF/Edit/5
@@ -87,29 +122,43 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "emplID,pto_accrual_rate,max_pto_accrual,total_pto_accrued,pay_rate,pay_schedule")] PAID_STAFF pAID_STAFF)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(pAID_STAFF).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pAID_STAFF).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
+                return View(pAID_STAFF);
             }
-            ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);
-            return View(pAID_STAFF);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PAID_STAFF/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
+                if (pAID_STAFF == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pAID_STAFF);
             }
-            PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
-            if (pAID_STAFF == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pAID_STAFF);
         }
 
         // POST: PAID_STAFF/Delete/5
@@ -117,10 +166,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
-            db.PAID_STAFF.Remove(pAID_STAFF);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                PAID_STAFF pAID_STAFF = db.PAID_STAFF.Find(id);
+                db.PAID_STAFF.Remove(pAID_STAFF);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)
