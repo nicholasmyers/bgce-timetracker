@@ -40,13 +40,13 @@ namespace bgce_timetracker.Controllers
         // GET: TimeSheetEntry/Create
         public ActionResult clockIn()
         {
-           int id = (int) TempData["UserID"];
+            int id = (int)Session["UserID"];
             var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
-            clockUserIn(activeTimeSheet);
 
-            if (isClockedIn(activeTimeSheet))
-            {
-                clockUserIn(activeTimeSheet);
+            clockUserIn(activeTimeSheet);
+            
+            if (isClockedIn(activeTimeSheet)){
+                clockUserOut(activeTimeSheet);
             }
              return RedirectToAction("Index", "Home");
         }
@@ -61,20 +61,22 @@ namespace bgce_timetracker.Controllers
             return clockedIn;
         }
 
-        public void clockUserIn(List<TIME_SHEET> activeTimeSheet) {
+        public void clockUserIn(List<TIME_SHEET> activeTimeSheet)
+        {
             TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
             foreach (var item in activeTimeSheet)
             {
-               timeSheetEntry.employee = item.employee;
+                timeSheetEntry.employee = item.employee;
             }
-            timeSheetEntry.employee = 1;
-            DateTime time = System.DateTime.Now;
-            timeSheetEntry.clock_in_time = time;
+            timeSheetEntry.clock_in_time = System.DateTime.Now;
+            timeSheetEntry.date = System.DateTime.Now;
+            timeSheetEntry.created_on = System.DateTime.Now;
+            timeSheetEntry.is_clocked_in = true;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
         }
 
-        public void clockUserOut(TIME_SHEET activeTimeSheet) {
+        public void clockUserOut(List<TIME_SHEET> activeTimeSheet) {
 
         }
 
