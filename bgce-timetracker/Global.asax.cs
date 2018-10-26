@@ -11,6 +11,8 @@ using System.Web.SessionState;
 using System.Data.SqlClient;
 using System.Web.Configuration;
 using System.Diagnostics;
+using System.Security.Claims;
+using System.Web.Helpers;
 
 namespace bgce_timetracker
 {
@@ -23,6 +25,7 @@ namespace bgce_timetracker
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Name;
             ConnectDB();
         }
 
