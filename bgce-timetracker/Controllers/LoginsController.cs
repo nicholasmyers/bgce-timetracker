@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using bgce_timetracker.Models;
 using bgce_timetracker.Services;
 using System.Text;
+using Microsoft.AspNet.Identity;
+using System.Security.Claims;
 
 namespace bgce_timetracker.Controllers
 {
@@ -90,6 +92,13 @@ namespace bgce_timetracker.Controllers
                         if(item.password == pass.GetHash(userModel.password,ss))
                         {
                             Session["userID"] = item.userID;
+                            var claims = new List<Claim>();
+                            claims.Add(new Claim(ClaimTypes.Name, item.username));
+
+                            var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+                            HttpContext.GetOwinContext().Authentication.SignIn(identity);
+                            return RedirectToAction("Index", "Home");
+                            
                             if (answer.Equals("Log in"))
                             {
                                 return RedirectToAction("Index", "Home");
@@ -98,7 +107,7 @@ namespace bgce_timetracker.Controllers
                                 TempData["userID"] = item.userID;
                                 return RedirectToAction("clockIn", "TimeSheetEntry");
                             }
-                            
+                           
                         }
                 }
                 userModel.LoginErrorMessage = "Wrong Username or password";
