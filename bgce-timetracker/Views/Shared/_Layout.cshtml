@@ -42,10 +42,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div class="dropdown-item">
-                                @Html.ActionLink("My Profile", "Details", "Users",
-                                    new {
-                                        userID = User.Identity.GetUserId()
-                                })
+                                @Html.ActionLink("My Profile", "Details", "Users", new {userID = TempData["UserID"]})
                             </div>
                             <a class="dropdown-item">@Html.ActionLink("My Timecard", "Index", "Timesheet")</a>
                             <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
