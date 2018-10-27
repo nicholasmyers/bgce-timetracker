@@ -6,9 +6,6 @@
 
 <h2>Notifications</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -60,8 +57,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.notifID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.notifID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.notifID })
+            @Html.ActionLink("Details", "Details", new { id=item.notifID })
         </td>
     </tr>
 }
