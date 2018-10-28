@@ -1,0 +1,142 @@
+﻿@model IEnumerable<bgce_timetracker.Models.USER>
+
+@{
+    ViewBag.Title = "UserPortal";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UserPortal</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.start_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updated_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updated_by)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_administrator)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_hours_worked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.can_work_foodservice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LOCATION1.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PAID_STAFF.pay_schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UNIT_DIRECTOR.emplID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER2.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VOLUNTEER.volID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LOGIN.username)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updated_on)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updated_by)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_administrator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_hours_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.can_work_foodservice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOCATION1.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PAID_STAFF.pay_schedule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UNIT_DIRECTOR.emplID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER2.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VOLUNTEER.volID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOGIN.username)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.userID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.userID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.userID })
+        </td>
+    </tr>
+}
+
+</table>
