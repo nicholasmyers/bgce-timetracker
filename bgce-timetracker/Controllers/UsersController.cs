@@ -49,7 +49,10 @@ namespace bgce_timetracker.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
+        public ActionResult UserPortal()
+        {
+            return View();
+        }
         // GET: Users/Create
         public ActionResult Create()
         {
