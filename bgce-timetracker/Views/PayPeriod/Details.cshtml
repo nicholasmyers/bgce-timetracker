@@ -56,3 +56,31 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.ppID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+<h4>Time Sheets in Pay Period</h4>
+<table class="table">
+    <tr>
+        <th>Employee</th>
+        <th>Total entries</th>
+        <th>Total unpaid time</th>
+        <th>Total PTO earned</th>
+        <th>Total PTO used</th>
+        <th>Total hours worked</th>
+        <th>Submitted</th>
+        <th>Approved</th>
+    </tr>
+    @foreach (var entry in Model.TIME_SHEET.Where(i => i.pay_period == Model.ppID))
+    {
+    <tr>
+        <td>@Html.DisplayFor(modelItem => entry.USER1.fname) @Html.DisplayFor(modelItem => entry.USER1.lname)</td>
+        <td>@Html.DisplayFor(modelItem => entry.total_entries)</td>
+        <td>@Html.DisplayFor(modelItem => entry.total_unpaid_time)</td>
+        <td>@Html.DisplayFor(modelItem => entry.total_pto_earned)</td>
+        <td>@Html.DisplayFor(modelItem => entry.total_pto_used)</td>
+        <td>@Html.DisplayFor(modelItem => entry.total_hours_worked)</td>
+        <td>@Html.DisplayFor(modelItem => entry.submitted)</td>
+        <td>@Html.DisplayFor(modelItem => entry.approved)</td>
+        <td>@Html.ActionLink("Details", "Details", "TimeSheet", routeValues: null, htmlAttributes: new { id = entry.timesheetID })</td>
+    </tr>
+
+    }
+</table>
