@@ -42,12 +42,13 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div class="dropdown-item">
-                                @Html.ActionLink("My Profile", "Details", "Users", new {userID = TempData["UserID"]})
+                                @Html.ActionLink("My Profile", "Details", "Users", new { id = TempData["UserID"] }, null)
                             </div>
-                            <a class="dropdown-item">@Html.ActionLink("My Timecard", "Index", "Timesheet")</a>
+                            <a class="dropdown-item">@Html.ActionLink("My Timecard", "Details", "Timesheet", new { id = 13 }, null)</a>
+                            <a class="dropdown-item">@Html.ActionLink("All My Timecards", "Index", "Timesheet")</a>
                             <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
                             <a class="dropdown-item">@Html.ActionLink("Clock In / Out", "Create", "TimeSheetEntry")</a>
-                            <a class="dropdown-item"href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
+                            <a class="dropdown-item" href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

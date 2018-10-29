@@ -174,7 +174,7 @@
         <td>@Html.DisplayFor(modelItem => entry.hours_worked)</td>
         <td>@Html.DisplayFor(modelItem => entry.pto_earned)</td>
         <td>@Html.DisplayFor(modelItem => entry.overtime_hours_worked)</td>
-        <td>@Html.ActionLink("Details", "Details", "TimeSheetEntry", routeValues: null, htmlAttributes: new { id = entry.entryID })</td>
+        <td>@Html.ActionLink("Details", "Details", "TimeSheetEntry", new { id = entry.entryID }, null)</td>
     </tr>
 
     }
