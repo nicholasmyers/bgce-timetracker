@@ -7,11 +7,17 @@
 
 <h2>UserPortal</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<form action="/users/create">
+    <input type="submit" value="Create New User" style="float:right;">
+</form>
+<form action="/Logins/create">
+    <input type="submit" value="Create New Login" style="float:right;">
+</form>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LOGIN.username)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.fname)
         </th>
@@ -47,51 +53,51 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.fname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.lname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.is_administrator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.user_type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LOCATION1.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PAID_STAFF.pay_schedule)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_hours_worked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.start_date)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.userID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.userID })
-            </td>
-        </tr>
-
-
-
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOGIN.username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_administrator)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOCATION1.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PAID_STAFF.pay_schedule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_hours_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start_date)
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.userID }) |
             @Html.ActionLink("Details", "Details", new { id = item.userID }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.userID })
         </td>
-        
+    </tr>
+
+
+
+
+
     }
 
 </table>

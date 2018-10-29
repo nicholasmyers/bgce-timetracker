@@ -51,7 +51,15 @@ namespace bgce_timetracker.Controllers
         }
         public ActionResult UserPortal()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                var uSERs = db.USERs.Include(u => u.LOCATION1).Include(u => u.PAID_STAFF).Include(u => u.UNIT_DIRECTOR).Include(u => u.LOGIN).Include(u => u.VOLUNTEER);
+                return View(uSERs.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
         // GET: Users/Create
         public ActionResult Create()
