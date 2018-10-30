@@ -171,7 +171,7 @@ namespace bgce_timetracker.Controllers
             }
             ModelState.Clear();
             ViewBag.SuccessMessage = "Registration Success!";
-            return View("Create", "User");
+            return RedirectToAction("Index", "Home");
             //return View("Create", new LOGIN());
         }
 
