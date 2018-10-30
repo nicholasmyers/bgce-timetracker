@@ -374,6 +374,7 @@
     <Content Include="Views\PAID_STAFF\Details.cshtml" />
     <Content Include="Views\PAID_STAFF\Edit.cshtml" />
     <Content Include="Views\PAID_STAFF\Index.cshtml" />
+    <Content Include="Views\Users\UserPortal.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
