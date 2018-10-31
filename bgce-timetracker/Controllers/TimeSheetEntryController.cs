@@ -38,27 +38,31 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult clockIn()
+        public ActionResult punch()
         {
             int id = (int)Session["UserID"];
             var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
 
-            clockUserIn(activeTimeSheet);
-            
-            if (isClockedIn(activeTimeSheet)){
+
+
+            if (!isClockedIn(activeTimeSheet))
+            {
+                clockUserIn(activeTimeSheet);
+            }
+            /*
+            else{
                 clockUserOut(activeTimeSheet);
             }
-             return RedirectToAction("Index", "Home");
+            */
+            
+
+            return RedirectToAction("Index", "Home");
         }
 
         public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
-            bool clockedIn = false;
-            foreach (var item in activeTimeSheet) {
-                if (item.active) {
-                    clockedIn = true;
-                }
-            }
-            return clockedIn;
+            int id = (int)Session["UserID"];
+            var tse = db.TIME_SHEET_ENTRY.Where(x => x.is_clocked_in == true && x.employee == id);
+            return tse == null;
         }
 
         public void clockUserIn(List<TIME_SHEET> activeTimeSheet)
@@ -77,7 +81,23 @@ namespace bgce_timetracker.Controllers
         }
 
         public void clockUserOut(List<TIME_SHEET> activeTimeSheet) {
+            int tsid = 0;
+            TIME_SHEET_ENTRY updated = new TIME_SHEET_ENTRY();
 
+            foreach (var item in activeTimeSheet) {
+                tsid = item.timesheetID;
+            }
+
+            var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(x => x.time_sheet == tsid).ToList();
+
+            foreach (var item in activeTimeSheetEntry) {
+                updated.clock_in_time = item.clock_in_time;
+                updated.date = item.date;
+                updated.created_on = item.created_on;
+                updated.clock_out_time = System.DateTime.Now;
+            }
+            db.Entry(updated).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         // POST: TimeSheetEntry/Create
