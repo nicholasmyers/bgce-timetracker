@@ -157,21 +157,28 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(LOGIN newuser)
         {
-            using (trackerEntities db = new trackerEntities())
+            if (Request.IsAuthenticated)
             {
-                PasswordHash pass = new PasswordHash();
-                pass.Salt = pass.GenerateSalt();
-           
-                newuser.password = pass.GetHash(newuser.password, pass.Salt);
-                newuser.password_salt = Convert.ToBase64String(pass.Salt);
-                //int hash = newuser.password.GetHashCode();
-                //newuser.password_salt = hash; //password salt needs to be int ??
-                db.LOGINs.Add(newuser);
-                db.SaveChanges();
+                using (trackerEntities db = new trackerEntities())
+                {
+                    PasswordHash pass = new PasswordHash();
+                    pass.Salt = pass.GenerateSalt();
+
+                    newuser.password = pass.GetHash(newuser.password, pass.Salt);
+                    newuser.password_salt = Convert.ToBase64String(pass.Salt);
+                    //int hash = newuser.password.GetHashCode();
+                    //newuser.password_salt = hash; //password salt needs to be int ??
+                    db.LOGINs.Add(newuser);
+                    db.SaveChanges();
+                }
+                ModelState.Clear();
+                ViewBag.SuccessMessage = "Registration Success!";
+                return RedirectToAction("Index", "Home");
             }
-            ModelState.Clear();
-            ViewBag.SuccessMessage = "Registration Success!";
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             //return View("Create", new LOGIN());
         }
 
