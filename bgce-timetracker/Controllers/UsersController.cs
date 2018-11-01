@@ -98,11 +98,13 @@ namespace bgce_timetracker.Controllers
                     db.SaveChanges();
                     if (newUser.user_type == "Volunteer")
                     {
-                        return RedirectToAction("Index");
+                        TempData["userID"] = newUser.userID;
+                        return RedirectToAction("Create","Logins");
 
                     }
                     else
                         TempData["userID"] = newUser.userID;
+                    TempData["userType"] = newUser.user_type;
                     return RedirectToAction("Create", "PAID_STAFF");
 
                 }

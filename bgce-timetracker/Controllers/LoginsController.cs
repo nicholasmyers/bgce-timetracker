@@ -147,6 +147,7 @@ namespace bgce_timetracker.Controllers
         public ActionResult Create()
         {
             ViewBag.userID = new SelectList(db.USERs, "userID", "fname");
+            TempData["u2"] = (int)TempData["userID"];
             return View();
         }
 
@@ -161,7 +162,8 @@ namespace bgce_timetracker.Controllers
             {
                 PasswordHash pass = new PasswordHash();
                 pass.Salt = pass.GenerateSalt();
-           
+
+                newuser.userID = (int)TempData["u2"];
                 newuser.password = pass.GetHash(newuser.password, pass.Salt);
                 newuser.password_salt = Convert.ToBase64String(pass.Salt);
                 //int hash = newuser.password.GetHashCode();
