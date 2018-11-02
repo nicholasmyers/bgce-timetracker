@@ -101,6 +101,13 @@ namespace bgce_timetracker.Controllers
                             if (answer.Equals("Log in"))
                             {
                                 Session["userID"] = item.userID;
+
+                                var timeSheet = db.TIME_SHEET.Where(x => x.active == true && x.employee == item.userID)
+                                                             .Select(x => x.timesheetID)
+                                                             .FirstOrDefault();
+
+                                TempData["activeTimesheetID"] = timeSheet;
+
                                 var claims = new List<Claim>();
                                 claims.Add(new Claim(ClaimTypes.Name, item.username));
 

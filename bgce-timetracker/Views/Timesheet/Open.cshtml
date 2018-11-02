@@ -1,0 +1,102 @@
+﻿@model IEnumerable<bgce_timetracker.Models.TIME_SHEET>
+
+@{
+    ViewBag.Title = "Open Timesheets";
+}
+
+<h2>Open Timesheets</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER1.lname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.submitted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.approved)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.active)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.is_missing_punches)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_entries)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_hours_worked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_overtime_worked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_pto_used)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_pto_earned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_unpaid_time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.created_on)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.USER1.fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.USER1.lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.submitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.approved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.is_missing_punches)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_entries)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_hours_worked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_overtime_worked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_pto_used)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_pto_earned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_unpaid_time)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_on)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.timesheetID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.timesheetID })
+            </td>
+        </tr>
+    }
+
+</table>
