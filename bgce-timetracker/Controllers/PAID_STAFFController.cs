@@ -79,8 +79,10 @@ namespace bgce_timetracker.Controllers
                 if (ModelState.IsValid)
                 {
                     pAID_STAFF.emplID = (int)TempData["u2"];
-                    db.PAID_STAFF.Add(pAID_STAFF);
-                    db.SaveChanges();
+                    TempData["paidStaffModel"] = pAID_STAFF;
+                    TempData.Keep("paidStaffModel");
+                    //db.PAID_STAFF.Add(pAID_STAFF);
+                    //db.SaveChanges();
                     TempData["userID"] = pAID_STAFF.emplID;
                     return RedirectToAction("Create","Logins");
                 }
