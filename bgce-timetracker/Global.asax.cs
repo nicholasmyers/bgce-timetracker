@@ -13,6 +13,7 @@ using System.Web.Configuration;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Web.Helpers;
+using System.Net;
 
 namespace bgce_timetracker
 {
@@ -38,6 +39,26 @@ namespace bgce_timetracker
             if(conn.State == System.Data.ConnectionState.Open)
             {
                 Debug.WriteLine("Connected to DB");
+            }
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            Exception lastErrorInfo = Server.GetLastError();
+            Exception errorInfo = null;
+
+            bool isNotFound = false;
+            if (lastErrorInfo != null)
+            {
+                errorInfo = lastErrorInfo.GetBaseException();
+                var error = errorInfo as HttpException;
+                if (error != null)
+                    isNotFound = error.GetHttpCode() == (int)HttpStatusCode.NotFound;
+            }
+            if (isNotFound)
+            {
+                Server.ClearError();
+                Response.Redirect("~/Home/NotFound");// Do what you need to render in view
             }
         }
     }

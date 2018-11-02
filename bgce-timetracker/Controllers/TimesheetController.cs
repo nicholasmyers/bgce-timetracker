@@ -28,6 +28,34 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        // GET: Timesheet/MyTimesheet
+        public ActionResult MyTimesheet()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1);
+                return View(tIME_SHEET.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: Timesheet/Open
+        public ActionResult Open()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1).Where(t => t.active == true);
+                return View(tIME_SHEET.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         // GET: Timesheet/Details/5
         public ActionResult Details(int? id)
         {
