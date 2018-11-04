@@ -11,6 +11,7 @@ using bgce_timetracker.Services;
 using System.Text;
 using Microsoft.AspNet.Identity;
 using System.Security.Claims;
+using System.Web.Security;
 
 namespace bgce_timetracker.Controllers
 {
@@ -154,6 +155,10 @@ namespace bgce_timetracker.Controllers
         public ActionResult Create()
         {
             ViewBag.userID = new SelectList(db.USERs, "userID", "fname");
+            TempData["u2"] = (int)TempData["userID"];
+            string RGpass = Membership.GeneratePassword(6, 1);
+            ViewData["pass"]=RGpass;
+            TempData["pass"] = RGpass;
             return View();
         }
 
@@ -168,15 +173,27 @@ namespace bgce_timetracker.Controllers
             {
                 using (trackerEntities db = new trackerEntities())
                 {
-                    PasswordHash pass = new PasswordHash();
-                    pass.Salt = pass.GenerateSalt();
+                     PasswordHash pass = new PasswordHash();
+                     pass.Salt = pass.GenerateSalt();
 
-                    newuser.password = pass.GetHash(newuser.password, pass.Salt);
-                    newuser.password_salt = Convert.ToBase64String(pass.Salt);
-                    //int hash = newuser.password.GetHashCode();
-                    //newuser.password_salt = hash; //password salt needs to be int ??
-                    db.LOGINs.Add(newuser);
-                    db.SaveChanges();
+                     newuser.userID = (int)TempData["u2"];
+                     newuser.password = (string)TempData["pass"];
+                     newuser.password = pass.GetHash(newuser.password, pass.Salt);
+                     newuser.password_salt = Convert.ToBase64String(pass.Salt);
+                     //int hash = newuser.password.GetHashCode();
+                     //newuser.password_salt = hash; //password salt needs to be int ??
+
+                     USER User = (USER)TempData["userModel"];
+                     db.USERs.Add(User);
+                     //db.SaveChanges();
+                     if (User.user_type != "Volunteer")
+                     {
+                          PAID_STAFF pAID_STAFF = (PAID_STAFF)TempData["paidStaffModel"];
+                          db.PAID_STAFF.Add(pAID_STAFF);
+                          //db.SaveChanges();
+                     }
+                     db.LOGINs.Add(newuser);
+                     db.SaveChanges();
                 }
                 ModelState.Clear();
                 ViewBag.SuccessMessage = "Registration Success!";

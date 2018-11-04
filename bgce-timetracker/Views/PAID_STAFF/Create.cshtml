@@ -14,8 +14,53 @@
 <div class="form-horizontal">
     <h4>PAID_STAFF</h4>
     <hr />
-    
-    <h3>UserID: @ViewData["userID"];</h3>
+
+    <h3>UserID:@ViewData["userID"]</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.pto_accrual_rate, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.DisplayFor(model => model.pto_accrual_rate, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @{
+                List<SelectListItem> listItems = new List<SelectListItem>();
+                if ((string)ViewData["type"] == "Part Time")
+                {
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Non-Exempt (.03845)",
+                        Value = ".03845"
+
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Exempt (.0769)",
+                        Value = ".0769"
+                    });
+                }
+                else
+                {
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Exempt (.0769)",
+                        Value = ".0769"
+
+                    });
+                    listItems.Add(new SelectListItem
+                    {
+                        Text = "Non-Exempt (.03845)",
+                        Value = ".03845"
+
+                    });
+                }
+
+            }
+            @Html.DropDownList("pto_accural_rate", listItems, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pto_accrual_rate, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <!--
     <div class="form-group">
         @Html.LabelFor(model => model.pto_accrual_rate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
@@ -23,7 +68,7 @@
             @Html.ValidationMessageFor(model => model.pto_accrual_rate, "", new { @class = "text-danger" })
         </div>
     </div>
-
+        -->
     <div class="form-group">
         @Html.LabelFor(model => model.max_pto_accrual, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">

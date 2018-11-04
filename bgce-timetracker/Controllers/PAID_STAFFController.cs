@@ -58,6 +58,7 @@ namespace bgce_timetracker.Controllers
                 //cViewBag.emplID = new SelectList(db.USERs, "userID", "fname");
                 ViewData["userID"] = TempData["userID"];
                 TempData["u2"] = TempData["userID"];
+                ViewData["type"] = TempData["userType"];
                 return View();
             }
             else
@@ -78,9 +79,12 @@ namespace bgce_timetracker.Controllers
                 if (ModelState.IsValid)
                 {
                     pAID_STAFF.emplID = (int)TempData["u2"];
-                    db.PAID_STAFF.Add(pAID_STAFF);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    TempData["paidStaffModel"] = pAID_STAFF;
+                    TempData.Keep("paidStaffModel");
+                    //db.PAID_STAFF.Add(pAID_STAFF);
+                    //db.SaveChanges();
+                    TempData["userID"] = pAID_STAFF.emplID;
+                    return RedirectToAction("Create","Logins");
                 }
 
                 ViewBag.emplID = new SelectList(db.USERs, "userID", "fname", pAID_STAFF.emplID);

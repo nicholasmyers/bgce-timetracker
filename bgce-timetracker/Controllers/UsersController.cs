@@ -93,16 +93,19 @@ namespace bgce_timetracker.Controllers
                     //newUser.active = true;
                     newUser.created_on = DateTime.Today;
                     newUser.created_by = "Admin";
-
-                    db.USERs.Add(newUser);
-                    db.SaveChanges();
+                    TempData["userModel"] = newUser;
+                    TempData.Keep("userModel");  
+                    //db.USERs.Add(newUser);
+                    //db.SaveChanges();
                     if (newUser.user_type == "Volunteer")
                     {
-                        return RedirectToAction("Index");
+                        TempData["userID"] = newUser.userID;
+                        return RedirectToAction("Create","Logins");
 
                     }
                     else
                         TempData["userID"] = newUser.userID;
+                    TempData["userType"] = newUser.user_type;
                     return RedirectToAction("Create", "PAID_STAFF");
 
                 }
