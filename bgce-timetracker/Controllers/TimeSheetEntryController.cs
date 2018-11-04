@@ -48,12 +48,9 @@ namespace bgce_timetracker.Controllers
             if (!isClockedIn(activeTimeSheet))
             {
                 clockUserIn(activeTimeSheet);
-            }
-            /*
-            else{
+            }else{
                 clockUserOut(activeTimeSheet);
             }
-            */
             
 
             return RedirectToAction("Index", "Home");
@@ -61,8 +58,7 @@ namespace bgce_timetracker.Controllers
 
         public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
             int id = (int)Session["UserID"];
-            var tse = db.TIME_SHEET_ENTRY.Where(x => x.is_clocked_in == true && x.employee == id);
-            return tse == null;
+            return db.TIME_SHEET_ENTRY.Where(x => x.is_clocked_in == true && x.employee == id) != null;
         }
 
         public void clockUserIn(List<TIME_SHEET> activeTimeSheet)
