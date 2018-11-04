@@ -15,11 +15,49 @@ namespace bgce_timetracker.Controllers
         private trackerEntities db = new trackerEntities();
 
         // GET: Timesheet
-        public ActionResult Index()
+        public ActionResult Index(int? userID)
+        {
+            if (Request.IsAuthenticated)
+            {
+
+                var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1);
+
+                //return a filtered list of time sheets if a userID is received, otherwise just return the full list
+                if (userID != null)
+                {
+                    return View(tIME_SHEET.Where(i => i.employee == userID).ToList());
+                }
+                else
+                {
+                    return View(tIME_SHEET.ToList());
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: Timesheet/MyTimesheet
+        public ActionResult MyTimesheet()
         {
             if (Request.IsAuthenticated)
             {
                 var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1);
+                return View(tIME_SHEET.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: Timesheet/Open
+        public ActionResult Open()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1).Where(t => t.active == true);
                 return View(tIME_SHEET.ToList());
             }
             else

@@ -375,6 +375,11 @@
     <Content Include="Views\PAID_STAFF\Edit.cshtml" />
     <Content Include="Views\PAID_STAFF\Index.cshtml" />
     <Content Include="Views\Users\UserPortal.cshtml" />
+    <Content Include="Views\Timesheet\MyTimesheet.cshtml">
+      <BrowseToURL>~/Timesheet/MyTimesheets</BrowseToURL>
+    </Content>
+    <Content Include="Views\Home\NotFound.cshtml" />
+    <Content Include="Views\Timesheet\Open.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

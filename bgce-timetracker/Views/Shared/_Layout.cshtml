@@ -42,12 +42,19 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <div class="dropdown-item">
-                                @Html.ActionLink("My Profile", "Details", "Users", new {userID = TempData["UserID"]})
+                                @Html.ActionLink("My Profile", "Details", "Users", new { id = Session["UserID"] }, null)
                             </div>
-                            <a class="dropdown-item">@Html.ActionLink("My Timecard", "Index", "Timesheet")</a>
+                            @if (TempData.Peek("activeTimesheetID") != null)
+                            {
+                                <a class="dropdown-item">@Html.ActionLink("My Timecard", "Details", "TimeSheet", new { id = @TempData.Peek("activeTimesheetID") }, null)</a>
+                            }
+                            else
+                            {
+                                <div class="dropdown-item">@Html.ActionLink("My Previous Timecards", "MyTimesheet", "TimeSheet")</div>
+                            }
                             <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
                             <a class="dropdown-item">@Html.ActionLink("Clock In / Out", "Create", "TimeSheetEntry")</a>
-                            <a class="dropdown-item"href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
+                            <a class="dropdown-item" href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -66,8 +73,9 @@
                             Timesheets
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View Open", "Details", "TimeSheet")</div>
+                            <div class="dropdown-item">@Html.ActionLink("View Open", "Open", "TimeSheet")</div>
                             <div class="dropdown-item">@Html.ActionLink("View All", "Index", "TimeSheet")</div>
+                            <div class="dropdown-item">@Html.ActionLink("My Previous Timecards", "MyTimesheet", "TimeSheet")</div>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

@@ -79,7 +79,7 @@
         <td>@Html.DisplayFor(modelItem => entry.total_hours_worked)</td>
         <td>@Html.DisplayFor(modelItem => entry.submitted)</td>
         <td>@Html.DisplayFor(modelItem => entry.approved)</td>
-        <td>@Html.ActionLink("Details", "Details", "TimeSheet", routeValues: null, htmlAttributes: new { id = entry.timesheetID })</td>
+        <td>@Html.ActionLink("Details", "Details", "TimeSheet", new { id = entry.timesheetID }, null)</td>
     </tr>
 
     }

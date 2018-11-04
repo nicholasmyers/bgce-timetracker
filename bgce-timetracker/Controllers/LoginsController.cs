@@ -102,6 +102,13 @@ namespace bgce_timetracker.Controllers
                             if (answer.Equals("Log in"))
                             {
                                 Session["userID"] = item.userID;
+
+                                var timeSheet = db.TIME_SHEET.Where(x => x.active == true && x.employee == item.userID)
+                                                             .Select(x => x.timesheetID)
+                                                             .FirstOrDefault();
+
+                                TempData["activeTimesheetID"] = timeSheet;
+
                                 var claims = new List<Claim>();
                                 claims.Add(new Claim(ClaimTypes.Name, item.username));
 
@@ -110,7 +117,7 @@ namespace bgce_timetracker.Controllers
                                 return RedirectToAction("Index", "Home");
                             }
                             else {
-                                TempData["UserID"] = item.userID;
+                                Session["UserID"] = item.userID;
                                 return RedirectToAction("clockIn", "TimeSheetEntry");       
                             }
                         }
@@ -162,33 +169,40 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(LOGIN newuser)
         {
-            using (trackerEntities db = new trackerEntities())
+            if (Request.IsAuthenticated)
             {
-                PasswordHash pass = new PasswordHash();
-                pass.Salt = pass.GenerateSalt();
-
-                newuser.userID = (int)TempData["u2"];
-                newuser.password = (string)TempData["pass"];
-                newuser.password = pass.GetHash(newuser.password, pass.Salt);
-                newuser.password_salt = Convert.ToBase64String(pass.Salt);
-                //int hash = newuser.password.GetHashCode();
-                //newuser.password_salt = hash; //password salt needs to be int ??
-
-                USER User = (USER)TempData["userModel"];
-                db.USERs.Add(User);
-                //db.SaveChanges();
-                if (User.user_type != "Volunteer")
+                using (trackerEntities db = new trackerEntities())
                 {
-                    PAID_STAFF pAID_STAFF = (PAID_STAFF)TempData["paidStaffModel"];
-                    db.PAID_STAFF.Add(pAID_STAFF);
-                    //db.SaveChanges();
+                     PasswordHash pass = new PasswordHash();
+                     pass.Salt = pass.GenerateSalt();
+
+                     newuser.userID = (int)TempData["u2"];
+                     newuser.password = (string)TempData["pass"];
+                     newuser.password = pass.GetHash(newuser.password, pass.Salt);
+                     newuser.password_salt = Convert.ToBase64String(pass.Salt);
+                     //int hash = newuser.password.GetHashCode();
+                     //newuser.password_salt = hash; //password salt needs to be int ??
+
+                     USER User = (USER)TempData["userModel"];
+                     db.USERs.Add(User);
+                     //db.SaveChanges();
+                     if (User.user_type != "Volunteer")
+                     {
+                          PAID_STAFF pAID_STAFF = (PAID_STAFF)TempData["paidStaffModel"];
+                          db.PAID_STAFF.Add(pAID_STAFF);
+                          //db.SaveChanges();
+                     }
+                     db.LOGINs.Add(newuser);
+                     db.SaveChanges();
                 }
-                db.LOGINs.Add(newuser);
-                db.SaveChanges();
+                ModelState.Clear();
+                ViewBag.SuccessMessage = "Registration Success!";
+                return RedirectToAction("Index", "Home");
             }
-            ModelState.Clear();
-            ViewBag.SuccessMessage = "Registration Success!";
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
             //return View("Create", new LOGIN());
         }
 
