@@ -62,16 +62,16 @@ namespace bgce_timetracker.Controllers
             int id = (int) TempData["id"];
             TempData.Keep("id");
 
-            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id);
-            foreach (var item in activeTimeSheet)
-            {
-                timeSheetEntry.employee = item.employee;
-            }
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            var user = db.USERs.Where(employee => employee.userID == id).FirstOrDefault();
+            var timeType = user.user_type;
+            timeSheetEntry.employee = activeTimeSheet.employee;
+            
             timeSheetEntry.clock_in_time = System.DateTime.Now;
             timeSheetEntry.date = System.DateTime.Now;
             timeSheetEntry.created_on = System.DateTime.Now;
             timeSheetEntry.is_clocked_in = true;
-            timeSheetEntry.time_type = "paid";
+            timeSheetEntry.time_type = timeType;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
         }
@@ -85,7 +85,7 @@ namespace bgce_timetracker.Controllers
             var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
             tsid = activeTimeSheet.timesheetID;
 
-            var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.time_sheet == tsid).FirstOrDefault();
+            var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.time_sheet == tsid && timeSheetEntry.is_clocked_in).FirstOrDefault();
 
             activeTimeSheetEntry.is_clocked_in = false;
             activeTimeSheetEntry.clock_out_time = DateTime.Now;
