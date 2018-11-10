@@ -1,9 +1,9 @@
 ﻿@model bgce_timetracker.Models.TIME_SHEET
 
 @{
-                /**/
+    /**/
 
-                ViewBag.Title = "Details";
+    ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
@@ -166,18 +166,39 @@
         <th>PTO Earned</th>
         <th>Overtime Worked</th>
     </tr>
-   @foreach (var entry in Model.TIME_SHEET_ENTRY.Where(i => i.time_sheet == Model.timesheetID))
-   {
-    <tr>
-        <td>@Html.DisplayFor(modelItem => entry.clock_in_time)</td>
-        <td>@Html.DisplayFor(modelItem => entry.clock_out_time)</td>
-        <td>@Html.DisplayFor(modelItem => entry.time_type)</td>
-        <td>@Html.DisplayFor(modelItem => entry.hours_worked)</td>
-        <td>@Html.DisplayFor(modelItem => entry.pto_earned)</td>
-        <td>@Html.DisplayFor(modelItem => entry.overtime_hours_worked)</td>
-        <td>@Html.ActionLink("Details", "Details", "TimeSheetEntry", new { id = entry.entryID }, null)</td>
-    </tr>
-
+    @foreach (var entry in Model.TIME_SHEET_ENTRY.Where(i => i.time_sheet == Model.timesheetID))
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => entry.clock_in_time)</td>
+            <td>@Html.DisplayFor(modelItem => entry.clock_out_time)</td>
+            <td>@Html.DisplayFor(modelItem => entry.time_type)</td>
+            <td>@Html.DisplayFor(modelItem => entry.hours_worked)</td>
+            <td>@Html.DisplayFor(modelItem => entry.pto_earned)</td>
+            <td>@Html.DisplayFor(modelItem => entry.overtime_hours_worked)</td>
+            <td>@Html.ActionLink("Details", "Details", "TimeSheetEntry", new { id = entry.entryID }, null)</td>
+        </tr>
     }
 </table>
+
+@using (Html.BeginForm("Details", "TimeSheet", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" name="answer" value="OnPostExport" class="btn btn-default" />
+        <button asp-page-handler="Export">Export</button>
+    </div>
+</div>
+}
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-8" style="padding-top:10px;">
+            <button asp-page-handler="Export">Export</button>
+            <input type="submit" name="answer" value="OnPostExport" class="btn btn-default" />
+        </div>
+    </div>
+    <br />
+    <div id="dvData"></div>
+</form>
+
+
 

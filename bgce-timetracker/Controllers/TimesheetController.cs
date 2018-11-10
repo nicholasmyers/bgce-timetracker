@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace bgce_timetracker.Controllers
 {
@@ -230,5 +234,54 @@ namespace bgce_timetracker.Controllers
             }
             base.Dispose(disposing);
         }
+
+
+
+
+        public ActionResult OnPostExport()
+        {
+            System.Diagnostics.Debug.WriteLine("9999999999999999999999999999999999999999999");
+            //string sWebRootFolder = _hostingEnvironment.WebRootPath;
+            string sFileName = @"Test.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
+            FileInfo file = new FileInfo(sFileName);
+            var memory = new MemoryStream();
+            using (var fs = new FileStream(sFileName, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook;
+                workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Test");
+                IRow row = excelSheet.CreateRow(0);
+
+                row.CreateCell(0).SetCellValue("Date");
+                row.CreateCell(1).SetCellValue("Clock In Time");
+                row.CreateCell(2).SetCellValue("Clock Out Time");
+                row.CreateCell(3).SetCellValue("Hours Worked");
+                row.CreateCell(4).SetCellValue("Overtime Hours");
+                row.CreateCell(5).SetCellValue("PTO Earned");
+                row.CreateCell(6).SetCellValue("");
+                row.CreateCell(7).SetCellValue("");
+
+                row = excelSheet.CreateRow(1);
+                row.CreateCell(0).SetCellValue("12/31");
+                row.CreateCell(1).SetCellValue("10am");
+                row.CreateCell(2).SetCellValue("10pm");
+                row.CreateCell(3).SetCellValue("12");
+                row.CreateCell(4).SetCellValue("4");
+                row.CreateCell(5).SetCellValue(".03");
+                row.CreateCell(6).SetCellValue("test");
+                row.CreateCell(7).SetCellValue("test2");
+
+
+                workbook.Write(fs);
+            }
+            using (var stream = new FileStream(sFileName, FileMode.Open))
+            {
+                stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName);
+        }
+
     }
 }
