@@ -12,6 +12,12 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.USER1.fname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.USER1.lname)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.total_time_requested)
         </th>
         <th>
@@ -26,17 +32,17 @@
         <th>
             @Html.DisplayNameFor(model => model.comments)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USER.fname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USER1.fname)
-        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.lname)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.total_time_requested)
         </td>
@@ -47,21 +53,11 @@
             @Html.DisplayFor(modelItem => item.approved)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.approved_on)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.comments)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.USER.fname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USER1.fname)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.requestID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.requestID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.requestID })
+            @Html.ActionLink("Edit", "Edit", new { id = item.requestID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.requestID })
         </td>
     </tr>
 }

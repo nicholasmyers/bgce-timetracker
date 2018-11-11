@@ -42,7 +42,7 @@ namespace bgce_timetracker.Models
         [DisplayName("Updated")]
         public Nullable<System.DateTime> updated_on { get; set; }
         [DisplayName("Updated by")]
-        public Nullable<System.DateTime> updated_by { get; set; }
+        public string updated_by { get; set; }
         [DisplayName("Manager")]
         public Nullable<int> manager { get; set; }
         [DisplayName("Location")]
