@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
 using NPOI.SS.UserModel;
@@ -91,6 +92,89 @@ namespace bgce_timetracker.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+
+
+
+        [HttpPost]
+        public ActionResult Details()
+        {
+            System.Diagnostics.Debug.WriteLine("9999999999999999999999999999999999999999999");
+            string sWebRootFolder = HttpRuntime.AppDomainAppPath;
+            string sFileName = @"Test.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
+            FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+            var memory = new MemoryStream();
+            using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook;
+                workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Test");
+                IRow row = excelSheet.CreateRow(0);
+
+                row.CreateCell(0).SetCellValue("Date");
+                row.CreateCell(1).SetCellValue("Clock In Time");
+                row.CreateCell(2).SetCellValue("Clock Out Time");
+                row.CreateCell(3).SetCellValue("Hours Worked");
+                row.CreateCell(4).SetCellValue("Time Type");
+                row.CreateCell(5).SetCellValue("Overtime Hours");
+                row.CreateCell(6).SetCellValue("PTO Earned");
+                row.CreateCell(7).SetCellValue("");
+                row.CreateCell(8).SetCellValue("");
+
+                int j = 1;
+                var time = db.TIME_SHEET_ENTRY./*Where(i => i.time_sheet == db.timesheetID).*/ToList();
+                foreach (var entry in time)
+                {
+                    row = excelSheet.CreateRow(j);
+                    if (entry.date.HasValue)
+                    {
+                        row.CreateCell(0).SetCellValue(Convert.ToString(entry.date));
+                    }
+                    if (entry.clock_in_time.HasValue)
+                    {
+                        row.CreateCell(1).SetCellValue(Convert.ToString(entry.clock_in_time));
+                    }
+                    if (entry.clock_out_time.HasValue)
+                    {
+                        row.CreateCell(2).SetCellValue(Convert.ToString(entry.clock_out_time));
+                    }
+                    row.CreateCell(4).SetCellValue(entry.time_type);
+                    if (entry.hours_worked.HasValue)
+                    {
+                        row.CreateCell(3).SetCellValue(Convert.ToString(entry.hours_worked));
+                    }
+                    if (entry.pto_earned.HasValue)
+                    {
+                        row.CreateCell(6).SetCellValue(Convert.ToString(entry.pto_earned));
+                    }
+                    if (entry.overtime_hours_worked.HasValue)
+                    {
+                        row.CreateCell(5).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                    }
+                    j++;
+                }
+
+                row = excelSheet.CreateRow(15);
+                row.CreateCell(0).SetCellValue("12/31");
+                row.CreateCell(1).SetCellValue("10am");
+                row.CreateCell(2).SetCellValue("10pm");
+                row.CreateCell(3).SetCellValue("12");
+                row.CreateCell(4).SetCellValue("4");
+                row.CreateCell(5).SetCellValue(".03");
+                row.CreateCell(6).SetCellValue("test");
+                row.CreateCell(7).SetCellValue("test2");
+
+
+                workbook.Write(fs);
+            }
+            using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
+            {
+                stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName);
+        
+    }
 
         // GET: Timesheet/Create
         public ActionResult Create()
