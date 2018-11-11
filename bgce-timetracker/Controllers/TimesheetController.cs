@@ -74,6 +74,8 @@ namespace bgce_timetracker.Controllers
         // GET: Timesheet/Details/5
         public ActionResult Details(int? id)
         {
+            TempData["id"] = id;
+            TempData.Keep("id");
             if (Request.IsAuthenticated)
             {
                 if (id == null)
@@ -81,6 +83,7 @@ namespace bgce_timetracker.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 TIME_SHEET tIME_SHEET = db.TIME_SHEET.Find(id);
+                
                 if (tIME_SHEET == null)
                 {
                     return HttpNotFound();
@@ -98,6 +101,7 @@ namespace bgce_timetracker.Controllers
         [HttpPost]
         public ActionResult Details()
         {
+
             System.Diagnostics.Debug.WriteLine("9999999999999999999999999999999999999999999");
             string sWebRootFolder = HttpRuntime.AppDomainAppPath;
             string sFileName = @"Test.xlsx";
@@ -122,7 +126,8 @@ namespace bgce_timetracker.Controllers
                 row.CreateCell(8).SetCellValue("");
 
                 int j = 1;
-                var time = db.TIME_SHEET_ENTRY./*Where(i => i.time_sheet == db.timesheetID).*/ToList();
+                int timeID = (int)TempData.Peek("id");
+                var time = (db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == timeID)).ToList();
                 foreach (var entry in time)
                 {
                     row = excelSheet.CreateRow(j);
