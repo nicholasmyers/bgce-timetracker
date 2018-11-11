@@ -118,7 +118,8 @@ namespace bgce_timetracker.Controllers
                             }
                             else {
                                 Session["UserID"] = item.userID;
-                                return RedirectToAction("clockIn", "TimeSheetEntry");       
+                                return RedirectToAction("punch", "TimeSheetEntry");       
+
                             }
                         }
                 }

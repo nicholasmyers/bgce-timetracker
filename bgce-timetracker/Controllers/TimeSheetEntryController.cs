@@ -52,46 +52,59 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult clockIn()
+        public ActionResult punch()
         {
             int id = (int)Session["UserID"];
-            var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
+            TempData["id"] = id;
+            bool isClockedIn = db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
 
-            clockUserIn(activeTimeSheet);
-            
-            if (isClockedIn(activeTimeSheet)){
-                clockUserOut(activeTimeSheet);
+            if (!isClockedIn)
+            {
+                clockUserIn();
             }
-             return RedirectToAction("Index", "Home");
+            else {
+                clockUserOut();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
 
-        public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
-            bool clockedIn = false;
-            foreach (var item in activeTimeSheet) {
-                if (item.active) {
-                    clockedIn = true;
-                }
-            }
-            return clockedIn;
-        }
-
-        public void clockUserIn(List<TIME_SHEET> activeTimeSheet)
+        public void clockUserIn()
         {
             TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
-            foreach (var item in activeTimeSheet)
-            {
-                timeSheetEntry.employee = item.employee;
-            }
+
+            int id = (int) TempData["id"];
+            TempData.Keep("id");
+
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            var user = db.USERs.Where(employee => employee.userID == id).FirstOrDefault();
+            var timeType = user.user_type;
+            timeSheetEntry.employee = activeTimeSheet.employee;
+            
             timeSheetEntry.clock_in_time = System.DateTime.Now;
             timeSheetEntry.date = System.DateTime.Now;
             timeSheetEntry.created_on = System.DateTime.Now;
             timeSheetEntry.is_clocked_in = true;
+            timeSheetEntry.time_type = timeType;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
         }
 
-        public void clockUserOut(List<TIME_SHEET> activeTimeSheet) {
+        public void clockUserOut() {
+            int tsid;
 
+            int id = (int)TempData["id"];
+            TempData.Keep("id");
+
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            tsid = activeTimeSheet.timesheetID;
+
+            var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.time_sheet == tsid && timeSheetEntry.is_clocked_in).FirstOrDefault();
+
+            activeTimeSheetEntry.is_clocked_in = false;
+            activeTimeSheetEntry.clock_out_time = DateTime.Now;
+            db.Entry(activeTimeSheetEntry).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         // POST: TimeSheetEntry/Create
