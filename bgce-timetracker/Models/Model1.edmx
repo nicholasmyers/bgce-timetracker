@@ -76,6 +76,8 @@
           <Property Name="approved_on" Type="datetime2" Precision="0" />
           <Property Name="approved_by" Type="int" />
           <Property Name="comments" Type="varchar(max)" />
+          <Property Name="pto_start" Type="datetime2" Precision="7" />
+          <Property Name="pto_end" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="TIME_SHEET">
           <Key>
@@ -108,15 +110,15 @@
           <Property Name="date" Type="date" Nullable="false" />
           <Property Name="hours_worked" Type="float" />
           <Property Name="comment" Type="varchar(max)" />
-          <Property Name="clock_in_time" Type="datetime2" />
-          <Property Name="clock_out_time" Type="datetime2" />
+          <Property Name="clock_in_time" Type="datetime2" Precision="7" />
+          <Property Name="clock_out_time" Type="datetime2" Precision="7" />
           <Property Name="is_clocked_in" Type="bit" Nullable="false" />
-          <Property Name="updated_on" Type="datetime2" />
+          <Property Name="updated_on" Type="datetime" />
           <Property Name="updated_by" Type="varchar" MaxLength="45" />
           <Property Name="time_type" Type="varchar" MaxLength="45" />
           <Property Name="overtime_hours_worked" Type="float" />
           <Property Name="pto_earned" Type="float" />
-          <Property Name="created_on" Type="datetime2" Nullable="false" />
+          <Property Name="created_on" Type="datetime" Nullable="false" />
           <Property Name="employee" Type="int" />
           <Property Name="time_sheet" Type="int" />
         </EntityType>
@@ -179,7 +181,7 @@ warning 6002: The table/view 'tracker.dbo.PAID_STAFF_VIEW' does not have a prima
           <Property Name="created_on" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="created_by" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="updated_on" Type="datetime2" Precision="0" />
-          <Property Name="updated_by" Type="varchar" MaxLength="45" />
+          <Property Name="updated_by" Type="varchar" MaxLength="45"/>
           <Property Name="manager" Type="int" />
           <Property Name="location" Type="int" />
           <Property Name="email" Type="varchar" MaxLength="45" Nullable="false" />
@@ -585,7 +587,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <EntitySet Name="NOTIFICATIONs" EntityType="trackerModel.NOTIFICATION" />
           <EntitySet Name="PAID_STAFF" EntityType="trackerModel.PAID_STAFF" />
           <EntitySet Name="PAY_PERIOD" EntityType="trackerModel.PAY_PERIOD" />
-          <EntitySet Name="PTO_REQUEST" EntityType="trackerModel.PTO_REQUEST" />
           <EntitySet Name="TIME_SHEET" EntityType="trackerModel.TIME_SHEET" />
           <EntitySet Name="UNIT_DIRECTOR" EntityType="trackerModel.UNIT_DIRECTOR" />
           <EntitySet Name="USERs" EntityType="trackerModel.USER" />
@@ -612,14 +613,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <AssociationSet Name="FK__TIME_SHEE__pay_p__1EA48E88" Association="trackerModel.FK__TIME_SHEE__pay_p__1EA48E88">
             <End Role="PAY_PERIOD" EntitySet="PAY_PERIOD" />
             <End Role="TIME_SHEET" EntitySet="TIME_SHEET" />
-          </AssociationSet>
-          <AssociationSet Name="FK__PTO_REQUE__appro__3587F3E0" Association="trackerModel.FK__PTO_REQUE__appro__3587F3E0">
-            <End Role="USER" EntitySet="USERs" />
-            <End Role="PTO_REQUEST" EntitySet="PTO_REQUEST" />
-          </AssociationSet>
-          <AssociationSet Name="requested_by" Association="trackerModel.requested_by">
-            <End Role="USER" EntitySet="USERs" />
-            <End Role="PTO_REQUEST" EntitySet="PTO_REQUEST" />
           </AssociationSet>
           <AssociationSet Name="approved_by" Association="trackerModel.approved_by">
             <End Role="USER" EntitySet="USERs" />
@@ -654,6 +647,15 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <AssociationSet Name="FK_TIME_SHEET_ENTRY_USER" Association="trackerModel.FK_TIME_SHEET_ENTRY_USER">
             <End Role="USER" EntitySet="USERs" />
             <End Role="TIME_SHEET_ENTRY" EntitySet="TIME_SHEET_ENTRY" />
+          </AssociationSet>
+          <EntitySet Name="PTO_REQUEST" EntityType="trackerModel.PTO_REQUEST" />
+          <AssociationSet Name="FK__PTO_REQUE__appro__3587F3E0" Association="trackerModel.FK__PTO_REQUE__appro__3587F3E0">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="PTO_REQUEST" EntitySet="PTO_REQUEST" />
+          </AssociationSet>
+          <AssociationSet Name="requested_by" Association="trackerModel.requested_by">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="PTO_REQUEST" EntitySet="PTO_REQUEST" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="LOCATION">
@@ -707,21 +709,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="created_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TIME_SHEET" Relationship="trackerModel.FK__TIME_SHEE__pay_p__1EA48E88" FromRole="PAY_PERIOD" ToRole="TIME_SHEET" />
-        </EntityType>
-        <EntityType Name="PTO_REQUEST">
-          <Key>
-            <PropertyRef Name="requestID" />
-          </Key>
-          <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="requested_by" Type="Int32" Nullable="false" />
-          <Property Name="total_time_requested" Type="Double" />
-          <Property Name="requested_on" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="approved" Type="Boolean" Nullable="false" />
-          <Property Name="approved_on" Type="DateTime" Precision="0" />
-          <Property Name="approved_by" Type="Int32" />
-          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="USER" Relationship="trackerModel.FK__PTO_REQUE__appro__3587F3E0" FromRole="PTO_REQUEST" ToRole="USER" />
-          <NavigationProperty Name="USER1" Relationship="trackerModel.requested_by" FromRole="PTO_REQUEST" ToRole="USER" />
         </EntityType>
         <EntityType Name="TIME_SHEET">
           <Key>
@@ -781,8 +768,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="NOTIFICATIONs" Relationship="trackerModel.user_recipient" FromRole="USER" ToRole="NOTIFICATION" />
           <NavigationProperty Name="NOTIFICATIONs1" Relationship="trackerModel.user_sender" FromRole="USER" ToRole="NOTIFICATION" />
           <NavigationProperty Name="PAID_STAFF" Relationship="trackerModel.emplID" FromRole="USER" ToRole="PAID_STAFF" />
-          <NavigationProperty Name="PTO_REQUEST" Relationship="trackerModel.FK__PTO_REQUE__appro__3587F3E0" FromRole="USER" ToRole="PTO_REQUEST" />
-          <NavigationProperty Name="PTO_REQUEST1" Relationship="trackerModel.requested_by" FromRole="USER" ToRole="PTO_REQUEST" />
           <NavigationProperty Name="TIME_SHEET" Relationship="trackerModel.approved_by" FromRole="USER" ToRole="TIME_SHEET" />
           <NavigationProperty Name="TIME_SHEET1" Relationship="trackerModel.employee" FromRole="USER" ToRole="TIME_SHEET" />
           <NavigationProperty Name="UNIT_DIRECTOR" Relationship="trackerModel.FK__UNIT_DIRE__emplI__498EEC8D" FromRole="USER" ToRole="UNIT_DIRECTOR" />
@@ -791,6 +776,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <NavigationProperty Name="VOLUNTEER" Relationship="trackerModel.volID" FromRole="USER" ToRole="VOLUNTEER" />
           <NavigationProperty Name="LOGIN" Relationship="trackerModel.FK_LOGIN_USER" FromRole="USER" ToRole="LOGIN" />
           <NavigationProperty Name="TIME_SHEET_ENTRY" Relationship="trackerModel.FK_TIME_SHEET_ENTRY_USER" FromRole="USER" ToRole="TIME_SHEET_ENTRY" />
+          <NavigationProperty Name="PTO_REQUEST" Relationship="trackerModel.FK__PTO_REQUE__appro__3587F3E0" FromRole="USER" ToRole="PTO_REQUEST" />
+          <NavigationProperty Name="PTO_REQUEST1" Relationship="trackerModel.requested_by" FromRole="USER" ToRole="PTO_REQUEST" />
         </EntityType>
         <EntityType Name="VOLUNTEER">
           <Key>
@@ -823,7 +810,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="created_by" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="updated_on" Type="DateTime" Precision="0" />
-          <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="updated_by" Type="String" />
           <Property Name="manager" Type="Int32" />
           <Property Name="location" Type="Int32" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
@@ -856,7 +843,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="created_by" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="updated_on" Type="DateTime" Precision="0" />
-          <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="updated_by" Type="String" />
           <Property Name="manager" Type="Int32" />
           <Property Name="location" Type="Int32" />
           <Property Name="is_administrator" Type="Boolean" Nullable="false" />
@@ -884,7 +871,7 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="created_by" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="updated_on" Type="DateTime" Precision="0" />
-          <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="updated_by" Type="String" />
           <Property Name="manager" Type="Int32" />
           <Property Name="location" Type="Int32" />
           <Property Name="email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
@@ -950,30 +937,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Principal>
             <Dependent Role="TIME_SHEET">
               <PropertyRef Name="pay_period" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__PTO_REQUE__appro__3587F3E0">
-          <End Type="trackerModel.USER" Role="USER" Multiplicity="0..1" />
-          <End Type="trackerModel.PTO_REQUEST" Role="PTO_REQUEST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="USER">
-              <PropertyRef Name="userID" />
-            </Principal>
-            <Dependent Role="PTO_REQUEST">
-              <PropertyRef Name="approved_by" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="requested_by">
-          <End Type="trackerModel.USER" Role="USER" Multiplicity="1" />
-          <End Type="trackerModel.PTO_REQUEST" Role="PTO_REQUEST" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="USER">
-              <PropertyRef Name="userID" />
-            </Principal>
-            <Dependent Role="PTO_REQUEST">
-              <PropertyRef Name="requested_by" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1070,8 +1033,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="hours_worked" Type="Double" />
           <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="clock_in_time" Type="DateTime" Precision="3" />
-          <Property Name="clock_out_time" Type="DateTime" Precision="3" />
+          <Property Name="clock_in_time" Type="DateTime" Precision="7" />
+          <Property Name="clock_out_time" Type="DateTime" Precision="7" />
           <Property Name="is_clocked_in" Type="Boolean" Nullable="false" />
           <Property Name="updated_on" Type="DateTime" Precision="3" />
           <Property Name="updated_by" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
@@ -1105,6 +1068,47 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
             </Principal>
             <Dependent Role="TIME_SHEET_ENTRY">
               <PropertyRef Name="employee" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PTO_REQUEST">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="requested_by" Type="Int32" Nullable="false" />
+          <Property Name="total_time_requested" Type="Double" />
+          <Property Name="requested_on" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="approved" Type="Boolean" Nullable="false" />
+          <Property Name="approved_on" Type="DateTime" Precision="0" />
+          <Property Name="approved_by" Type="Int32" />
+          <Property Name="comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="pto_start" Type="DateTime" Precision="7" />
+          <Property Name="pto_end" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="USER" Relationship="trackerModel.FK__PTO_REQUE__appro__3587F3E0" FromRole="PTO_REQUEST" ToRole="USER" />
+          <NavigationProperty Name="USER1" Relationship="trackerModel.requested_by" FromRole="PTO_REQUEST" ToRole="USER" />
+        </EntityType>
+        <Association Name="FK__PTO_REQUE__appro__3587F3E0">
+          <End Type="trackerModel.USER" Role="USER" Multiplicity="0..1" />
+          <End Type="trackerModel.PTO_REQUEST" Role="PTO_REQUEST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="PTO_REQUEST">
+              <PropertyRef Name="approved_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requested_by">
+          <End Type="trackerModel.USER" Role="USER" Multiplicity="1" />
+          <End Type="trackerModel.PTO_REQUEST" Role="PTO_REQUEST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="PTO_REQUEST">
+              <PropertyRef Name="requested_by" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1162,20 +1166,6 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
                 <ScalarProperty Name="end_date" ColumnName="end_date" />
                 <ScalarProperty Name="start_date" ColumnName="start_date" />
                 <ScalarProperty Name="ppID" ColumnName="ppID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PTO_REQUEST">
-            <EntityTypeMapping TypeName="trackerModel.PTO_REQUEST">
-              <MappingFragment StoreEntitySet="PTO_REQUEST">
-                <ScalarProperty Name="comments" ColumnName="comments" />
-                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
-                <ScalarProperty Name="approved_on" ColumnName="approved_on" />
-                <ScalarProperty Name="approved" ColumnName="approved" />
-                <ScalarProperty Name="requested_on" ColumnName="requested_on" />
-                <ScalarProperty Name="total_time_requested" ColumnName="total_time_requested" />
-                <ScalarProperty Name="requested_by" ColumnName="requested_by" />
-                <ScalarProperty Name="requestID" ColumnName="requestID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1346,6 +1336,22 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
                 <ScalarProperty Name="hours_worked" ColumnName="hours_worked" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="entryID" ColumnName="entryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PTO_REQUEST">
+            <EntityTypeMapping TypeName="trackerModel.PTO_REQUEST">
+              <MappingFragment StoreEntitySet="PTO_REQUEST">
+                <ScalarProperty Name="pto_end" ColumnName="pto_end" />
+                <ScalarProperty Name="pto_start" ColumnName="pto_start" />
+                <ScalarProperty Name="comments" ColumnName="comments" />
+                <ScalarProperty Name="approved_by" ColumnName="approved_by" />
+                <ScalarProperty Name="approved_on" ColumnName="approved_on" />
+                <ScalarProperty Name="approved" ColumnName="approved" />
+                <ScalarProperty Name="requested_on" ColumnName="requested_on" />
+                <ScalarProperty Name="total_time_requested" ColumnName="total_time_requested" />
+                <ScalarProperty Name="requested_by" ColumnName="requested_by" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

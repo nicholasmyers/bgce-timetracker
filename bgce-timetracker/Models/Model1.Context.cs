@@ -29,7 +29,6 @@ namespace bgce_timetracker.Models
         public virtual DbSet<NOTIFICATION> NOTIFICATIONs { get; set; }
         public virtual DbSet<PAID_STAFF> PAID_STAFF { get; set; }
         public virtual DbSet<PAY_PERIOD> PAY_PERIOD { get; set; }
-        public virtual DbSet<PTO_REQUEST> PTO_REQUEST { get; set; }
         public virtual DbSet<TIME_SHEET> TIME_SHEET { get; set; }
         public virtual DbSet<UNIT_DIRECTOR> UNIT_DIRECTOR { get; set; }
         public virtual DbSet<USER> USERs { get; set; }
@@ -39,5 +38,6 @@ namespace bgce_timetracker.Models
         public virtual DbSet<VOLUNTEER_VIEW> VOLUNTEER_VIEW { get; set; }
         public virtual DbSet<LOGIN> LOGINs { get; set; }
         public virtual DbSet<TIME_SHEET_ENTRY> TIME_SHEET_ENTRY { get; set; }
+        public virtual DbSet<PTO_REQUEST> PTO_REQUEST { get; set; }
     }
 }

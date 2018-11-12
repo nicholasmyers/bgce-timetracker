@@ -18,6 +18,12 @@
             @Html.DisplayNameFor(model => model.USER1.lname)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.pto_start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pto_end)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.total_time_requested)
         </th>
         <th>
@@ -44,6 +50,12 @@
             @Html.DisplayFor(modelItem => item.USER1.lname)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.pto_start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pto_end)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.total_time_requested)
         </td>
         <td>
@@ -51,6 +63,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved_on)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.comments)
