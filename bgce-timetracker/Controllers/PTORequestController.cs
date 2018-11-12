@@ -28,6 +28,63 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        // GET: PTORequest/MyRequests
+        public ActionResult MyRequests()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1);
+                return View(pTO_REQUEST.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: PTORequest/Pending
+        public ActionResult Pending()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1).Where(p => p.approved == false);
+                return View(pTO_REQUEST.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: PTORequest/Approve
+        public ActionResult Approve(int? id)
+        {
+            if (Request.IsAuthenticated)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                if (pTO_REQUEST == null)
+                {
+                    return HttpNotFound();
+                } else
+                {
+                    pTO_REQUEST.approved = true;
+                    pTO_REQUEST.approved_by = (int)Session["UserID"];
+                    pTO_REQUEST.approved_on = DateTime.Now;
+                    Edit(pTO_REQUEST);
+
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         // GET: PTORequest/Details/5
         public ActionResult Details(int? id)
         {

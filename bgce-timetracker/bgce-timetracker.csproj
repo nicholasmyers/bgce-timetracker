@@ -380,6 +380,8 @@
     </Content>
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Views\Timesheet\Open.cshtml" />
+    <Content Include="Views\PTORequest\MyRequests.cshtml" />
+    <Content Include="Views\PTORequest\Pending.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
