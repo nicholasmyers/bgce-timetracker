@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Details</h2>
@@ -71,5 +70,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.userID }) |
-    @Html.ActionLink("Back to List", "Index")
+    <a href="javascript:void(0);" onclick="history.go(-1);">Back</a>
 </p>

@@ -17,31 +17,52 @@ namespace bgce_timetracker.Controllers
         // GET: PTORequest
         public ActionResult Index()
         {
-            var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1);
-            return View(pTO_REQUEST.ToList());
+            if (Request.IsAuthenticated)
+            {
+                var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1);
+                return View(pTO_REQUEST.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PTORequest/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                if (pTO_REQUEST == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pTO_REQUEST);
             }
-            PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
-            if (pTO_REQUEST == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pTO_REQUEST);
         }
 
         // GET: PTORequest/Create
         public ActionResult Create()
         {
-            ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname");
-            ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname");
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname");
+                ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: PTORequest/Create
@@ -51,33 +72,47 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments")] PTO_REQUEST pTO_REQUEST)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.PTO_REQUEST.Add(pTO_REQUEST);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    db.PTO_REQUEST.Add(pTO_REQUEST);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
-            ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
-            return View(pTO_REQUEST);
+                ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
+                ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
+                return View(pTO_REQUEST);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PTORequest/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                if (pTO_REQUEST == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
+                ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
+                return View(pTO_REQUEST);
             }
-            PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
-            if (pTO_REQUEST == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
-            ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
-            return View(pTO_REQUEST);
         }
 
         // POST: PTORequest/Edit/5
@@ -87,30 +122,44 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments")] PTO_REQUEST pTO_REQUEST)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(pTO_REQUEST).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pTO_REQUEST).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
+                ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
+                return View(pTO_REQUEST);
             }
-            ViewBag.approved_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.approved_by);
-            ViewBag.requested_by = new SelectList(db.USERs, "userID", "fname", pTO_REQUEST.requested_by);
-            return View(pTO_REQUEST);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PTORequest/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                if (pTO_REQUEST == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pTO_REQUEST);
             }
-            PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
-            if (pTO_REQUEST == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pTO_REQUEST);
         }
 
         // POST: PTORequest/Delete/5
@@ -118,10 +167,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
-            db.PTO_REQUEST.Remove(pTO_REQUEST);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                db.PTO_REQUEST.Remove(pTO_REQUEST);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

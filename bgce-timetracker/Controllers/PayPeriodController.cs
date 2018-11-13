@@ -17,28 +17,49 @@ namespace bgce_timetracker.Controllers
         // GET: PayPeriod
         public ActionResult Index()
         {
-            return View(db.PAY_PERIOD.ToList());
+            if (Request.IsAuthenticated)
+            {
+                return View(db.PAY_PERIOD.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PayPeriod/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
+                if (pAY_PERIOD == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pAY_PERIOD);
             }
-            PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
-            if (pAY_PERIOD == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pAY_PERIOD);
         }
 
         // GET: PayPeriod/Create
         public ActionResult Create()
         {
-            return View();
+            if (Request.IsAuthenticated)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: PayPeriod/Create
@@ -48,29 +69,43 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ppID,start_date,end_date,active,created_on,created_by")] PAY_PERIOD pAY_PERIOD)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.PAY_PERIOD.Add(pAY_PERIOD);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+                if (ModelState.IsValid)
+                {
+                    db.PAY_PERIOD.Add(pAY_PERIOD);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
 
-            return View(pAY_PERIOD);
+                return View(pAY_PERIOD);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PayPeriod/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
+                if (pAY_PERIOD == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pAY_PERIOD);
             }
-            PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
-            if (pAY_PERIOD == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pAY_PERIOD);
         }
 
         // POST: PayPeriod/Edit/5
@@ -80,28 +115,42 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ppID,start_date,end_date,active,created_on,created_by")] PAY_PERIOD pAY_PERIOD)
         {
-            if (ModelState.IsValid)
+            if (Request.IsAuthenticated)
             {
-                db.Entry(pAY_PERIOD).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pAY_PERIOD).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                return View(pAY_PERIOD);
             }
-            return View(pAY_PERIOD);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // GET: PayPeriod/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (Request.IsAuthenticated)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
+                if (pAY_PERIOD == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(pAY_PERIOD);
             }
-            PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
-            if (pAY_PERIOD == null)
+            else
             {
-                return HttpNotFound();
+                return RedirectToAction("Index", "Home");
             }
-            return View(pAY_PERIOD);
         }
 
         // POST: PayPeriod/Delete/5
@@ -109,10 +158,17 @@ namespace bgce_timetracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
-            db.PAY_PERIOD.Remove(pAY_PERIOD);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (Request.IsAuthenticated)
+            {
+                PAY_PERIOD pAY_PERIOD = db.PAY_PERIOD.Find(id);
+                db.PAY_PERIOD.Remove(pAY_PERIOD);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         protected override void Dispose(bool disposing)

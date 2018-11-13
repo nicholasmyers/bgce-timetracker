@@ -1,23 +1,23 @@
 ﻿@model IEnumerable<bgce_timetracker.Models.USER>
 
 @{
-    ViewBag.Title = "Users";
+    ViewBag.Title = "UserPortal";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Users</h2>
-<form action= "/users/create">
+<h2>UserPortal</h2>
+
+<form action="/users/create">
     <input type="submit" value="Create New User" style="float:right;">
 </form>
 <form action="/Logins/create">
     <input type="submit" value="Create New Login" style="float:right;">
 </form>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LOGIN.username)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.fname)
         </th>
@@ -51,8 +51,12 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.LOGIN.username)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.fname)
         </td>
@@ -85,9 +89,15 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.userID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.userID })
+            @Html.ActionLink("Details", "Details", new { id = item.userID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.userID })
         </td>
     </tr>
-}
+
+
+
+
+
+    }
 
 </table>

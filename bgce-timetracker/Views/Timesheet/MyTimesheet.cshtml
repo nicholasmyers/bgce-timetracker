@@ -1,22 +1,13 @@
 ﻿@model IEnumerable<bgce_timetracker.Models.TIME_SHEET>
 
 @{
-    ViewBag.Title = "Timesheets";
+    ViewBag.Title = "My Timesheet";
 }
 
-<h2>Timesheets</h2>
+<h2>My Timesheets</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.USER1.fname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USER1.lname)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.submitted)
         </th>
@@ -53,14 +44,9 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model.Where(item => item.employee == (int)Session["userID"]))
+    {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.USER1.fname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USER1.lname)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.submitted)
         </td>
@@ -95,10 +81,9 @@
             @Html.DisplayFor(modelItem => item.created_on)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.timesheetID }) |
             @Html.ActionLink("Details", "Details", new { id = item.timesheetID })
         </td>
     </tr>
-}
+    }
 
 </table>
