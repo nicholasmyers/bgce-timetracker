@@ -180,20 +180,13 @@
     }
 </table>
 
-@using (Html.BeginForm("Details", "TimeSheet", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" name="answer" value="OnPostExport" class="btn btn-default" />
-        <button asp-page-handler="Export">Export</button>
-    </div>
-</div>
-}
+
+
 <form method="post" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-8" style="padding-top:10px;">
             <button asp-page-handler="Export">Export</button>
-            <input type="submit" name="answer" value="OnPostExport" class="btn btn-default" />
+            
         </div>
     </div>
     <br />

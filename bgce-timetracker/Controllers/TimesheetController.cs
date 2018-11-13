@@ -127,6 +127,7 @@ namespace bgce_timetracker.Controllers
 
                 int j = 1;
                 int timeID = (int)TempData.Peek("id");
+                System.Diagnostics.Debug.WriteLine(timeID);
                 var time = (db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == timeID)).ToList();
                 foreach (var entry in time)
                 {
@@ -134,27 +135,33 @@ namespace bgce_timetracker.Controllers
                     if (entry.date.HasValue)
                     {
                         row.CreateCell(0).SetCellValue(Convert.ToString(entry.date));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
                     }
                     if (entry.clock_in_time.HasValue)
                     {
                         row.CreateCell(1).SetCellValue(Convert.ToString(entry.clock_in_time));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
                     }
                     if (entry.clock_out_time.HasValue)
                     {
                         row.CreateCell(2).SetCellValue(Convert.ToString(entry.clock_out_time));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
                     }
                     row.CreateCell(4).SetCellValue(entry.time_type);
                     if (entry.hours_worked.HasValue)
                     {
                         row.CreateCell(3).SetCellValue(Convert.ToString(entry.hours_worked));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
                     }
                     if (entry.pto_earned.HasValue)
                     {
                         row.CreateCell(6).SetCellValue(Convert.ToString(entry.pto_earned));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
                     }
                     if (entry.overtime_hours_worked.HasValue)
                     {
                         row.CreateCell(5).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
                     }
                     j++;
                 }
