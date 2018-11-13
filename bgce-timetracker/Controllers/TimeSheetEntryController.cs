@@ -82,7 +82,7 @@ namespace bgce_timetracker.Controllers
             int id = (int)TempData["id"];
             TempData.Keep("id");
 
-            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id && timeSheet.active).FirstOrDefault();
             tsid = activeTimeSheet.timesheetID;
 
             var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.time_sheet == tsid && timeSheetEntry.is_clocked_in).FirstOrDefault();
