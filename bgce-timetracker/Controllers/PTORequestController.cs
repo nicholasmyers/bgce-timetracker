@@ -76,7 +76,7 @@ namespace bgce_timetracker.Controllers
                     pTO_REQUEST.approved_on = DateTime.Now;
                     Edit(pTO_REQUEST);
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Pending");
                 }
             }
             else
