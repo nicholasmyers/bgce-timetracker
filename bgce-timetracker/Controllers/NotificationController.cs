@@ -28,6 +28,20 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        // GET: HomepageNotification
+        public ActionResult ManageHomepage()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var nOTIFICATIONs = db.NOTIFICATIONs.Where(n => n.type == "homepage");
+                return View(nOTIFICATIONs.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         // GET: Notification/Details/5
         public ActionResult Details(int? id)
         {
