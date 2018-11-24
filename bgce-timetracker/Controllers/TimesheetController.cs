@@ -181,7 +181,7 @@ namespace bgce_timetracker.Controllers
             }
             using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
             {
-                stream.CopyToAsync(memory);
+                stream.CopyTo(memory);
             }
             memory.Position = 0;
             return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName);
