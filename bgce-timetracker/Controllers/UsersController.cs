@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using bgce_timetracker.Models;
+using bgce_timetracker.Services;
 
 namespace bgce_timetracker.Controllers
 {
@@ -147,6 +148,8 @@ namespace bgce_timetracker.Controllers
                 editorModel.User = db.USERs.Find(id);
                 editorModel.LUser = db.LOGINs.Find(id);
                 editorModel.PUser = db.PAID_STAFF.Find(id);
+                TempData["temp"] = editorModel.LUser.password;
+                TempData.Keep("temp");
                 if (editorModel.User == null)
                 {
                     return HttpNotFound();
@@ -169,13 +172,27 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userID,fname,lname,active,start_date,created_on,created_by,updated_on,updated_by,manager,location,username,email,passwrd,passwrd_last_set,passwrd_expired,passwd_salt,is_administrator,user_type,total_hours_worked")] USER uSER)
+        public ActionResult Edit(EditView myModel)
         {
-            if (Request.IsAuthenticated)
+            USER uSER = myModel.User;
+            //LOGIN LUser = myModel.LUser;
+           
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = myModel.LUser.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+            if (pass.GetHash(myModel.LUser.password,ss) == (string)TempData["temp"])
+            {
+                myModel.LUser.password = pass.GetHash(myModel.LUser.password, ss);
+
+            }
+            PAID_STAFF PUser = myModel.PUser;
+
+           if (Request.IsAuthenticated)
             {
                 if (ModelState.IsValid)
                 {
-                    db.Entry(uSER).State = EntityState.Modified;
+                    db.Entry(myModel.User).State = EntityState.Modified;
+                    db.Entry(myModel.LUser).State = EntityState.Modified;
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -184,11 +201,12 @@ namespace bgce_timetracker.Controllers
                 ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", uSER.userID);
                 ViewBag.manager = new SelectList(db.USERs, "userID", "fname", uSER.manager);
                 ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", uSER.userID);
-                return View(uSER);
+                //myModel.LUser = LUser;
+                return View(myModel);
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+               return RedirectToAction("Index", "Home");
             }
         }
 
@@ -222,6 +240,13 @@ namespace bgce_timetracker.Controllers
             if (Request.IsAuthenticated)
             {
                 USER uSER = db.USERs.Find(id);
+                LOGIN LUser = db.LOGINs.Find(id);
+                PAID_STAFF PUser = db.PAID_STAFF.Find(id);
+                VOLUNTEER VUser = db.VOLUNTEERs.Find(id);
+
+                db.LOGINs.Remove(LUser);
+                if(PUser != null)db.PAID_STAFF.Remove(PUser);
+                if(VUser != null)db.VOLUNTEERs.Remove(VUser);
                 db.USERs.Remove(uSER);
                 db.SaveChanges();
                 return RedirectToAction("Index");
