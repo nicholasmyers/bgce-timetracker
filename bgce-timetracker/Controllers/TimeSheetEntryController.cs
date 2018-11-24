@@ -52,24 +52,30 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult punch()
+        public ActionResult punch(bgce_timetracker.Models.LOGIN loginModel)
         {
             int id = (int)Session["UserID"];
             TempData["id"] = id;
             bool isClockedIn = db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
 
-            if (!isClockedIn)
+            if (!isClockedIn) //if the user is not clocked in, clock them in and display a confirmation message telling them they clocked in successfully.
             {
-                clockUserIn();
+                if (clockUserIn())
+                {
+                    loginModel.punchStatusConfirmation = "Successfully clocked in.";
+                }
             }
-            else {
-                clockUserOut();
+            else{ //if the user is clocked in, clock them out and display a confirmation message telling them they clocked out successfully.
+                if (clockUserOut()) 
+                {
+                    loginModel.punchStatusConfirmation = "Successfully clocked out.";
+                }
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("punchConfirmation", "Logins", loginModel);
         }
 
-        public void clockUserIn()
+        public bool clockUserIn()
         {
             TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
 
@@ -88,9 +94,10 @@ namespace bgce_timetracker.Controllers
             timeSheetEntry.time_type = timeType;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
+            return true;
         }
 
-        public void clockUserOut() {
+        public bool clockUserOut() {
             int tsid;
 
             int id = (int)TempData["id"];
@@ -105,6 +112,7 @@ namespace bgce_timetracker.Controllers
             activeTimeSheetEntry.clock_out_time = DateTime.Now;
             db.Entry(activeTimeSheetEntry).State = EntityState.Modified;
             db.SaveChanges();
+            return true;
         }
 
         // POST: TimeSheetEntry/Create
