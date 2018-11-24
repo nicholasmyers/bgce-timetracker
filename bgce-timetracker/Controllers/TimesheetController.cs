@@ -166,17 +166,6 @@ namespace bgce_timetracker.Controllers
                     j++;
                 }
 
-                row = excelSheet.CreateRow(15);
-                row.CreateCell(0).SetCellValue("12/31");
-                row.CreateCell(1).SetCellValue("10am");
-                row.CreateCell(2).SetCellValue("10pm");
-                row.CreateCell(3).SetCellValue("12");
-                row.CreateCell(4).SetCellValue("4");
-                row.CreateCell(5).SetCellValue(".03");
-                row.CreateCell(6).SetCellValue("test");
-                row.CreateCell(7).SetCellValue("test2");
-
-
                 workbook.Write(fs);
             }
             using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
