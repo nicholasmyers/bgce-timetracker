@@ -28,6 +28,15 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        public ActionResult Editor(int id)
+        {
+            var editorModel = new EditView();
+            editorModel.User = db.USERs.Find(id);
+            editorModel.LUser = db.LOGINs.Find(id);
+            editorModel.PUser = db.PAID_STAFF.Find(id);
+            return View(editorModel);
+        }
+
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -126,23 +135,28 @@ namespace bgce_timetracker.Controllers
         // GET: Users/Edit/5
         public ActionResult Edit(int? id)
         {
+            var editorModel = new EditView();
+           
             if (Request.IsAuthenticated)
             {
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                USER uSER = db.USERs.Find(id);
-                if (uSER == null)
+                //USER uSER = db.USERs.Find(id);
+                editorModel.User = db.USERs.Find(id);
+                editorModel.LUser = db.LOGINs.Find(id);
+                editorModel.PUser = db.PAID_STAFF.Find(id);
+                if (editorModel.User == null)
                 {
                     return HttpNotFound();
                 }
-                ViewBag.location = new SelectList(db.LOCATIONs, "locationID", "name", uSER.location);
-                ViewBag.userID = new SelectList(db.PAID_STAFF, "emplID", "pay_schedule", uSER.userID);
-                ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", uSER.userID);
-                ViewBag.manager = new SelectList(db.USERs, "userID", "fname", uSER.manager);
-                ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", uSER.userID);
-                return View(uSER);
+                ViewBag.location = new SelectList(db.LOCATIONs, "locationID", "name", editorModel.User.location);
+                ViewBag.userID = new SelectList(db.PAID_STAFF, "emplID", "pay_schedule", editorModel.User.userID);
+                ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", editorModel.User.userID);
+                ViewBag.manager = new SelectList(db.USERs, "userID", "fname", editorModel.User.manager);
+                ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", editorModel.User.userID);
+                return View(editorModel);
             }
             else
             {
