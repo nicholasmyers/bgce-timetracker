@@ -118,7 +118,7 @@ namespace bgce_timetracker.Controllers
                             }
                             else {
                                 Session["UserID"] = item.userID;
-                                return RedirectToAction("punch", "TimeSheetEntry");       
+                                return RedirectToAction("punch", "TimeSheetEntry", userModel);       
 
                             }
                         }
@@ -128,6 +128,10 @@ namespace bgce_timetracker.Controllers
 
             }
                 
+        }
+
+        public ActionResult punchConfirmation(bgce_timetracker.Models.LOGIN loginModel) {
+            return View("Authorize", loginModel);
         }
 
         // GET: Logins/Details/5
