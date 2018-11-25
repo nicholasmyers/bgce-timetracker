@@ -191,6 +191,7 @@ namespace bgce_timetracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                   
                     db.Entry(myModel.User).State = EntityState.Modified;
                     db.Entry(myModel.LUser).State = EntityState.Modified;
                     if(myModel.PUser != null)db.Entry(myModel.PUser).State = EntityState.Modified;
