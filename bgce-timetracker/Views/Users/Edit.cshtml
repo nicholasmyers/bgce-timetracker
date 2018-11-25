@@ -138,6 +138,7 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.User.user_type, htmlAttributes: new { @class = "control-label col-md-2"})
         @Html.DisplayFor(model => model.User.user_type, new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @{
@@ -176,7 +177,7 @@
             @Html.ValidationMessageFor(model => model.User.total_hours_worked, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    @Html.HiddenFor(model => model.User.can_work_foodservice)
     <h4>PAID STAFF</h4>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.PUser.emplID)

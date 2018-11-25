@@ -185,7 +185,7 @@ namespace bgce_timetracker.Controllers
                 myModel.LUser.password = pass.GetHash(myModel.LUser.password, ss);
 
             }
-            PAID_STAFF PUser = myModel.PUser;
+            //PAID_STAFF PUser = myModel.PUser;
 
            if (Request.IsAuthenticated)
             {
@@ -193,6 +193,8 @@ namespace bgce_timetracker.Controllers
                 {
                     db.Entry(myModel.User).State = EntityState.Modified;
                     db.Entry(myModel.LUser).State = EntityState.Modified;
+                    if(myModel.PUser != null)db.Entry(myModel.PUser).State = EntityState.Modified;
+
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
