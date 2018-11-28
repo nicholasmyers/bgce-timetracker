@@ -85,7 +85,7 @@ namespace bgce_timetracker.Controllers
             var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
             var user = db.USERs.Where(employee => employee.userID == id).FirstOrDefault();
             var timeType = "paid";
-            timeSheetEntry.employee = activeTimeSheet.employee;
+            timeSheetEntry.employee = id;
 
             //check if the user is clocking in as food service, if so set their time type to food service.
             var isFoodService = TempData["isFoodService"];
