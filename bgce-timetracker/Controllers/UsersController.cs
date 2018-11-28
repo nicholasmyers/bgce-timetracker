@@ -139,8 +139,7 @@ namespace bgce_timetracker.Controllers
                 editorModel.User = db.USERs.Find(id);
                 editorModel.LUser = db.LOGINs.Find(id);
                 editorModel.PUser = db.PAID_STAFF.Find(id);
-                TempData["temp"] = editorModel.LUser.password;
-                TempData.Keep("temp");
+               
                 if (editorModel.User == null)
                 {
                     return HttpNotFound();
@@ -173,11 +172,31 @@ namespace bgce_timetracker.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                   
+                   if(myModel.User.user_type != "Volunteer" && myModel.PUser == null)
+                    {
+                        ViewBag.location = new SelectList(db.LOCATIONs, "locationID", "name", uSER.location);
+                        ViewBag.userID = new SelectList(db.PAID_STAFF, "emplID", "pay_schedule", uSER.userID);
+                        ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", uSER.userID);
+                        ViewBag.manager = new SelectList(db.USERs, "userID", "fname", uSER.manager);
+                        ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", uSER.userID);
+
+                        PAID_STAFF newPaid = new PAID_STAFF();
+                        newPaid.emplID = myModel.User.userID;
+                        db.PAID_STAFF.Add(newPaid);
+                        myModel.PUser = newPaid;
+                        db.SaveChanges();
+                        return View(myModel);
+                    }
+
                     db.Entry(myModel.User).State = EntityState.Modified;
                     db.Entry(myModel.LUser).State = EntityState.Modified;
                     if(myModel.PUser != null)db.Entry(myModel.PUser).State = EntityState.Modified;
 
+                    if (myModel.User.user_type == "Volunteer" && myModel.PUser != null)
+                    {
+                        PAID_STAFF old = db.PAID_STAFF.Find(myModel.PUser.emplID);
+                        db.PAID_STAFF.Remove(old);
+                    }
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -186,7 +205,7 @@ namespace bgce_timetracker.Controllers
                 ViewBag.userID = new SelectList(db.UNIT_DIRECTOR, "emplID", "emplID", uSER.userID);
                 ViewBag.manager = new SelectList(db.USERs, "userID", "fname", uSER.manager);
                 ViewBag.userID = new SelectList(db.VOLUNTEERs, "volID", "volID", uSER.userID);
-                //myModel.LUser = LUser;
+                
                 return View(myModel);
             }
             else
