@@ -51,28 +51,33 @@ namespace bgce_timetracker.Controllers
             }
         }
 
-        // GET: TimeSheetEntry/Create
+        private bool isClockedIn() {
+            int id = (int)Session["UserID"];
+            return db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
+        }
+
+        private bgce_timetracker.Models.TIME_SHEET getActiveTimeSheet() {
+            int id = (int)Session["UserID"];
+            return db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id && timeSheet.active).FirstOrDefault();
+        }
+
+
         public ActionResult punch(bgce_timetracker.Models.LOGIN loginModel)
         {
             int id = (int)Session["UserID"];
             TempData["id"] = id;
-            bool isClockedIn = db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
 
-            if (Request.IsAuthenticated)
+            if (!isClockedIn()) //if the user is not clocked in, clock them in and display a confirmation message telling them they clocked in successfully.
             {
-                if (!isClockedIn) //if the user is not clocked in, clock them in and display a confirmation message telling them they clocked in successfully.
+                if (clockUserIn())
                 {
-                    if (clockUserIn())
-                    {
-                        loginModel.punchStatusConfirmation = "Successfully clocked in.";
-                    }
+                    loginModel.punchStatusConfirmation = "Successfully clocked in.";
                 }
-                else
-                { //if the user is clocked in, clock them out and display a confirmation message telling them they clocked out successfully.
-                    if (clockUserOut())
-                    {
-                        loginModel.punchStatusConfirmation = "Successfully clocked out.";
-                    }
+            }
+            else{ //if the user is clocked in, clock them out and display a confirmation message telling them they clocked out successfully.
+                if (clockUserOut()) 
+                {
+                    loginModel.punchStatusConfirmation = "Successfully clocked out.";
                 }
             }
 
@@ -86,16 +91,10 @@ namespace bgce_timetracker.Controllers
             int id = (int) TempData["id"];
             TempData.Keep("id");
 
-            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            var activeTimeSheet = getActiveTimeSheet();
             var user = db.USERs.Where(employee => employee.userID == id).FirstOrDefault();
-            var timeType = "paid";
-            timeSheetEntry.employee = id;
-
-            //check if the user is clocking in as food service, if so set their time type to food service.
-            var isFoodService = TempData["isFoodService"];
-            if (isFoodService.Equals("True")) {
-                timeType = "food";
-            }
+            var timeType = user.user_type;
+            timeSheetEntry.employee = activeTimeSheet.employee;
             
             timeSheetEntry.clock_in_time = System.DateTime.Now;
             timeSheetEntry.date = System.DateTime.Now;
@@ -123,6 +122,20 @@ namespace bgce_timetracker.Controllers
             db.Entry(activeTimeSheetEntry).State = EntityState.Modified;
             db.SaveChanges();
             return true;
+        }
+        // GET: TimeSheetEntry/Create
+        public ActionResult Create()
+        {
+            int id = (int)Session["UserID"];
+            if (Request.IsAuthenticated)
+            {
+                ViewBag.time_sheet = new SelectList(db.TIME_SHEET, "timesheetID", "comments");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // POST: TimeSheetEntry/Create
