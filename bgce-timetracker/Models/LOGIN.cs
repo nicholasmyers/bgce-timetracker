@@ -41,6 +41,8 @@ namespace bgce_timetracker.Models
         public bool is_password_expired { get; set; }
 
         public string LoginErrorMessage { get; set; }
+
+        public string punchStatusConfirmation { get; set; }
     
         public virtual USER USER { get; set; }
     }

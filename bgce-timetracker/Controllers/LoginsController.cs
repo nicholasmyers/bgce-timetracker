@@ -156,9 +156,17 @@ namespace bgce_timetracker.Controllers
                                 HttpContext.GetOwinContext().Authentication.SignIn(identity);
                                 return RedirectToAction("Index", "Home");
                             }
+                            else if (answer.Equals("Punch in/out"))
+                            {
+                                Session["UserID"] = item.userID;
+                                TempData["isFoodService"] = "False";
+                                return RedirectToAction("punch", "TimeSheetEntry", userModel);
+
+                            }
                             else {
                                 Session["UserID"] = item.userID;
-                                return RedirectToAction("clockIn", "TimeSheetEntry");       
+                                TempData["isFoodService"] = "True";
+                                return RedirectToAction("punch", "TimeSheetEntry", userModel);
                             }
                         }
                 }
@@ -167,6 +175,10 @@ namespace bgce_timetracker.Controllers
 
             }
                 
+        }
+
+        public ActionResult punchConfirmation(bgce_timetracker.Models.LOGIN loginModel) {
+            return View("Authorize", loginModel);
         }
 
         // GET: Logins/Details/5
