@@ -70,7 +70,47 @@ namespace bgce_timetracker.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-        } 
+        }
+        public ActionResult AdminChangePassword(int id)
+        {
+            TempData["User"] = id;
+            return View();//user);
+        }
+        [HttpPost]
+        public ActionResult AdminChangePassword(ChangePasswordViewModel ChangePassModel)
+        {
+            int id = (int)TempData["User"];
+            var user = db.LOGINs.Where(x => x.userID == id).FirstOrDefault();
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = user.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+
+            user.password = pass.GetHash(ChangePassModel.NewPassword, ss);
+            db.SaveChanges();
+            
+            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("UserPortal", "Users");
+        }
+        
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(bgce_timetracker.Models.ChangePasswordViewModel ChangePassModel)
+        {
+            int id = (int)Session["userID"];
+            var user = db.LOGINs.Where(x => x.userID == id).FirstOrDefault();
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = user.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+            if (user.password == pass.GetHash(ChangePassModel.OldPassword, ss))//if the oldpassword matches the existing, update using NewPassword
+            {
+                user.password = pass.GetHash(ChangePassModel.NewPassword, ss);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
         public ActionResult Authorize()
         {
             return View();
