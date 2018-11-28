@@ -135,9 +135,14 @@ namespace bgce_timetracker.Controllers
                 {
                         string userSaltString = item.password_salt;
                         ss = Convert.FromBase64String(userSaltString);
-                    //check the getbytes method used in the creation and login parts. make it consistant **PasswordHash.cs
-                    //pass.GetHash(item.password, ss);
-                        if(item.password == pass.GetHash(userModel.password,ss) && item.password != null)
+                        //check the getbytes method used in the creation and login parts. make it consistant **PasswordHash.cs
+                        //pass.GetHash(item.password, ss);
+                        String password = userModel.password;
+                        if (password == null) {
+                            return View("Authorize", userModel);
+                        }
+
+                        if(item.password == pass.GetHash(userModel.password,ss))
                         {
                             if (answer.Equals("Log in"))
                             {
