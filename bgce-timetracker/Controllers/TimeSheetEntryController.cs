@@ -57,9 +57,6 @@ namespace bgce_timetracker.Controllers
             int id = (int)Session["UserID"];
             TempData["id"] = id;
             bool isClockedIn = db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
-
-            if (Request.IsAuthenticated)
-            {
                 if (!isClockedIn) //if the user is not clocked in, clock them in and display a confirmation message telling them they clocked in successfully.
                 {
                     if (clockUserIn())
@@ -74,7 +71,6 @@ namespace bgce_timetracker.Controllers
                         loginModel.punchStatusConfirmation = "Successfully clocked out.";
                     }
                 }
-            }
 
             return RedirectToAction("punchConfirmation", "Logins", loginModel);
         }
