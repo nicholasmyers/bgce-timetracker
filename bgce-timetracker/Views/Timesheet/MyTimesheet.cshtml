@@ -39,12 +39,15 @@
             @Html.DisplayNameFor(model => model.total_unpaid_time)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.pay_earned)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.created_on)
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Where(item => item.employee == (int)Session["userID"]))
+    @foreach (var item in Model.Where(item =>  item.employee == (int)Session["userID"]))
     {
     <tr>
         <td>
@@ -76,6 +79,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.total_unpaid_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pay_earned)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.created_on)
