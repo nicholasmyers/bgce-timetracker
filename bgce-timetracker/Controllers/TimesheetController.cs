@@ -87,6 +87,9 @@ namespace bgce_timetracker.Controllers
                 ISheet excelSheet = workbook.CreateSheet("Test");
                 IRow row = excelSheet.CreateRow(0);
                 int x=0;
+                row.CreateCell(x++).SetCellValue("Employee ID");
+                row.CreateCell(x++).SetCellValue("Last Name");
+                row.CreateCell(x++).SetCellValue("First Name");
                 row.CreateCell(x++).SetCellValue("Date");
                 row.CreateCell(x++).SetCellValue("Clock In Time");
                 row.CreateCell(x++).SetCellValue("Clock Out Time");
@@ -106,11 +109,16 @@ namespace bgce_timetracker.Controllers
                     {
                         ID -= 1;
                     }
+                    var fname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.fname).FirstOrDefault();
+                    var lname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.lname).FirstOrDefault();
                     var time = db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == ID).ToList();
                     foreach (var entry in time)
                     {
                         row = excelSheet.CreateRow(j);
                         int i = 0;
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(lname));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(fname));
                         if (entry.date.HasValue)
                         {
                             row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
