@@ -71,6 +71,27 @@ namespace bgce_timetracker.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
+        public ActionResult AdminChangePassword(int id)
+        {
+            TempData["User"] = id;
+            return View();//user);
+        }
+        [HttpPost]
+        public ActionResult AdminChangePassword(ChangePasswordViewModel ChangePassModel)
+        {
+            int id = (int)TempData["User"];
+            var user = db.LOGINs.Where(x => x.userID == id).FirstOrDefault();
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = user.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+
+            user.password = pass.GetHash(ChangePassModel.NewPassword, ss);
+            db.SaveChanges();
+            
+            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("UserPortal", "Users");
+        }
+        
         public ActionResult ChangePassword()
         {
             return View();

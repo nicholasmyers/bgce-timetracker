@@ -29,15 +29,6 @@ namespace bgce_timetracker.Controllers
             }
         }
 
-        public ActionResult Editor(int id)
-        {
-            var editorModel = new EditView();
-            editorModel.User = db.USERs.Find(id);
-            editorModel.LUser = db.LOGINs.Find(id);
-            editorModel.PUser = db.PAID_STAFF.Find(id);
-            return View(editorModel);
-        }
-
         // GET: Users/Details/5
         public ActionResult Details(int? id)
         {
@@ -176,15 +167,6 @@ namespace bgce_timetracker.Controllers
         {
             USER uSER = myModel.User;
             //LOGIN LUser = myModel.LUser;
-           
-            PasswordHash pass = new PasswordHash();
-            string userSaltString = myModel.LUser.password_salt;
-            byte[] ss = Convert.FromBase64String(userSaltString);
-            if (pass.GetHash(myModel.LUser.password,ss) == (string)TempData["temp"])
-            {
-                myModel.LUser.password = pass.GetHash(myModel.LUser.password, ss);
-
-            }
             //PAID_STAFF PUser = myModel.PUser;
 
            if (Request.IsAuthenticated)
