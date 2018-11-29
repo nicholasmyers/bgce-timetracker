@@ -52,46 +52,73 @@ namespace bgce_timetracker.Controllers
         }
 
         // GET: TimeSheetEntry/Create
-        public ActionResult clockIn()
+        public ActionResult punch(bgce_timetracker.Models.LOGIN loginModel)
         {
             int id = (int)Session["UserID"];
-            var activeTimeSheet = db.TIME_SHEET.Where(x => x.employee == id).ToList();
-
-            clockUserIn(activeTimeSheet);
-            
-            if (isClockedIn(activeTimeSheet)){
-                clockUserOut(activeTimeSheet);
-            }
-             return RedirectToAction("Index", "Home");
-        }
-
-        public bool isClockedIn(List<TIME_SHEET> activeTimeSheet) {
-            bool clockedIn = false;
-            foreach (var item in activeTimeSheet) {
-                if (item.active) {
-                    clockedIn = true;
+            TempData["id"] = id;
+            bool isClockedIn = db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
+                if (!isClockedIn) //if the user is not clocked in, clock them in and display a confirmation message telling them they clocked in successfully.
+                {
+                    if (clockUserIn())
+                    {
+                        loginModel.punchStatusConfirmation = "Successfully clocked in.";
+                    }
                 }
-            }
-            return clockedIn;
+                else
+                { //if the user is clocked in, clock them out and display a confirmation message telling them they clocked out successfully.
+                    if (clockUserOut())
+                    {
+                        loginModel.punchStatusConfirmation = "Successfully clocked out.";
+                    }
+                }
+
+            return RedirectToAction("punchConfirmation", "Logins", loginModel);
         }
 
-        public void clockUserIn(List<TIME_SHEET> activeTimeSheet)
+        public bool clockUserIn()
         {
             TIME_SHEET_ENTRY timeSheetEntry = new TIME_SHEET_ENTRY();
-            foreach (var item in activeTimeSheet)
-            {
-                timeSheetEntry.employee = item.employee;
+
+            int id = (int) TempData["id"];
+            TempData.Keep("id");
+
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id).FirstOrDefault();
+            var user = db.USERs.Where(employee => employee.userID == id).FirstOrDefault();
+            var timeType = "paid";
+            timeSheetEntry.employee = id;
+
+            //check if the user is clocking in as food service, if so set their time type to food service.
+            var isFoodService = TempData["isFoodService"];
+            if (isFoodService.Equals("True")) {
+                timeType = "food";
             }
+            
             timeSheetEntry.clock_in_time = System.DateTime.Now;
             timeSheetEntry.date = System.DateTime.Now;
             timeSheetEntry.created_on = System.DateTime.Now;
             timeSheetEntry.is_clocked_in = true;
+            timeSheetEntry.time_type = timeType;
             db.TIME_SHEET_ENTRY.Add(timeSheetEntry);
             db.SaveChanges();
+            return true;
         }
 
-        public void clockUserOut(List<TIME_SHEET> activeTimeSheet) {
+        public bool clockUserOut() {
+            int tsid;
 
+            int id = (int)TempData["id"];
+            TempData.Keep("id");
+
+            var activeTimeSheet = db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id && timeSheet.active).FirstOrDefault();
+            tsid = activeTimeSheet.timesheetID;
+
+            var activeTimeSheetEntry = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.time_sheet == tsid && timeSheetEntry.is_clocked_in).FirstOrDefault();
+
+            activeTimeSheetEntry.is_clocked_in = false;
+            activeTimeSheetEntry.clock_out_time = DateTime.Now;
+            db.Entry(activeTimeSheetEntry).State = EntityState.Modified;
+            db.SaveChanges();
+            return true;
         }
 
         // POST: TimeSheetEntry/Create

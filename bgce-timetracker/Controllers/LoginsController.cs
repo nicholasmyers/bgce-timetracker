@@ -70,7 +70,47 @@ namespace bgce_timetracker.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-        } 
+        }
+        public ActionResult AdminChangePassword(int id)
+        {
+            TempData["User"] = id;
+            return View();//user);
+        }
+        [HttpPost]
+        public ActionResult AdminChangePassword(ChangePasswordViewModel ChangePassModel)
+        {
+            int id = (int)TempData["User"];
+            var user = db.LOGINs.Where(x => x.userID == id).FirstOrDefault();
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = user.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+
+            user.password = pass.GetHash(ChangePassModel.NewPassword, ss);
+            db.SaveChanges();
+            
+            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("UserPortal", "Users");
+        }
+        
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(bgce_timetracker.Models.ChangePasswordViewModel ChangePassModel)
+        {
+            int id = (int)Session["userID"];
+            var user = db.LOGINs.Where(x => x.userID == id).FirstOrDefault();
+            PasswordHash pass = new PasswordHash();
+            string userSaltString = user.password_salt;
+            byte[] ss = Convert.FromBase64String(userSaltString);
+            if (user.password == pass.GetHash(ChangePassModel.OldPassword, ss))//if the oldpassword matches the existing, update using NewPassword
+            {
+                user.password = pass.GetHash(ChangePassModel.NewPassword, ss);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
         public ActionResult Authorize()
         {
             return View();
@@ -95,8 +135,13 @@ namespace bgce_timetracker.Controllers
                 {
                         string userSaltString = item.password_salt;
                         ss = Convert.FromBase64String(userSaltString);
-                    //check the getbytes method used in the creation and login parts. make it consistant **PasswordHash.cs
-                    //pass.GetHash(item.password, ss);
+                        //check the getbytes method used in the creation and login parts. make it consistant **PasswordHash.cs
+                        //pass.GetHash(item.password, ss);
+                        String password = userModel.password;
+                        if (password == null) {
+                            return View("Authorize", userModel);
+                        }
+
                         if(item.password == pass.GetHash(userModel.password,ss))
                         {
                             if (answer.Equals("Log in"))
@@ -116,9 +161,17 @@ namespace bgce_timetracker.Controllers
                                 HttpContext.GetOwinContext().Authentication.SignIn(identity);
                                 return RedirectToAction("Index", "Home");
                             }
+                            else if (answer.Equals("Punch in/out"))
+                            {
+                                Session["UserID"] = item.userID;
+                                TempData["isFoodService"] = "False";
+                                return RedirectToAction("punch", "TimeSheetEntry", userModel);
+
+                            }
                             else {
                                 Session["UserID"] = item.userID;
-                                return RedirectToAction("clockIn", "TimeSheetEntry");       
+                                TempData["isFoodService"] = "True";
+                                return RedirectToAction("punch", "TimeSheetEntry", userModel);
                             }
                         }
                 }
@@ -127,6 +180,10 @@ namespace bgce_timetracker.Controllers
 
             }
                 
+        }
+
+        public ActionResult punchConfirmation(bgce_timetracker.Models.LOGIN loginModel) {
+            return View("Authorize", loginModel);
         }
 
         // GET: Logins/Details/5

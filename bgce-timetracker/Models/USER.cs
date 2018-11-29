@@ -13,6 +13,12 @@ namespace bgce_timetracker.Models
     using System.Collections.Generic;
     using System.ComponentModel;
 
+       public class EditView
+    {
+        public USER User { get; set; }
+        public PAID_STAFF PUser { get; set; }
+        public LOGIN LUser { get; set; }
+    }
     public partial class USER
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

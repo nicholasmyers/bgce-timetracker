@@ -1,4 +1,4 @@
-﻿@model bgce_timetracker.Models.USER
+﻿@model bgce_timetracker.Models.EditView
 
 @{
     ViewBag.Title = "Details";
@@ -12,144 +12,193 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.fname)
+            @Html.DisplayNameFor(model => model.LUser.username)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.fname)
+            @Html.DisplayFor(model => model.LUser.username)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.lname)
+            @Html.DisplayNameFor(model => model.User.fname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.lname)
+            @Html.DisplayFor(model => model.User.fname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.active)
+            @Html.DisplayNameFor(model => model.User.lname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.active)
+            @Html.DisplayFor(model => model.User.lname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.start_date)
+            @Html.DisplayNameFor(model => model.User.active)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.start_date)
+            @Html.DisplayFor(model => model.User.active)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.created_on)
+            @Html.DisplayNameFor(model => model.User.start_date)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.created_on)
+            @Html.DisplayFor(model => model.User.start_date)
+        </dd>
+        <!--
+        <dt>
+            @Html.DisplayNameFor(model => model.User.created_on)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.created_on)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.created_by)
+            @Html.DisplayNameFor(model => model.User.created_by)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.created_by)
+            @Html.DisplayFor(model => model.User.created_by)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.updated_on)
+            @Html.DisplayNameFor(model => model.User.updated_on)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updated_on)
+            @Html.DisplayFor(model => model.User.updated_on)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.updated_by)
+            @Html.DisplayNameFor(model => model.User.updated_by)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.updated_by)
+            @Html.DisplayFor(model => model.User.updated_by)
+        </dd>
+            -->
+        <dt>
+            @Html.DisplayNameFor(model => model.User.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.email)
+            @Html.DisplayNameFor(model => model.User.is_administrator)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.email)
+            @Html.DisplayFor(model => model.User.is_administrator)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.is_administrator)
+            @Html.DisplayNameFor(model => model.User.user_type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.is_administrator)
+            @Html.DisplayFor(model => model.User.user_type)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.user_type)
+            @Html.DisplayNameFor(model => model.User.total_hours_worked)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.user_type)
+            @Html.DisplayFor(model => model.User.total_hours_worked)
+        </dd>
+        <!--
+        <dt>
+            @Html.DisplayNameFor(model => model.User.LOCATION1.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.LOCATION1.name)
+        </dd-->
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.PAID_STAFF.pay_schedule)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.PAID_STAFF.pay_schedule)
+        </dd>
+
+        <!--dt>
+            @Html.DisplayNameFor(model => model.User.UNIT_DIRECTOR.emplID)
+        </!--dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UNIT_DIRECTOR.emplID)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.total_hours_worked)
+            @Html.DisplayNameFor(model => model.User.USER2.fname)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.total_hours_worked)
+            @Html.DisplayFor(model => model.User.USER2.fname)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LOCATION1.name)
+            @Html.DisplayNameFor(model => model.User.VOLUNTEER.volID)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LOCATION1.name)
-        </dd>
+            @Html.DisplayFor(model => model.User.VOLUNTEER.volID)
+        </dd-->
+        @if (Model.User.user_type != "Volunteer")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.PUser.pto_accrual_rate)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PAID_STAFF.pay_schedule)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PUser.pto_accrual_rate)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.PAID_STAFF.pay_schedule)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PUser.max_pto_accrual)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UNIT_DIRECTOR.emplID)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PUser.max_pto_accrual)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.UNIT_DIRECTOR.emplID)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PUser.total_pto_accrued)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.USER2.fname)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PUser.total_pto_accrued)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.USER2.fname)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PUser.pay_rate)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.VOLUNTEER.volID)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PUser.pay_rate)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.VOLUNTEER.volID)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PUser.pay_schedule)
+            </dt>
 
+            <dd>
+                @Html.DisplayFor(model => model.PUser.pay_schedule)
+            </dd>
+        }
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.userID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.User.userID }) |
     <a href="javascript:void(0);" onclick="history.go(-1);">Back</a>
 </p>
