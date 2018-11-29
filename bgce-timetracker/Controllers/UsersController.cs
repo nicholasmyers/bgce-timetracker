@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using bgce_timetracker.Models;
 using bgce_timetracker.Services;
 
@@ -38,12 +39,15 @@ namespace bgce_timetracker.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                USER uSER = db.USERs.Find(id);
-                if (uSER == null)
+                var editorModel = new EditView();
+                editorModel.User = db.USERs.Find(id);
+                editorModel.LUser = db.LOGINs.Find(id);
+                editorModel.PUser = db.PAID_STAFF.Find(id);
+                if (editorModel.User == null)
                 {
                     return HttpNotFound();
                 }
-                return View(uSER);
+                return View(editorModel);
             }
             else
             {
@@ -190,8 +194,11 @@ namespace bgce_timetracker.Controllers
 
                     db.Entry(myModel.User).State = EntityState.Modified;
                     db.Entry(myModel.LUser).State = EntityState.Modified;
-                    if(myModel.PUser != null)db.Entry(myModel.PUser).State = EntityState.Modified;
-
+                    if (myModel.PUser != null)
+                    {
+                        
+                        db.Entry(myModel.PUser).State = EntityState.Modified;
+                    }
                     if (myModel.User.user_type == "Volunteer" && myModel.PUser != null)
                     {
                         PAID_STAFF old = db.PAID_STAFF.Find(myModel.PUser.emplID);
