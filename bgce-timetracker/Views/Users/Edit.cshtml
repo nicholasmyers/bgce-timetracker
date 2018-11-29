@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Nums = new List<double> { .03845, .0796 };
 }
 
 <h2>Editing: <br />  @Model.LUser.username</h2>
@@ -189,9 +190,25 @@
 
              <div class="form-group">
                  @Html.LabelFor(model => model.PUser.pto_accrual_rate, htmlAttributes: new { @class = "control-label col-md-2" })
+                
                  <div class="col-md-10">
-                     @Html.EditorFor(model => model.PUser.pto_accrual_rate, new { htmlAttributes = new { @class = "form-control" } })
+                     @{ List<double> listItems2 = new List<double>(); ;
+                         if (Model.User.user_type == "Part Time")
+                         {
+                             listItems2.Add(.03845);
+                             listItems2.Add(.0769);
+                         }
+                         else
+                         {
+                             listItems2.Add(.0769);
+                             listItems2.Add(.03845);
+                         }
+
+
+                     }
+                         @Html.DropDownListFor(model => model.PUser.pto_accrual_rate, new SelectList(listItems2), new { htmlAttributes = new { @class = "form-control" } })
                      @Html.ValidationMessageFor(model => model.PUser.pto_accrual_rate, "", new { @class = "text-danger" })
+
                  </div>
              </div>
 
