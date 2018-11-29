@@ -28,6 +28,63 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        // GET: PTORequest/MyRequests
+        public ActionResult MyRequests()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1);
+                return View(pTO_REQUEST.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: PTORequest/Pending
+        public ActionResult Pending()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var pTO_REQUEST = db.PTO_REQUEST.Include(p => p.USER).Include(p => p.USER1).Where(p => p.approved == false);
+                return View(pTO_REQUEST.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // GET: PTORequest/Approve
+        public ActionResult Approve(int? id)
+        {
+            if (Request.IsAuthenticated)
+            {
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                PTO_REQUEST pTO_REQUEST = db.PTO_REQUEST.Find(id);
+                if (pTO_REQUEST == null)
+                {
+                    return HttpNotFound();
+                } else
+                {
+                    pTO_REQUEST.approved = true;
+                    pTO_REQUEST.approved_by = (int)Session["UserID"];
+                    pTO_REQUEST.approved_on = DateTime.Now;
+                    Edit(pTO_REQUEST);
+
+                    return RedirectToAction("Pending");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         // GET: PTORequest/Details/5
         public ActionResult Details(int? id)
         {
@@ -70,7 +127,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments")] PTO_REQUEST pTO_REQUEST)
+        public ActionResult Create([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments,pto_start,pto_end")] PTO_REQUEST pTO_REQUEST)
         {
             if (Request.IsAuthenticated)
             {
@@ -120,7 +177,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments")] PTO_REQUEST pTO_REQUEST)
+        public ActionResult Edit([Bind(Include = "requestID,requested_by,total_time_requested,requested_on,approved,approved_on,approved_by,comments,pto_start,pto_end")] PTO_REQUEST pTO_REQUEST)
         {
             if (Request.IsAuthenticated)
             {

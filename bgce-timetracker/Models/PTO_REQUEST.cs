@@ -12,6 +12,7 @@ namespace bgce_timetracker.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class PTO_REQUEST
     {
@@ -21,8 +22,16 @@ namespace bgce_timetracker.Models
         public int requested_by { get; set; }
         [DisplayName("Total time requested")]
         public Nullable<double> total_time_requested { get; set; }
+        [DisplayName("PTO Starting")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> pto_start { get; set; }
+        [DisplayName("PTO Ending")]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> pto_end { get; set; }
         [DisplayName("Requested on")]
-        public System.DateTime requested_on { get; set; }
+        public System.DateTime requested_on { get; set; } = DateTime.Now;
         [DisplayName("Approved")]
         public bool approved { get; set; }
         [DisplayName("Approved on")]

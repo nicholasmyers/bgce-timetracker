@@ -52,7 +52,7 @@
                             {
                                 <div class="dropdown-item">@Html.ActionLink("My Previous Timecards", "MyTimesheet", "TimeSheet")</div>
                             }
-                            <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "Index", "PTORequest")</a>
+                            <a class="dropdown-item">@Html.ActionLink("My PTO Requests", "MyRequests", "PTORequest")</a>
                             <a class="dropdown-item">@Html.ActionLink("Clock In / Out", "Create", "TimeSheetEntry")</a>
                             <a class="dropdown-item" href="http://www.bgce.org/" target="_blank">Visit BGCE Home</a>
                         </div>
@@ -62,9 +62,9 @@
                             PTO Requests
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <div class="dropdown-item">@Html.ActionLink("View my PTO Requests", "Index", "PTORequest")</div>
-                            <div class="dropdown-item">@Html.ActionLink("My staff's Requests", "Index", "PTORequest")</div>
-                            <div class="dropdown-item">@Html.ActionLink("Pending My Approval", "Index", "PTORequest")</div>
+                            <div class="dropdown-item">@Html.ActionLink("View my PTO Requests", "MyRequests", "PTORequest")</div>
+                            <div class="dropdown-item">@Html.ActionLink("My staff's Requests", "MyStaff", "PTORequest")</div>
+                            <div class="dropdown-item">@Html.ActionLink("Pending My Approval", "Pending", "PTORequest")</div>
                             <div class="dropdown-item">@Html.ActionLink("View all PTO Requests", "Index", "PTORequest")</div>
                         </div>
                     </li>
