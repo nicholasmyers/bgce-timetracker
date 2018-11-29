@@ -53,7 +53,7 @@ namespace bgce_timetracker.Controllers
 
         private bool isClockedIn() {
             int id = (int)Session["UserID"];
-            return db.TIME_SHEET_ENTRY.Where(timeSheet => timeSheet.employee == id && timeSheet.is_clocked_in == true).FirstOrDefault() != null;
+            return db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.employee == id && timeSheetEntry.is_clocked_in == true).FirstOrDefault() != null;
         }
 
         private bgce_timetracker.Models.TIME_SHEET getActiveTimeSheet() {
@@ -61,6 +61,11 @@ namespace bgce_timetracker.Controllers
             return db.TIME_SHEET.Where(timeSheet => timeSheet.employee == id && timeSheet.active).FirstOrDefault();
         }
 
+        private bgce_timetracker.Models.TIME_SHEET_ENTRY getActiveTimeSheetEntry() {
+            int id = (int)Session["UserID"];
+            var tse = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.employee == id && timeSheetEntry.is_clocked_in == true).FirstOrDefault();
+            return tse;
+        }
 
         public ActionResult punch(bgce_timetracker.Models.LOGIN loginModel)
         {
@@ -71,13 +76,13 @@ namespace bgce_timetracker.Controllers
             {
                 if (clockUserIn())
                 {
-                    loginModel.punchStatusConfirmation = "Successfully clocked in.";
+                    loginModel.punchStatusConfirmation = "Successfully punched in.";
                 }
             }
             else{ //if the user is clocked in, clock them out and display a confirmation message telling them they clocked out successfully.
                 if (clockUserOut()) 
                 {
-                    loginModel.punchStatusConfirmation = "Successfully clocked out.";
+                    loginModel.punchStatusConfirmation = "Successfully punched out.";
                 }
             }
 
@@ -127,15 +132,19 @@ namespace bgce_timetracker.Controllers
         public ActionResult Create()
         {
             int id = (int)Session["UserID"];
-            if (Request.IsAuthenticated)
+            if (isClockedIn())
             {
-                ViewBag.time_sheet = new SelectList(db.TIME_SHEET, "timesheetID", "comments");
+                //let the user set their clock out time and update the current time sheet entry they're clocked in on
+                var activeTimeSheetEntry = getActiveTimeSheetEntry();
+
+                ViewBag.Message(activeTimeSheetEntry);
                 return View();
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                //let the user set a clock in and out time for a new time sheet entry for today
             }
+            return View();
         }
 
         // POST: TimeSheetEntry/Create
