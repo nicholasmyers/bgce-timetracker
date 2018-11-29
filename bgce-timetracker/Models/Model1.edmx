@@ -41,6 +41,8 @@
           <Property Name="created_on" Type="datetime2" Precision="0" Nullable="false" />
           <Property Name="user_recipient" Type="int" />
           <Property Name="user_sender" Type="int" />
+          <Property Name="active" Type="bit" Nullable="false" />
+          <Property Name="expires" Type="datetime2" Precision="0" />
         </EntityType>
         <EntityType Name="PAID_STAFF">
           <Key>
@@ -681,6 +683,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
           <Property Name="created_on" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="user_recipient" Type="Int32" />
           <Property Name="user_sender" Type="Int32" />
+          <Property Name="expires" Type="DateTime" Precision="0" />
+          <Property Name="active" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="USER" Relationship="trackerModel.user_recipient" FromRole="NOTIFICATION" ToRole="USER" />
           <NavigationProperty Name="USER1" Relationship="trackerModel.user_sender" FromRole="NOTIFICATION" ToRole="USER" />
         </EntityType>
@@ -1138,6 +1142,8 @@ warning 6002: The table/view 'tracker.dbo.VOLUNTEER_VIEW' does not have a primar
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="recipients" ColumnName="recipients" />
                 <ScalarProperty Name="notifID" ColumnName="notifID" />
+                <ScalarProperty Name="expires" ColumnName="expires" />
+                <ScalarProperty Name="active" ColumnName="active"/>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

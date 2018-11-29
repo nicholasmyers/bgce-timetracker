@@ -84,7 +84,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
+        public ActionResult Create([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender,active,expires")] NOTIFICATION nOTIFICATION)
         {
             if(Request.IsAuthenticated)
             {
@@ -134,7 +134,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
+        public ActionResult Edit([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender,active,expires")] NOTIFICATION nOTIFICATION)
         {
             if (Request.IsAuthenticated)
             {
