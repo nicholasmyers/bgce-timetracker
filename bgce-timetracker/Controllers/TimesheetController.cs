@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -24,17 +25,20 @@ namespace bgce_timetracker.Controllers
         {
             if (Request.IsAuthenticated)
             {
-
+                TimeSheetSearch TSLModel = new TimeSheetSearch();
+               
                 var tIME_SHEET = db.TIME_SHEET.Include(t => t.PAY_PERIOD1).Include(t => t.USER).Include(t => t.USER1);
+                TSLModel.TSList = tIME_SHEET.ToList();
 
                 //return a filtered list of time sheets if a userID is received, otherwise just return the full list
                 if (userID != null)
                 {
-                    return View(tIME_SHEET.Where(i => i.employee == userID).ToList());
+                    TSLModel.TSList = tIME_SHEET.Where(i => i.employee == userID).ToList();
+                    return View(TSLModel);
                 }
                 else
                 {
-                    return View(tIME_SHEET.ToList());
+                    return View(TSLModel);
                 }
             }
             else
