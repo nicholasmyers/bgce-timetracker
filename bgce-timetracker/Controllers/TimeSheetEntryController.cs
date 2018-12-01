@@ -63,8 +63,7 @@ namespace bgce_timetracker.Controllers
 
         private bgce_timetracker.Models.TIME_SHEET_ENTRY getActiveTimeSheetEntry() {
             int id = (int)Session["UserID"];
-            var tse = db.TIME_SHEET_ENTRY.Where(timeSheetEntry => timeSheetEntry.employee == id && timeSheetEntry.is_clocked_in == true).FirstOrDefault();
-            return tse;
+            return db.TIME_SHEET_ENTRY.Where(tse => tse.entryID == id && tse.is_clocked_in == true).FirstOrDefault();
         }
 
         public ActionResult punch(bgce_timetracker.Models.LOGIN loginModel)
@@ -136,9 +135,7 @@ namespace bgce_timetracker.Controllers
             {
                 //let the user set their clock out time and update the current time sheet entry they're clocked in on
                 var activeTimeSheetEntry = getActiveTimeSheetEntry();
-
-                ViewBag.Message(activeTimeSheetEntry);
-                return View();
+                return View(activeTimeSheetEntry);
             }
             else
             {
