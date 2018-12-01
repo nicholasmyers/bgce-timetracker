@@ -182,7 +182,7 @@ namespace bgce_timetracker.Controllers
                         j++;
                     }
                 }
-                if(answer.Equals("Entries Range"))
+                if(answer.Equals("Export Range"))
                 {
                     int x = 0;
                     row.CreateCell(x++).SetCellValue("Employee ID");
@@ -198,7 +198,7 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("");
                     DateTime date1 = new DateTime(2018, 11, 13);
                     DateTime date2 = new DateTime(2018, 11, 24);
-                    var periodRange = db.PAY_PERIOD.Where(i => i.start_date <= date1 && i.start_date >= date2).ToList();
+                    var periodRange = db.PAY_PERIOD.Where(i => i.start_date >= date1 && i.start_date <= date2).ToList();
                     foreach(var period in periodRange)
                     {
                         var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
