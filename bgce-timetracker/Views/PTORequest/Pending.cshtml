@@ -1,0 +1,60 @@
+﻿@model IEnumerable<bgce_timetracker.Models.PTO_REQUEST>
+
+@{
+    ViewBag.Title = "Pending PTO Requests";
+}
+
+
+<h2>PTO Requests Pending My Approval</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Employee Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pto_start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pto_end)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total_time_requested)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requested_on)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comments)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.USER1.fname) @Html.DisplayFor(modelItem => item.USER1.lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pto_start)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pto_end)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.total_time_requested)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.requested_on)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.comments)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.requestID }) |
+                @Html.ActionLink("Approve", "Approve", new { id = item.requestID })
+            </td>
+        </tr>
+    }
+</table>

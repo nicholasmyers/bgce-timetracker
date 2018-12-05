@@ -45,6 +45,9 @@
             @Html.DisplayNameFor(model => model.total_unpaid_time)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.pay_earned)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.created_on)
         </th>
         <th></th>
@@ -52,51 +55,66 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.USER1.fname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.USER1.lname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.submitted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.approved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.is_missing_punches)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_entries)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_hours_worked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_overtime_worked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_pto_used)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_pto_earned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.total_unpaid_time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.created_on)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.timesheetID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.timesheetID })
-            </td>
-        </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.fname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.USER1.lname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.submitted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.approved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_missing_punches)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_entries)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_hours_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_overtime_worked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_pto_used)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_pto_earned)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.total_unpaid_time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pay_earned)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created_on)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.timesheetID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.timesheetID })
+        </td>
+    </tr>
     }
 
 </table>
+<form method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-8" style="padding-top:10px;">
+            <input type="submit" name="answer" value="Export All With Entries" class="btn btn-default" />
+            <input type="submit" name="answer" value="Export Previous Period With Entries" class="btn btn-default" />
+            <input type="submit" name="answer" value="Export All" class="btn btn-default" />
+            <input type="submit" name="answer" value="Export Previous Period" class="btn btn-default" />
+        </div>
+    </div>
+    <br />
+    <div id="dvData"></div>
+</form>
