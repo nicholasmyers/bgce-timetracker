@@ -120,7 +120,7 @@ namespace bgce_timetracker.Controllers
                     }
                 }  
                 
-                if(answer.Equals("Export Range Entries"))
+                if(answer.Equals("Export Range With Entries"))
                 {
                     int x = 0;
                     row.CreateCell(x++).SetCellValue("Employee ID");
