@@ -14,7 +14,8 @@ namespace bgce_timetracker.Models
     using System.ComponentModel;
     public class TimeSheetSearch
     {
-        public DateTime SearchDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public TIME_SHEET format { get; set; }
         public IEnumerable<bgce_timetracker.Models.TIME_SHEET> TSList { get; set; }
     }

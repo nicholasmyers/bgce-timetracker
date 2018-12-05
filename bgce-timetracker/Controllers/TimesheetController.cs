@@ -48,8 +48,11 @@ namespace bgce_timetracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult index(string answer)
+        public ActionResult index(TimeSheetSearch TSLModel , string answer)
         {
+            DateTime sDate = TSLModel.StartDate;
+            DateTime eDate = TSLModel.EndDate;
+            
             string sWebRootFolder = HttpRuntime.AppDomainAppPath;
             string sFileName = @"Test.xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
