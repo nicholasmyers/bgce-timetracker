@@ -31,7 +31,10 @@ namespace bgce_timetracker.Models
         public Nullable<int> user_recipient { get; set; }
         [DisplayName("User sender")]
         public Nullable<int> user_sender { get; set; }
-    
+        [DisplayName("Expires")]
+        public System.DateTime expires { get; set; }
+        [DisplayName("Active")]
+        public bool active { get; set; }
         public virtual USER USER { get; set; }
         public virtual USER USER1 { get; set; }
     }

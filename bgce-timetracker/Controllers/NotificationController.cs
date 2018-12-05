@@ -28,6 +28,20 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        // GET: HomepageNotification
+        public ActionResult ManageHomepage()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var nOTIFICATIONs = db.NOTIFICATIONs.Where(n => n.type == "homepage");
+                return View(nOTIFICATIONs.ToList());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         // GET: Notification/Details/5
         public ActionResult Details(int? id)
         {
@@ -70,7 +84,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
+        public ActionResult Create([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender,active,expires")] NOTIFICATION nOTIFICATION)
         {
             if(Request.IsAuthenticated)
             {
@@ -120,7 +134,7 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender")] NOTIFICATION nOTIFICATION)
+        public ActionResult Edit([Bind(Include = "notifID,recipients,type,trigger,content,created_on,user_recipient,user_sender,active,expires")] NOTIFICATION nOTIFICATION)
         {
             if (Request.IsAuthenticated)
             {
