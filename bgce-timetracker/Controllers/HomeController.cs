@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using bgce_timetracker.Models;
 
 namespace bgce_timetracker.Controllers
 {
     public class HomeController : Controller
-    {
+   {
+        private trackerEntities db = new trackerEntities();
         public ActionResult Index()
         {
             if (Request.IsAuthenticated)
@@ -34,13 +39,14 @@ namespace bgce_timetracker.Controllers
 
         public ActionResult IndexInternal()
         {
+            
             if (!Request.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
             ViewBag.Message = "Home.";
-
-            return View();
+            var nOTIFICATIONs = db.NOTIFICATIONs.Where(n => n.type == "homepage" && n.active == true);
+            return View(nOTIFICATIONs.ToList());
         }
     }
 }

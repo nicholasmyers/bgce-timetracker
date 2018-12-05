@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<bgce_timetracker.Models.NOTIFICATION>
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -8,13 +10,34 @@
     <p><a href="http://www.bgce.org/" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Boys & Girls Club Home</h2>
-        <p>
-            This website is a private service to Boys & Girls Club employees. Use the button
-            below to view our website.
-        </p>
-        <p><a class="btn btn-default" href="http://www.bgce.org/">Learn more &raquo;</a></p>
+@if (Model != null)
+{
+<div class="jumbotron" id="notification-pane">
+    <h2>Notifications</h2>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <hr />
+            <tr>
+                <td>
+                    <strong><em>@Html.DisplayFor(modelItem => item.content)</em></strong>
+                </td>
+                <td> - expires @Html.DisplayFor(modelItem => item.expires)</td>
+            </tr>
+        }
+    </tbody>
     </div>
-</div>
+}
+
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Boys & Girls Club Home</h2>
+            <p>
+                This website is a private service to Boys & Girls Club employees. Use the button
+                below to view our website.
+            </p>
+            <p><a class="btn btn-default" href="http://www.bgce.org/">Learn more &raquo;</a></p>
+        </div>
+    </div>

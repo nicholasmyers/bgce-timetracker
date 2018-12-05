@@ -27,19 +27,6 @@ namespace bgce_timetracker
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Name;
-            ConnectDB();
-        }
-
-        public void ConnectDB()
-        {
-            SqlConnection conn = new SqlConnection(
-                WebConfigurationManager.ConnectionStrings["MainDB"].ConnectionString);
-            conn.Open();
-
-            if(conn.State == System.Data.ConnectionState.Open)
-            {
-                Debug.WriteLine("Connected to DB");
-            }
         }
 
         protected void Application_Error(object sender, EventArgs e)
