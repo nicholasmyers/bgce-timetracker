@@ -59,7 +59,7 @@ namespace bgce_timetracker.Controllers
                 IRow row = excelSheet.CreateRow(0);
 
                 int j = 1;
-                if (answer.Equals("Export All"))
+                if (answer.Equals("Export All Entries"))
                 {
                     int x = 0;
                     row.CreateCell(x++).SetCellValue("Employee ID");
@@ -194,7 +194,7 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("Total PTO Earned");
                     row.CreateCell(x++).SetCellValue("Total PTO Used");
                     row.CreateCell(x++).SetCellValue("Total Unpaid Time");
-                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("Total Pay Earned");
                     row.CreateCell(x++).SetCellValue("");
                     DateTime date1 = new DateTime(2018, 11, 13);
                     DateTime date2 = new DateTime(2018, 11, 24);
@@ -218,6 +218,7 @@ namespace bgce_timetracker.Controllers
                             row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
                             row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
                             row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pay_earned));
                             j++;
                         }
                     }
@@ -422,7 +423,7 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("Total PTO Earned");
                     row.CreateCell(x++).SetCellValue("Total PTO Used");
                     row.CreateCell(x++).SetCellValue("Total Unpaid Time");
-                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("Total Pay Earned");
                     row.CreateCell(x++).SetCellValue("");
                     var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
                     foreach (var entry in sheets)
@@ -441,6 +442,7 @@ namespace bgce_timetracker.Controllers
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pay_earned));
                         j++;
                     }
                 }
@@ -456,7 +458,7 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("Total PTO Earned");
                     row.CreateCell(x++).SetCellValue("Total PTO Used");
                     row.CreateCell(x++).SetCellValue("Total Unpaid Time");
-                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("Total Pay Earned");
                     row.CreateCell(x++).SetCellValue("");
                     int period = db.TIME_SHEET.Where(i => i.active).Select(i => i.pay_period).FirstOrDefault();
                     period -= 1;
@@ -477,6 +479,7 @@ namespace bgce_timetracker.Controllers
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
                         row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pay_earned));
                         j++;
                     }
                 }
