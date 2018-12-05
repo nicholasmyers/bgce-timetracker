@@ -143,9 +143,9 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("");
                     row.CreateCell(x++).SetCellValue("");
 
-                    DateTime date1 = new DateTime(2018, 11, 13);
-                    DateTime date2 = new DateTime(2018, 11, 24);
-                    var time = db.TIME_SHEET_ENTRY.Where(i => i.date >= date1 && i.date <= date2).ToList();
+                    //DateTime date1 = new DateTime(2018, 11, 13);
+                    //DateTime date2 = new DateTime(2018, 11, 24);
+                    var time = db.TIME_SHEET_ENTRY.Where(i => i.date >= sDate && i.date <= eDate).ToList();
                     foreach (var entry in time)
                     {
                         string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
@@ -203,9 +203,9 @@ namespace bgce_timetracker.Controllers
                     row.CreateCell(x++).SetCellValue("Total Unpaid Time");
                     row.CreateCell(x++).SetCellValue("Total Pay Earned");
                     row.CreateCell(x++).SetCellValue("");
-                    DateTime date1 = new DateTime(2018, 11, 13);
-                    DateTime date2 = new DateTime(2018, 11, 24);
-                    var periodRange = db.PAY_PERIOD.Where(i => i.start_date >= date1 && i.start_date <= date2).ToList();
+                    //DateTime date1 = new DateTime(2018, 11, 13);
+                    //DateTime date2 = new DateTime(2018, 11, 24);
+                    var periodRange = db.PAY_PERIOD.Where(i => i.start_date >= sDate && i.start_date <= eDate).ToList();
                     foreach(var period in periodRange)
                     {
                         var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
