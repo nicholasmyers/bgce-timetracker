@@ -47,6 +47,198 @@ namespace bgce_timetracker.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult index(string answer)
+        {
+            string sWebRootFolder = HttpRuntime.AppDomainAppPath;
+            string sFileName = @"Test.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
+            FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+            var memory = new MemoryStream();
+            using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook;
+                workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Test");
+                IRow row = excelSheet.CreateRow(0);
+
+                int j = 1;
+                if (answer.Equals("Export All"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Date");
+                    row.CreateCell(x++).SetCellValue("Clock In Time");
+                    row.CreateCell(x++).SetCellValue("Clock Out Time");
+                    row.CreateCell(x++).SetCellValue("Hours Worked");
+                    row.CreateCell(x++).SetCellValue("Time Type");
+                    row.CreateCell(x++).SetCellValue("Overtime Hours");
+                    row.CreateCell(x++).SetCellValue("PTO Earned");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+
+                    var time = (db.TIME_SHEET_ENTRY).ToList();
+                    foreach (var entry in time)
+                    {
+                        string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
+                        string lname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.lname).FirstOrDefault();
+                        row = excelSheet.CreateRow(j);
+                        int i = 0;
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                        row.CreateCell(i++).SetCellValue(lname);
+                        row.CreateCell(i++).SetCellValue(fname);
+                        if (entry.date.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
+                        }
+                        if (entry.clock_in_time.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_in_time));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
+                        }
+                        if (entry.clock_out_time.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_out_time));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
+                        }
+                        if (entry.hours_worked.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.hours_worked));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                        }
+                        row.CreateCell(i++).SetCellValue(entry.time_type);
+                        if (entry.overtime_hours_worked.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
+                        }
+                        if (entry.pto_earned.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pto_earned));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
+                        }
+                        j++;
+                    }
+                }  
+                
+                if(answer.Equals("Export Range Entries"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Date");
+                    row.CreateCell(x++).SetCellValue("Clock In Time");
+                    row.CreateCell(x++).SetCellValue("Clock Out Time");
+                    row.CreateCell(x++).SetCellValue("Hours Worked");
+                    row.CreateCell(x++).SetCellValue("Time Type");
+                    row.CreateCell(x++).SetCellValue("Overtime Hours");
+                    row.CreateCell(x++).SetCellValue("PTO Earned");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+
+                    DateTime date1 = new DateTime(2018, 11, 13);
+                    DateTime date2 = new DateTime(2018, 11, 24);
+                    var time = db.TIME_SHEET_ENTRY.Where(i => i.date >= date1 && i.date <= date2).ToList();
+                    foreach (var entry in time)
+                    {
+                        string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
+                        string lname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.lname).FirstOrDefault();
+                        row = excelSheet.CreateRow(j);
+                        int i = 0;
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                        row.CreateCell(i++).SetCellValue(lname);
+                        row.CreateCell(i++).SetCellValue(fname);
+                        if (entry.date.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
+                        }
+                        if (entry.clock_in_time.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_in_time));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
+                        }
+                        if (entry.clock_out_time.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_out_time));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
+                        }
+                        if (entry.hours_worked.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.hours_worked));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                        }
+                        row.CreateCell(i++).SetCellValue(entry.time_type);
+                        if (entry.overtime_hours_worked.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
+                        }
+                        if (entry.pto_earned.HasValue)
+                        {
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pto_earned));
+                            //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
+                        }
+                        j++;
+                    }
+                }
+                if(answer.Equals("Export Range"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Total Entries");
+                    row.CreateCell(x++).SetCellValue("Total Hours");
+                    row.CreateCell(x++).SetCellValue("Total Overtime");
+                    row.CreateCell(x++).SetCellValue("Total PTO Earned");
+                    row.CreateCell(x++).SetCellValue("Total PTO Used");
+                    row.CreateCell(x++).SetCellValue("Total Unpaid Time");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+                    DateTime date1 = new DateTime(2018, 11, 13);
+                    DateTime date2 = new DateTime(2018, 11, 24);
+                    var periodRange = db.PAY_PERIOD.Where(i => i.start_date >= date1 && i.start_date <= date2).ToList();
+                    foreach(var period in periodRange)
+                    {
+                        var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
+                        foreach (var entry in sheets)
+                        {
+                            row = excelSheet.CreateRow(j);
+                            string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
+                            string lname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.lname).FirstOrDefault();
+
+                            int i = 0;
+                            row.CreateCell(i++).SetCellValue(entry.employee);
+                            row.CreateCell(i++).SetCellValue(lname);
+                            row.CreateCell(i++).SetCellValue(fname);
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_entries));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_hours_worked));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_overtime_worked));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                            j++;
+                        }
+                    }
+                }
+
+                workbook.Write(fs);
+                
+                using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
+                {
+                    stream.CopyTo(memory);
+                }
+                memory.Position = 0;
+                return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName);
+
+            }                
+        }
+
         // GET: Timesheet/MyTimesheet
         public ActionResult MyTimesheet()
         {
@@ -73,6 +265,234 @@ namespace bgce_timetracker.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpPost]
+        // Post: Timesheet/Open
+        public ActionResult Open(string answer)
+        {
+            string sWebRootFolder = HttpRuntime.AppDomainAppPath;
+            string sFileName = @"Test.xlsx";
+            string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
+            FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+            var memory = new MemoryStream();
+            using (var fs = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook;
+                workbook = new XSSFWorkbook();
+                ISheet excelSheet = workbook.CreateSheet("Test");
+                IRow row = excelSheet.CreateRow(0);
+
+                int j = 1;
+                if(answer.Equals("Export All With Entries"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Date");
+                    row.CreateCell(x++).SetCellValue("Clock In Time");
+                    row.CreateCell(x++).SetCellValue("Clock Out Time");
+                    row.CreateCell(x++).SetCellValue("Hours Worked");
+                    row.CreateCell(x++).SetCellValue("Time Type");
+                    row.CreateCell(x++).SetCellValue("Overtime Hours");
+                    row.CreateCell(x++).SetCellValue("PTO Earned");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+                    var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
+                    foreach (var id in sheets)
+                    {
+                        int ID = id.timesheetID;
+                        var fname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.fname).FirstOrDefault();
+                        var lname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.lname).FirstOrDefault();
+                        var time = db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == ID).ToList();
+                        foreach (var entry in time)
+                        {
+                            row = excelSheet.CreateRow(j);
+                            int i = 0;
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(lname));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(fname));
+                            if (entry.date.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
+                            }
+                            if (entry.clock_in_time.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_in_time));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
+                            }
+                            if (entry.clock_out_time.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_out_time));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
+                            }
+                            if (entry.hours_worked.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.hours_worked));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                            }
+                            row.CreateCell(i++).SetCellValue(entry.time_type);
+                            if (entry.overtime_hours_worked.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
+                            }
+                            if (entry.pto_earned.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pto_earned));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
+                            }
+                            j++;
+                        }
+                    }
+                }
+                if (answer.Equals("Export Previous Period With Entries"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Date");
+                    row.CreateCell(x++).SetCellValue("Clock In Time");
+                    row.CreateCell(x++).SetCellValue("Clock Out Time");
+                    row.CreateCell(x++).SetCellValue("Hours Worked");
+                    row.CreateCell(x++).SetCellValue("Time Type");
+                    row.CreateCell(x++).SetCellValue("Overtime Hours");
+                    row.CreateCell(x++).SetCellValue("PTO Earned");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+                    int period = db.TIME_SHEET.Where(i => i.active).Select(i => i.pay_period).FirstOrDefault();
+                    period -= 1;
+                    var sheets = db.TIME_SHEET.Where(i => i.pay_period == period).ToList();
+                    foreach (var id in sheets)
+                    {
+                        int ID = id.timesheetID;
+                        var fname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.fname).FirstOrDefault();
+                        var lname = db.USERs.Where(i => i.userID == id.employee).Select(i => i.lname).FirstOrDefault();
+                        var time = db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == ID).ToList();
+                        foreach (var entry in time)
+                        {
+                            row = excelSheet.CreateRow(j);
+                            int i = 0;
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(lname));
+                            row.CreateCell(i++).SetCellValue(Convert.ToString(fname));
+                            if (entry.date.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
+                            }
+                            if (entry.clock_in_time.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_in_time));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
+                            }
+                            if (entry.clock_out_time.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_out_time));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
+                            }
+                            if (entry.hours_worked.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.hours_worked));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                            }
+                            row.CreateCell(i++).SetCellValue(entry.time_type);
+                            if (entry.overtime_hours_worked.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
+                            }
+                            if (entry.pto_earned.HasValue)
+                            {
+                                row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pto_earned));
+                                //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
+                            }
+                            j++;
+                        }
+                    }
+                }
+                if(answer.Equals("Export All"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Total Entries");
+                    row.CreateCell(x++).SetCellValue("Total Hours");
+                    row.CreateCell(x++).SetCellValue("Total Overtime");
+                    row.CreateCell(x++).SetCellValue("Total PTO Earned");
+                    row.CreateCell(x++).SetCellValue("Total PTO Used");
+                    row.CreateCell(x++).SetCellValue("Total Unpaid Time");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+                    var sheets = db.TIME_SHEET.Where(i => i.active).ToList();
+                    foreach (var entry in sheets)
+                    {
+                        row = excelSheet.CreateRow(j);
+                        string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
+                        string lname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.lname).FirstOrDefault();
+                        
+                        int i = 0;
+                        row.CreateCell(i++).SetCellValue(entry.employee);
+                        row.CreateCell(i++).SetCellValue(lname);
+                        row.CreateCell(i++).SetCellValue(fname);
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_entries));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_hours_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_overtime_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                        j++;
+                    }
+                }
+                if(answer.Equals("Export Previous Period"))
+                {
+                    int x = 0;
+                    row.CreateCell(x++).SetCellValue("Employee ID");
+                    row.CreateCell(x++).SetCellValue("Last Name");
+                    row.CreateCell(x++).SetCellValue("First Name");
+                    row.CreateCell(x++).SetCellValue("Total Entries");
+                    row.CreateCell(x++).SetCellValue("Total Hours");
+                    row.CreateCell(x++).SetCellValue("Total Overtime");
+                    row.CreateCell(x++).SetCellValue("Total PTO Earned");
+                    row.CreateCell(x++).SetCellValue("Total PTO Used");
+                    row.CreateCell(x++).SetCellValue("Total Unpaid Time");
+                    row.CreateCell(x++).SetCellValue("");
+                    row.CreateCell(x++).SetCellValue("");
+                    int period = db.TIME_SHEET.Where(i => i.active).Select(i => i.pay_period).FirstOrDefault();
+                    period -= 1;
+                    var sheets = db.TIME_SHEET.Where(i => i.pay_period == period).ToList();
+                    foreach (var entry in sheets)
+                    {
+                        row = excelSheet.CreateRow(j);
+                        string fname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.fname).FirstOrDefault();
+                        string lname = db.USERs.Where(w => w.userID == entry.employee).Select(w => w.lname).FirstOrDefault();
+
+                        int i = 0;
+                        row.CreateCell(i++).SetCellValue(entry.employee);
+                        row.CreateCell(i++).SetCellValue(lname);
+                        row.CreateCell(i++).SetCellValue(fname);
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_entries));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_hours_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_overtime_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_earned));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_pto_used));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.total_unpaid_time));
+                        j++;
+                    }
+                }
+                workbook.Write(fs);
+            }
+            using (var stream = new FileStream(Path.Combine(sWebRootFolder, sFileName), FileMode.Open))
+            {
+                stream.CopyTo(memory);
+            }
+            memory.Position = 0;
+            return File(memory, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", sFileName);
+
         }
 
         // GET: Timesheet/Details/5
@@ -105,8 +525,6 @@ namespace bgce_timetracker.Controllers
         [HttpPost]
         public ActionResult Details()
         {
-
-            System.Diagnostics.Debug.WriteLine("9999999999999999999999999999999999999999999");
             string sWebRootFolder = HttpRuntime.AppDomainAppPath;
             string sFileName = @"Test.xlsx";
             string URL = string.Format("{0}://{1}/{2}", Request.Url.Scheme, Request.Url.Host, sFileName);
@@ -119,53 +537,63 @@ namespace bgce_timetracker.Controllers
                 ISheet excelSheet = workbook.CreateSheet("Test");
                 IRow row = excelSheet.CreateRow(0);
 
-                row.CreateCell(0).SetCellValue("Date");
-                row.CreateCell(1).SetCellValue("Clock In Time");
-                row.CreateCell(2).SetCellValue("Clock Out Time");
-                row.CreateCell(3).SetCellValue("Hours Worked");
-                row.CreateCell(4).SetCellValue("Time Type");
-                row.CreateCell(5).SetCellValue("Overtime Hours");
-                row.CreateCell(6).SetCellValue("PTO Earned");
-                row.CreateCell(7).SetCellValue("");
-                row.CreateCell(8).SetCellValue("");
+                int x = 0;
+                row.CreateCell(x++).SetCellValue("Employee ID");
+                row.CreateCell(x++).SetCellValue("Last Name");
+                row.CreateCell(x++).SetCellValue("First Name");
+                row.CreateCell(x++).SetCellValue("Date");
+                row.CreateCell(x++).SetCellValue("Clock In Time");
+                row.CreateCell(x++).SetCellValue("Clock Out Time");
+                row.CreateCell(x++).SetCellValue("Hours Worked");
+                row.CreateCell(x++).SetCellValue("Time Type");
+                row.CreateCell(x++).SetCellValue("Overtime Hours");
+                row.CreateCell(x++).SetCellValue("PTO Earned");
+                row.CreateCell(x++).SetCellValue("");
+                row.CreateCell(x++).SetCellValue("");
 
                 int j = 1;
                 int timeID = (int)TempData.Peek("id");
-                System.Diagnostics.Debug.WriteLine(timeID);
                 var time = (db.TIME_SHEET_ENTRY.Where(i => i.time_sheet == timeID)).ToList();
+                var empID = db.TIME_SHEET.Where(i => i.timesheetID == timeID).Select(i => i.employee).FirstOrDefault();
+                var fname = db.USERs.Where(i => i.userID == empID).Select(i => i.fname).FirstOrDefault();
+                var lname = db.USERs.Where(i => i.userID == empID).Select(i => i.lname).FirstOrDefault();
                 foreach (var entry in time)
                 {
                     row = excelSheet.CreateRow(j);
+                    int i = 0;
+                    row.CreateCell(i++).SetCellValue(Convert.ToString(entry.employee));
+                    row.CreateCell(i++).SetCellValue(Convert.ToString(lname));
+                    row.CreateCell(i++).SetCellValue(Convert.ToString(fname));
                     if (entry.date.HasValue)
                     {
-                        row.CreateCell(0).SetCellValue(Convert.ToString(entry.date));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.date));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.date));
                     }
                     if (entry.clock_in_time.HasValue)
                     {
-                        row.CreateCell(1).SetCellValue(Convert.ToString(entry.clock_in_time));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_in_time));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_in_time));
                     }
                     if (entry.clock_out_time.HasValue)
                     {
-                        row.CreateCell(2).SetCellValue(Convert.ToString(entry.clock_out_time));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.clock_out_time));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.clock_out_time));
                     }
-                    row.CreateCell(4).SetCellValue(entry.time_type);
                     if (entry.hours_worked.HasValue)
                     {
-                        row.CreateCell(3).SetCellValue(Convert.ToString(entry.hours_worked));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.hours_worked));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.hours_worked));
+                    }
+                    row.CreateCell(i++).SetCellValue(entry.time_type);
+                    if (entry.overtime_hours_worked.HasValue)
+                    {
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
                     }
                     if (entry.pto_earned.HasValue)
                     {
-                        row.CreateCell(6).SetCellValue(Convert.ToString(entry.pto_earned));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
-                    }
-                    if (entry.overtime_hours_worked.HasValue)
-                    {
-                        row.CreateCell(5).SetCellValue(Convert.ToString(entry.overtime_hours_worked));
-                        System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.overtime_hours_worked));
+                        row.CreateCell(i++).SetCellValue(Convert.ToString(entry.pto_earned));
+                        //System.Diagnostics.Debug.WriteLine(Convert.ToString(entry.pto_earned));
                     }
                     j++;
                 }
