@@ -19,7 +19,6 @@
         <div class="form-group">
             @Html.LabelFor(model => model.time_sheet, "time sheet", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor("time_sheet", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.time_sheet, "", new { @class = "text-danger" })
             </div>
         </div>
