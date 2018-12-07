@@ -149,24 +149,14 @@ namespace bgce_timetracker.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "entryID,time_sheet,date,hours_worked,comment,clock_in_time,clock_out_time,is_clocked_in,updated_on,updated_by,time_type,overtime_hours_worked,pto_earned,created_on")] TIME_SHEET_ENTRY tIME_SHEET_ENTRY)
+        public ActionResult Create(TIME_SHEET_ENTRY tIME_SHEET_ENTRY)
         {
-            if (Request.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    db.TIME_SHEET_ENTRY.Add(tIME_SHEET_ENTRY);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-
-                ViewBag.time_sheet = new SelectList(db.TIME_SHEET, "timesheetID", "comments", tIME_SHEET_ENTRY.time_sheet);
-                return View(tIME_SHEET_ENTRY);
+                db.Entry(tIME_SHEET_ENTRY).State = EntityState.Modified;
+                db.SaveChanges();
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: TimeSheetEntry/Edit/5
